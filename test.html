@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="pic/o.ico">
+    <link rel="shortcut icon" href="pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="pic/o.png">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/mainContent.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- <link rel="stylesheet" href="../css/main3_half.css" media="screen and (max-width:1360px)"> -->
+    <!-- <link rel="stylesheet" href="../css/main3_quarter.css" media="screen and (max-width:850px)"> -->
+    <!-- <link rel="stylesheet" href="../css/main3_mobile.css" media="screen and (max-width:550px)"> -->
+    <meta property="og:title" content="おさだのホームページ">
+    <meta property="og:description" content="Pythonが好きな おさだ のホームページです。最近Javascriptを勉強しています。">
+    <meta property="og:site_name" content="おさだのホームページ">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://ossa2019.stars.ne.jp/index.html">
+    <title>【おさだのホームページ】Pythonが好きな&nbsp;おさだ&nbsp;が備忘録や作ったものを載せるページ</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li id="now">
+                <a href="index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li>
+                <a href="blog/blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="jouhou.html" target="_blank" rel="noopener noreferrer">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="text.html" target="_blank" rel="noopener noreferrer">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <div class="caption_text" id="jp_font">Pythonが好きな&nbsp;おさだ&nbsp;が備忘録や作ったものを載せるページ</div>
+            <br>
+            <br>
+            <div class="counter_content">
+                <div class="counter_view">
+                    <span class="counter" id="jp_font">
+                        サイト全体の表示回数&nbsp;&nbsp;:&nbsp;&nbsp;<counter id="counter">--</counter>&nbsp;&nbsp;回
+                    </span>
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <br>
+                <div class="window">
+                    <div class="window_btn">
+                        <div class="red"></div>
+                        <div class="yellow"></div>
+                        <div class="green"></div>
+                    </div>
+                    <div class="window_title">window</div>
+                    <div class="window_content">
+                        <div class="window_content_buf"></div>
+                        <div class="window_text">
+                            test<br>
+                            テスト<br>
+                            <span id="jp_font">
+                                jp_font<br>
+                                Test<br>
+                                テスト<br>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="code_window">
+                    <div class="window_btn">
+                        <div class="red"></div>
+                        <div class="yellow"></div>
+                        <div class="green"></div>
+                        <div class="copy_btn" id="copy_btn" onclick="copyText()">copy</div>
+                        <div class="copied">copied!</div>
+                    </div>
+                    <div class="window_title">code</div>
+                    <div class="window_content">
+                        <div class="window_content_buf"></div>
+                        <div class="window_text">
+                            <span id="copy_text">
+                                <span class="dec0">import</span> inspect<br>
+                                <br>
+                                <span class="dec0">def</span> check(func):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> f(<span class="dec2">*</span><span class="dec2">args</span>, <span class="dec2">*</span><span class="dec2">*</span><span class="dec2">kw</span><span class="dec2">args</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sig = inspect.signature(func)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> (name, param) <span class="dec1">in</span> sig.parameters.items():<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f'args: {name}\ntype: {repr(param.annotation)}')<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f'result: {func(<span class="dec2">*</span><span class="dec2">args</span>, <span class="dec2">*</span><span class="dec2">*</span><span class="dec2">kw</span><span class="dec2">args</span>)}')<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> func<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> f
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="title">最近更新したページ</div>
+                <div class="link_content">
+                    <div class="link">
+                        <a href="blog/other/font_class.html">
+                            Pythonでのフォント作成を楽にするモジュールを自作する
+                        </a><br><div class="article_caption" id="jp_font">最終的に画像認識を用いて、画像からフォントへの変換を可能にしたい</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="blog/other/rsa.html">
+                            RSA暗号を作ってみる
+                        </a><br><div class="article_caption" id="jp_font">スレッドの活用と既解読暗号の再利用</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="blog/other/linear_separation.html">
+                            ２次元の簡単な線形分離モデルを自作する
+                        </a><br><div class="article_caption" id="jp_font">人工知能（深層学習）の構成単位であるパーセプトロンについて少し理解する</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="blog/other/plot_anime.html">
+                            matplotlibのアニメーションで複数のグラフを重ねて描画する方法について
+                        </a>
+                        <br><br><br>
+                    </div>
+                    <div class="link">
+                        <a href="blog/chromeEx/chromeEx1.html">
+                            Google Chromeの拡張機能を作ってみる
+                        </a>
+                        <br><br><br>
+                    </div>
+                </div>
+                <!-- <div class="content">
+                    content
+                    <div class="code">
+                        import numpy as np
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <script src="js/copy.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/i_btn.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/fade.js"></script>
+    <script src="js/counter.js"></script>
+    <script src="count/count.php"></script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+body {
+    font-family : Arial, Helvetica, sans-serif;
+    background-color: #220120;
+    background-image: url("../pic/pc.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
+    padding     : 0px;
+    margin      : 0px;
+}
+
+.page {
+    padding-bottom: 80px;
+}
+
+/* タブ */
+.tab {
+    position    : absolute;
+    display     : inline;
+    top         : -1px;
+    font-size   : 50px;
+    width       : 100%;
+    padding-bottom: 1%;
+    color       : #ffffff;
+    background-color: #000000a0;
+    background-size: cover;
+}
+.tab p{
+    position    : relative;
+    display     : block;
+    letter-spacing: 10px;
+    top         : 5px;
+    font-size   : 40px;
+    padding     : 0% 3%;
+    margin: 0px;
+    margin-top: 10px;
+}
+.tab a:first-of-type{
+    position    : relative;
+    font-size   : 20px;
+    text-decoration: none;
+    margin      : 0px;
+    padding: 2% 3% 1.5% 3%;
+    margin-left: 10px;
+}
+.tab a{
+    position    : relative;
+    font-size   : 20px;
+    text-decoration: none;
+    color       : #ffffff;
+    margin      : 0px;
+    padding: 2% 3% 1.5% 3%;
+    background: linear-gradient(#ffffffa0, #ffffffa0) right bottom / 0 100% no-repeat;
+	transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.tab a:hover{
+    border-bottom: solid;
+    border-color: white;
+    /* background  : #ffffffa0; */
+    background-position: left bottom;
+	background-size: 100% 100%;
+    color       : black;
+}
+.tab_now{
+    border-bottom: solid;
+    /* background  : #ffffffa0; */
+    color       : black;
+}
+
+/* 一番上に行くやつ */
+.tmTopBtn {
+	display		: inline-block;
+	position	: fixed;
+	bottom		: 20px;
+	right		: 20px;
+	padding		: 14px 15px;
+	background	: rgba(51, 51, 51, 0.70);
+	color		: #fff;
+	opacity		: 0.5;
+	border-radius	: 4%;
+	font-size	: 16.5pt;
+	font-weight	: bold;
+	line-height	: 1.2em;
+	text-align	: center;
+	cursor		: pointer;
+	z-index		: 999;
+}
+.tmTopBtn:hover {
+	opacity		: 0.9;
+}
+
+/* 内容 */
+.page{
+    position    : relative;
+    top         : 120px;
+    margin      : 50px 10%;
+}
+/* 冒頭の説明 */
+.caption{
+    color       : #FFFFFF;
+    font-weight : bold;
+    text-shadow : 
+        2px  2px 1px rgba(153, 153, 153, 0.5),
+        -2px  2px 1px rgba(153, 153, 153, 0.5),
+        2px -2px 1px rgba(153, 153, 153, 0.5),
+        -2px -2px 1px rgba(153, 153, 153, 0.5),
+        2px  0px 1px rgba(153, 153, 153, 0.5),
+        0px  2px 1px rgba(153, 153, 153, 0.5),
+        -2px  0px 1px rgba(153, 153, 153, 0.5),
+        0px -2px 1px rgba(153, 153, 153, 0.5);
+    font-size   : 18px;
+    letter-spacing: 4px;
+}
+/* counter_view */
+.counter_view p{
+    color       : #FFFFFF;
+    text-align  : left;
+    font-size   : 20px;
+    padding-top : 0px;
+    padding-left: 20px;
+    padding-right: 50px;
+    margin      : 0;
+    border-left : solid;
+    border-width: 10px;
+    border-color: #4f015e;
+    letter-spacing: 10px;
+}
+/* 記事 */
+.article{
+    background-color: #dadadaf0;
+    text-align  : center;
+    padding-bottom: 25px;
+}
+.article p{
+    text-align  : left;
+    font-size   : 30px;
+    padding-top : 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-left : solid;
+    border-width: 10px;
+    border-color: #c7a511;
+    letter-spacing: 10px;
+}
+.article p1{
+    font-size   : 20px;
+    color       : black;
+    padding     : 10px 20px;
+}
+.article p2{
+    font-size   : 20px;
+    color       : black;
+    background  : #0272b330;
+    border-bottom: solid;
+    padding     : 10px 35%;
+}
+.article section{
+    text-align  : left;
+    font-size   : 15px;
+    color       : black;
+    padding     : 0px 50px;
+}
+.article a{
+    font-size   : 20px;
+    text-decoration-style: dotted;
+    color       : #00629b;
+    padding     : 10px 20px;
+}
+.article section > .newlink{
+    font-size   : 20px;
+    text-decoration: none;
+}
+.article a:hover{
+    color: #941717;
+    text-shadow: 0px 0px 20px #ffffff;
+    font-weight: 900;
+}
+
+.article1{
+    background-color: #dadadaf0;
+    text-align  : center;
+    padding-bottom: 25px;
+}
+.article1 p{
+    text-align  : left;
+    font-size   : 30px;
+    padding-top : 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-left : solid;
+    border-width: 10px;
+    border-color: #7511c7;
+    letter-spacing: 10px;
+}
+.article1 p1{
+    font-size   : 20px;
+    color       : black;
+    padding     : 10px 20px;
+}
+.article1 p2{
+    font-size   : 20px;
+    color       : black;
+    background  : #0272b330;
+    border-bottom: solid;
+    padding     : 10px 35%;
+}
+.article1 section{
+    text-align  : left;
+    font-size   : 15px;
+    color       : black;
+    padding     : 0px 50px;
+}
+.article1 a{
+    font-size   : 20px;
+    text-decoration-style: dotted;
+    color       : #00629b;
+    padding     : 10px 20px;
+}
+.article1 a:hover{
+    color: #941717;
+    text-shadow: 0px 0px 20px #ffffff;
+    font-weight: 900;
+}
+
+/* .exeが入ったzipファイル */
+.exezip{
+    font-size   : 30px;
+    text-decoration: underline;
+    color       : #00629b;
+    padding     : 10px 20px;
+}
+
+/* 備忘録等の更新日時 */
+p_update{
+    font-size   : 20px;
+    text-decoration: none;
+    color       : black;
+    padding     : 10px 20px;
+    padding-left: 0px;
+}
+
+.hajimeni{
+    font-size : 12px;
+    color : #777777
+}
+
+.pic{
+    text-align  : center;
+}
+
+.a_list > a{
+    font-size: 20px;
+    text-decoration:none;
+}
+
+.newlink{
+    font-size   : 15px;
+    text-decoration: none;
+}
+
+.det > a{
+    font-size : 1.2vw;
+    margin: 0px;
+    padding : 0px;
+    font-weight: 0;
+}

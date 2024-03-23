@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterのボタンの使い方'>
+        <meta property='og:description' content='tkinterのボタンの使い方について'>
+        <meta property='og:site_name' content='tkinterのボタンの使い方'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk4.html'>
+        <title>tkinterのボタンの使い方：Button()について【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                4. tkinterのボタンの使い方
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月10日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <a href='tk2.html' class='a1'>2. 基本的な構文</a><br>
+                    <a href='tk3.html' class='a1'>3. ラベル</a><br>
+                    <bl>
+                    <a href='#i4' class='a1'>4. ボタン</a><br>
+                    <a href='#i4-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;ボタンの定義</a><br>
+                    <a href='#i4-2' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;ボタンのカスタマイズ</a><br>
+                    <a href='#i4-3' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;ボタンの内容を後から書き換える</a><br>
+                    <a href='#i4-4' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;ボタンを押したときに何か動作をする</a><br>
+                    <a href='#i4-5' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;右クリック以外のキーをトリガーとする</a><br>
+                    </bl>
+                    <br>
+                    <a href='tk5.html' class='a1'>5. エントリー</a><br>
+                    <a href='tk6.html' class='a1'>6. テキスト</a><br>
+                    <a href='tk7.html' class='a1'>7. スクロールバー</a><br>
+                    <a href='tk8.html' class='a1'>8. チェックボックス</a><br>
+                    <a href='tk9.html' class='a1'>9. バインドについて</a><br>
+                    <a href='tk10.html' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <a href='tk11.html' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i4'>ボタン</p>
+                <div class='list0'>
+                    <li id='i4-1'>
+                        ボタンの定義
+                    </li><br>
+                    <p1>
+                        ボタンの作成には <bl>Button()</bl> を用いる。
+                        <br><br><div class='t0'>but = t.Button()</div>
+                        <br><br>ボタンに文字を挿入するには <bl>text</bl> オプションを用いる。
+                        <br><br><div class='t0'>but = t.Button( text = u'ボタン' )</div>
+                        <br><br>ボタンの表示にも <bl>pack()</bl> または <bl>place()</bl> を用いる。
+                        <br><br>
+                        <div class='t2' id='j1'>
+                            &nbsp;実行例１
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '250x150' )<br>
+                                <br><koko>
+                                but = t.Button( text = u'ボタン' )<br>
+                                but.place( x = 10, y = 10 )<br>
+                                <br></koko>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果
+                            <div class='pic'><img src='button1.PNG' width='250px'></div>
+                            <br><br>
+                        </div><br>
+                    </p1><br>
+                    <li id='i4-2'>
+                        ボタンのカスタマイズ
+                    </li><br>
+                    <p1>
+                        ボタンに対しても <bl>font</bl> や <bl>background</bl> 、 <bl>foreground</bl> オプションが利用できる。詳しくは<a href='tk3.html#i3-2'>第３章：ラベルのカスタマイズ</a>を参照。<br><br>
+                        <div class='t2' id='j2'>
+                            &nbsp;実行例２
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '250x150' )<br>
+                                <br>
+                                but = t.button( text = u'ボタン'<koko>, font = ('MS Gothic', 20), background = '#FFDFDF' )</koko><br>
+                                but.place( x = 10, y = 10<koko>, width = 230, height = 50 )<br>
+                                <br></koko>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果
+                            <div class='pic'><img src='button2.PNG' width='250px'></div>
+                        </div>
+                        <br>
+                    </p1><br>
+                    <li id='i4-3'>
+                        ボタンの内容を後から書き換える
+                    </li><br>
+                    <p1>
+                        ラベルと同様の操作が可能なため、<a href='tk3.html#i3-3'>”第３章：ラベルの内容を後から書き換える”</a>を参照。
+                    </p1><br><br><br>
+                    <li id='i4-4'>
+                        ボタンを押したときに何か動作をする
+                    </li><br>
+                    <p1>
+                        ボタンを押すことで何か動作をおこしたい時は <bl>bind()</bl> を用いる。構文は下記だ。
+                        <br><br><div class='t0'>but.bind(「トリガーとなるキー」,「実行したい関数」)</div>
+                        <br><br>
+                        「左クリック」を指定するには「'&lt;Button-1&gt;'」と記述すればよい。<br>
+                        例えばボタンを左クリックしたときに「func」という関数を実行したければ下記のようになる。
+                        <br><br><div class='t0'>but.bind( '&lt;Button-1&gt;', func )</div>
+                        <br><br>
+                        これを加味して、ボタンをクリックするたびに数字が１ずつ増えていくプログラムを記述する。<br><br>
+                        <div class='t2' id='j3'>
+                            &nbsp;実行例３
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br><koko>
+                                count = 1<br>
+                                <br>
+                                def func(event):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;global count<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but[ 'text' ] = str( count )<br>
+                                <br></koko>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '250x150' )<br>
+                                <br>
+                                but = t.button( text = str( count ), font = ('MS Gothic', 20), background = '#FFDFDF' )<br>
+                                but.place( x = 10, y = 10, width = 230, height = 50 )<br>
+                                <br><koko>
+                                but.bind( '&lt;Button-1&gt;', func )<br>
+                                <br></koko>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果（gif画像）
+                            <div class='pic'><img src='button.gif' width='250px'></div>
+                        </div><br>
+                        bind()で呼び出した関数には特に記述しなくても「event」という値が与えられる。なので関数を定義する際は <bl>def func(event):</bl> のようにeventを引数にする必要がある。これについてはそういうものだとして暗記してしまう方がよいだろう。
+                        <br>
+                    </p1><br>
+                    <li id='i4-5'>
+                        左クリック以外のキーをトリガーとする
+                    </li><br>
+                    <p1>
+                        左クリック以外のキーをトリガーにしたい場合については<a href='tk9.html'>第９章："バインドについて"</a>を参照。
+                    </p1>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

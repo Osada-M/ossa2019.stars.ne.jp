@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='pic\o.png'>
+        <link rel='stylesheet' href='css\main.css'>
+        <title>エラーの対処法</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                <p style="background-color:#00000000">アプリでエラーが出るときの対処法</p>
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='index.html' class='a2'>
+                トップ
+            </a>
+            &ensp;&ensp;
+            <a href='apps.html' class='a2'>
+                アプリ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='file'>
+                <p>
+                    Python
+                </p>
+                <div class='list0'>
+                    <li>
+                        モジュールがインストールされていない
+                    </li>
+                    <br>
+                    <p1>
+                        アプリ内で使用するモジュールがインストールされていないためエラーが出る
+                        <br></br>
+                        解決策(anaconda3環境下)：コマンドプロンプトにて
+                        <br><div class='t0'>pip install (モジュール名)</div>
+                        と打ち、Enterキーを押しモジュールのインストールを行う。
+                        <br><br>具体的には、<br>アプリを表示する「tkinter」
+                        <br><div class='t0'>pip install tkinter</div>
+                        パスを取得する「pathlib」
+                        <br><div class='t0'>pip install pathlib</div>
+                        標準入出力を仮想的に実現する「pyautogui」
+                        <br><div class='t0'>pip install pyautogui</div>
+                        などをインストールするとよいかも。
+                    </p1>
+                    <br></br>
+                    <li>
+                        Pythonのバージョンが古い
+                    </li>
+                    <p1>
+                        Python3以前のものを使用しているためエラーが出る。
+                        <br></br>
+                        解決策：最新のPythonをインストールする。
+                        <br>バージョンの確認はコマンドプロンプトにて以下を実行する。
+                        <br><div class='t0'> >> python --version<br>Python(ここにバージョンが書かれる)</div>
+                    </p1>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src='js/main.js'></script>
+        <script src='count/count.php'></script>
+    </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='../../pic/o.ico'>
+    <link rel='apple-touch-icon-precomposed' href='../../pic/o.png'>
+    <link rel='stylesheet' href='../../css/main2.css'>
+    <link rel='stylesheet' href='../../css/main2_half.css' media='screen and (max-width:1360px)'>
+    <link rel='stylesheet' href='../../css/main2_quarter.css' media='screen and (max-width:850px)'>
+    <link rel='stylesheet' href='../../css/main2_mobile.css' media='screen and (max-width:550px)'>
+    <meta property='og:title' content='高次方程式の展開と筆算の拡張'>
+    <meta property='og:description' content='高次の方程式の展開を、筆算の拡張により簡単に行います。'>
+    <meta property='og:site_name' content='筆算を拡張し、方程式を簡単に展開します。'>
+    <meta property='og:type' content='blog'>
+    <meta property='og:url' content='https://ossa2019.stars.ne.jp/blog/number/long_division.html'>
+    <title>高次方程式の展開を筆算で行う【おさだのホームページ】</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='tab'>
+            <p>おさだのホームページ</p>
+            <a href='../../index.html' id='home'>
+                ホーム
+            </a>
+            <a href='../../apps.html' id='home'>
+                倉　庫
+            </a>
+            <a href='../../Remember/Remember.html' id='home'>
+                備忘録
+            </a>
+            <a href='../blog.html' id='home' class='tab_now'>
+                にっき
+            </a>
+        </div>
+        <div class='page'>
+            <div class='caption'>
+                方程式を楽に展開したい
+            </div>
+            <div class='article'>
+                <p>筆算を使って方程式の展開を簡単に解く</p><br>
+                    <section>
+                        結論から言うとこうなる↓<br><br>
+                        <div class='pic'><img src='images/long_div_1.png' width='65%' alt='mandelblot^2の画像'></div>
+                        <br>
+                        x の累乗の項を分けてそれぞれ計算することと変わらないが、筆算を使う方が計算ミスが少なくて済みそうだ。<br>
+                        なぜこうなるのかと言えば、上の画像の計算で x = 10 ならば普通の掛け算と筆算に変わることを考えればわかる。<br><br>
+                        <div class='pic'><img src='images/long_div_2.png' width='65%' alt='mandelblot^2の画像'></div>
+                        <br>
+                        筆算は右から順に10^0の項、10^1の項、10^2の項、10^3の項・・・と表記していくのと同様に、x の筆算においても右から順にx^0の項、x^1の項、x^2の項、x^3の項・・・と考えれば良い。<br><br><br><br>
+                        では、なぜ x の筆算では桁あがり(繰り上げ)をしないのか。まずは x = 10 の普通の筆算で考える。<br><br>
+                        そもそも”桁あがりする”とは、その桁の数字が１０を超えたら１の位だけを残し１０の位は次の桁に足し合わせることである。
+                        次に x の筆算ならばどうなるのか。その桁の数字が x を超えたら１桁目だけを残し２桁目は次の桁に足し合わせることになるが、この時 x は変数であり何の数字なのかは不明なので x を超えたかどうかの判定ができない。<br><br>
+                        また、桁あがりを計算することの意味は計算結果を見やすくするためであって、桁あがりをやるやらないは結果の正誤に関係しない。このことからも x の筆算で桁あがりを計算しないことのイメージが掴めるであろう。<br><br><br><br>
+                        ここまで普通の筆算、x の筆算と言ってきたものは実は１０進数の筆算と x 進数の筆算である。これを利用すればさまざまな進数の乗算が計算可能になる。たとえば２進数の乗算↓<br><br>
+                        <div class='pic'><img src='images/long_div_3.png' width='65%' alt='mandelblot^2の画像'></div>
+                        <br><br>
+                        この計算方法を全ての受験生に伝えにいくために旅に出ます。探さないでください。
+                        <br><br><br>
+                        <a href='../blog.html' class='link'>
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src='../../count/count.php'></script>
+</body>
+</html>

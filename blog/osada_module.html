@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../pic/o.ico">
+    <link rel="shortcut icon" href="../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="osada Reference - osada v0.1">
+    <meta property="og:description" content='Python用の自作モジュール"osada"を作りました'>
+    <meta property="og:site_name" content="osada Reference - osada v0.1">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/osada_module.html">
+    <title>osada Reference - osada v0.1</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../sorting/sorting.html">
+                    <i class='bx bx-bar-chart'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- tkinterの解説ページ -->
+            <li>
+                <a href="../Remember/tkinter/tkinter.html">
+                    <i class='bx bxl-python'></i>
+                    <span class="link_name" id="jp_font">tkinterの解説ページ</span>
+                </a>
+                <span class="popup_text" id="jp_font">tkinterの解説ページ</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../text.html">
+                    <i class='bx bx-pencil'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    Reference - osada v0.1<br>
+                </div>
+                <div class="caption_text" id="jp_font">
+                    自分がたまに使う関数をモジュール化しました。自分用ですが、使ってもらいたいので説明書を書きました。Pythonを書いていて何か面倒に思うことがあったらそれを解決する関数を追加していきます。
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <div class="index_content" id="fade_1">
+                    <div class="index_link">
+                        <span id="jp_font">
+                            <a https: href="https://github.com/Osada-M/osada" class="plane" target="_blank" rel="noopener noreferrer">ソースコード</a>
+                            |
+                            <a https: href="https://pypi.org/project/osada/" class="plane" target="_blank" rel="noopener noreferrer">pypiのページ</a><br>
+                            <br>
+                            ・色付き文字<br>
+                            <a href=#1-1>cprint : print文に色をつける</a><br>
+                            <a href=#1-2>colored : 文字列を色付き文字列に変換</a><br>
+                            <br>
+                            ・配列関係<br>
+                            <a href=#2-1>array : ある値からある値までの数列を生成</a><br>
+                            <a href=#2-2>randomArray : ある値からある値までの乱数の数列を生成</a><br>
+                        </span>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <div class="fade", id="fade_2">
+                    <span id="jp_font">
+                        インストールはターミナルで
+                        <span id="code_font">pip install osada</span>
+                        と入力してください。<br>
+                        <br>
+                        インポートは通常通り
+                        <span id="code_font"><span class="dec0">import</span> osada</span>
+                        でできます。
+                    </span>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="text" id="1-1">
+                        <span id="jp_font">
+                            <div class="window" id="fade_3">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                </div>
+                                <div class="window_title">cprint</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="jp_font">
+                                            機能：通常のprint文に色をつけて表示<br>
+                                            <br>
+                                            引数：<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            string (str型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;表示したい文字列<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            color (str型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;文字色<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            background (str型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;背景色<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            end (str型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;print()のendと同様<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            bloom (str型 / float型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;文字色または背景色の輝度（0以上の実数、1が既定）<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            その他 (dict型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;その他、print()渡したい引数は辞書型で指定<br>
+                                            <br>
+                                            実行例：<br>
+                                            <br>
+                                            文字色：オレンジ<br>
+                                            <span id="code_font"><span class="dec3">osada</span>.<span class="dec4">cprint</span>("hello!", "orange")</span><br>
+                                            <img src="osada_img/cprint_0.png" width="90px" alt="cprint_0"><br>
+                                            <br>
+                                            文字色：オレンジ、背景色：白<br>
+                                            <span id="code_font"><span class="dec3">osada</span>.<span class="dec4">cprint</span>("hello!", "orange", "white")</span><br>
+                                            <img src="osada_img/cprint_1.png" width="90px" alt="cprint_1"><br>
+                                            <br>
+                                            背景色：ダークグレー<br>
+                                            <span id="code_font"><span class="dec3">osada</span>.<span class="dec4">cprint</span>("hello!", background="darkgray")</span><br>
+                                            <img src="osada_img/cprint_2.png" width="90px" alt="cprint_2"><br>
+                                            <br>
+                                            カラーコードでの色の指定もできる<br>
+                                            <span id="code_font"><span class="dec3">osada</span>.<span class="dec4">cprint</span>("hello!", "ff1199")</span><br>
+                                            <img src="osada_img/cprint_3.png" width="90px" alt="cprint_3"><br>
+                                            <br>
+                                            輝度：10（白っぽくなる）<br>
+                                            <span id="code_font"><span class="dec3">osada</span>.<span class="dec4">cprint</span>("hello!", "ff1199", bloom=10)</span><br>
+                                            <img src="osada_img/cprint_4.png" width="90px" alt="cprint_4"><br>
+                                            数値以外で特別に、bloom="light"とbloom="dark"が使用できます。
+                                            <br>
+                                            <br>
+                                            カラーコードならば全ての色が使用できます。<br>
+                                            また、"red"や"white"など、登録されている色の一覧は<br>
+                                            <span id="code_font"><span class="dec3">osada</span>.colors.<span class="dec4">keys</span>()</span><br>
+                                            をprintしてみてください。<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <hr/>
+                    <br>
+                    <br>
+                    <div class="text" id="1-2">
+                        <span id="jp_font">
+                            <div class="window" id="fade_4">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                </div>
+                                <div class="window_title">colored</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="jp_font">
+                                            機能：文字列を色付き文字列に変換<br>
+                                            <br>
+                                            引数：<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            string (str型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;変換したい文字列<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            color (str型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;文字色<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            background (str型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;背景色<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            bloom (str型 / float型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;文字色または背景色の輝度（0以上の実数、1が既定）<br>
+                                            <br>
+                                            実行例：<br>
+                                            <br>
+                                            文字色：シアン（水色）<br>
+                                            <div class="code_block">
+                                                string = "hola!"<br>
+                                                string = <span class="dec3">osada</span>.<span class="dec4">colored</span>(string, "cyan")<br>
+                                                <span class="dec4">print</span>(string)
+                                            </div>
+                                            <img src="osada_img/colored_0.png" width="90px" alt="colored_0"><br>
+                                            <br>
+                                            colored()の出力は文字列なので、str型と同じように足し算ができる。<br>
+                                            <div class="code_block">
+                                                <span class="dec4">print</span>(<span class="dec3">osada</span>.<span class="dec4">colored</span>("赤信号", "red", "white") + <span class="dec3">osada</span>.<span class="dec4">colored</span>("は止まりましょう。", "black", "white"))
+                                            </div>
+                                            <img src="osada_img/colored_1.png" width="300px" alt="colored_1"><br>
+                                            <br>
+                                            f文字列を用れば柔軟に色を変更できる。<br>
+                                            <div class="code_block">
+                                                <span class="dec4">print</span>(f"光の三原色とは、{<span class="dec3">osada</span>.<span class="dec4">colored</span>('赤色', 'red')}、{<span class="dec3">osada</span>.<span class="dec4">colored</span>('緑色', 'green')}、{<span class="dec3">osada</span>.<span class="dec4">colored</span>('青色', 'blue')}の３つのことです。")
+                                            </div>
+                                            <img src="osada_img/colored_2.png" width="450px" alt="colored_2"><br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <hr/>
+                    <br>
+                    <br>
+                    <div class="text" id="2-1">
+                        <span id="jp_font">
+                            <div class="window" id="fade_5">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                </div>
+                                <div class="window_title">array</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="jp_font">
+                                            機能：ある値からある値までの数列を生成<br>
+                                            <br>
+                                            引数：<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            inf (float型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;開始値<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            sup (float型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;終了値<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            number (int型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;要素数<br>
+                                            <br>
+                                            実行例：<br>
+                                            <br>
+                                            範囲：1〜2、要素数：2<br>
+                                            <div class="code_block">
+                                                <span class="dec3">osada</span>.<span class="dec4">array</span>(1, 2, 2)<br>
+                                                # [1.0, 2.0]
+                                            </div>
+                                            <br>
+                                            範囲：1〜2、要素数：5<br>
+                                            <div class="code_block">
+                                                <span class="dec3">osada</span>.<span class="dec4">array</span>(1, 2, 5)<br>
+                                                # [1.0, 1.25, 1.5, 1.75, 2.0]
+                                            </div>
+                                            <br>
+                                            範囲：1〜10、要素数：10<br>
+                                            <div class="code_block">
+                                                <span class="dec3">osada</span>.<span class="dec4">array</span>(1, 10, 10)<br>
+                                                # [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <hr/>
+                    <br>
+                    <br>
+                    <div class="text" id="2-2">
+                        <span id="jp_font">
+                            <div class="window" id="fade_6">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                </div>
+                                <div class="window_title">randomArray</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="jp_font">
+                                            機能：ある値からある値までの乱数の数列を生成<br>
+                                            <br>
+                                            引数：<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            inf (float型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;最小値<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            sup (float型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;最大値<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            number (int型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;要素数<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            isint (bool型)&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;整数にするか否か（TrueかFalse）<br>
+                                            <br>
+                                            実行例：<br>
+                                            <br>
+                                            範囲：0.5〜2.5、要素数：5<br>
+                                            <div class="code_block">
+                                                <span class="dec3">osada</span>.<span class="dec4">randomArray</span>(0.5, 2.5, 5)<br>
+                                                # [2.194497415102428, 0.7737558419874342, 1.1125631802685167, 1.3339922752512487, 1.3124783900756711]
+                                            </div>
+                                            <br>
+                                            範囲：5〜10、要素数：10、整数で出力<br>
+                                            <div class="code_block">
+                                                <span class="dec3">osada</span>.<span class="dec4">randomArray</span>(5, 10, 10, <span class="dec3">True</span>)<br>
+                                                # [7, 10, 5, 7, 7, 8, 7, 7, 9, 6]
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <!-- <hr/> -->
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/copy.js"></script>
+    <script src="../js/scroll.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/details.js"></script>
+    <script src="../js/i_btn.js"></script>
+    <script src="../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/fade.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on('load scroll', function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="../count/count.php"></script>
+</body>
+</html>

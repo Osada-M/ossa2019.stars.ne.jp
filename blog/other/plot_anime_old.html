@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <link rel="stylesheet" href="../../css/main2.css">
+    <link rel="stylesheet" href="../../css/main2_half.css" media="screen and (max-width:1360px)">
+    <link rel="stylesheet" href="../../css/main2_quarter.css" media="screen and (max-width:850px)">
+    <link rel="stylesheet" href="../../css/main2_mobile.css" media="screen and (max-width:550px)">
+    <meta property="og:title" content="matplotlibのアニメーションで複数のグラフを重ねて描画する方法について">
+    <meta property="og:description" content="matplotlib.animationで複数のグラフを重ねて描画できないとのネット記事が多数見受けられたので、それらへの訂正の意味で方法を紹介する。">
+    <meta property="og:site_name" content="matplotlibのアニメーションで複数のグラフを重ねて描画する方法について">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="http://ossa2019.stars.ne.jp/blog/other/plot_anime.html">
+    <title>matplotlibのアニメーションで複数のグラフを重ねて描画する方法について</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class="tab">
+            <p>おさだのホームページ</p>
+            <a href="../../index.html" id="home">
+                ホーム
+            </a>
+            <a href="../../apps.html" id="home">
+                倉　庫
+            </a>
+            <a href="../../Remember/Remember.html" id="home">
+                備忘録
+            </a>
+            <a href="../blog.html" id="home" class="tab_now">
+                にっき
+            </a>
+        </div>
+        <div class="page">
+            <div class="caption">
+                複数のグラフを重ねて動かしたい
+            </div>
+            <div class="article">
+                <p>matplotlibのアニメーションで複数のグラフを重ねて描画する方法について</p><br>
+                    <section>
+                        <div class="hajimeni">
+                            はじめに<br>
+                            matplotlibでアニメーションを作成するaminationモジュールについてネット記事を読み漁っていた際、「matplotlib.animationでは複数のグラフを重ねて描画できない」との意見が多数見受けられた。
+                            しかし、方法さえわかれば可能であるので今回はそれを紹介しようと思う。
+                        </div><br><br>
+                        <div class='a_list'>
+                            <a href=#1>1. 一つのグラフの描画</a><br>
+                            <a href=#2>2. 二つのグラフを重ねて描画</a><br>
+                            <a href=#3>3. おまけ</a><br>
+                        </div><br><br>
+                        <div class="index_title", id="1">
+                            1. 一つのグラフの描画
+                        </div><hr/>
+                        まずは y = sin(x+t) のグラフをアニメーションにして描画し、それにコードを加筆していく形で紹介する。<br><br>
+                        <div class="code">
+                            <span class="dec0">import</span> numpy <span class="dec1">as</span> np<br>
+                            <span class="dec0">import</span> matplotlib.pyplot <span class="dec1">as</span> plt<br>
+                            <span class="dec0">import</span> matplotlib.animation <span class="dec1">as</span> animation<br>
+                            <br>
+                            fig = plt.figure(figsize=(8, 5))<br>
+                            ax = fig.add_subplot(111)<br>
+                            <br>
+                            lim = 50<br>
+                            xs = np.linspace(0, 4*np.pi, 100)<br>
+                            images = []<br>
+                            <br>
+                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(lim):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;theta = i*2*np.pi/lim<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ys = np.sin(xs+theta)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;image = ax.plot(xs, ys, c=&quot;#11cccc&quot;)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(image)<br>
+                            <br>
+                            anime = animation.ArtistAnimation(fig, images, interval=40, blit=<span class="dec3">True</span>, repeat_delay=0)<br>
+                            anime.save(&quot;sin.gif&quot;, writer=&quot;pillow&quot;)<br>
+                            plt.show()
+                        </div><br>
+                        実行結果：<br>
+                        <div class="pic"><img src="img/sin0.gif" width="60%" alt="sin"></div><br><br>
+                        <br><br><br>
+                        <div class="index_title", id="2">
+                            2. 二つのグラフを重ねて描画
+                        </div><hr/>
+                        サブプロットのオブジェクトを別の変数に分けてグラフを挿入、その後一つの配列にまとめてanimationを用いて描画を行えばグラフが重なって表示される。<br><br>
+                        <div class="code">
+                            <span class="dec0">import</span> numpy <span class="dec1">as</span> np<br>
+                            <span class="dec0">import</span> matplotlib.pyplot <span class="dec1">as</span> plt<br>
+                            <span class="dec0">import</span> matplotlib.animation <span class="dec1">as</span> animation<br>
+                            <br>
+                            fig = plt.figure(figsize=(8, 5))<br>
+                            ax = fig.add_subplot(111)<br>
+                            <br>
+                            lim = 50<br>
+                            xs = np.linspace(0, 4*np.pi, 100)<br>
+                            images = []<br>
+                            <br>
+                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(lim):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;theta = i*2*np.pi/lim<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ys1 = np.sin(xs+theta)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ys2 = np.cos(xs+theta)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2" style="font-weight: bold">image1</span> = ax.plot(xs, ys1, c=&quot;#11cccc&quot;)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2" style="font-weight: bold">image2</span> = ax.plot(xs, ys2, c=&quot;#dd8888&quot;)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(<span class="dec2" style="font-weight: bold">image1 + image2</span>)<br>
+                            <br>
+                            anime = animation.ArtistAnimation(fig, images, interval=40, blit=<span class="dec3">True</span>, repeat_delay=0)<br>
+                            anime.save(&quot;sin_cos.gif&quot;, writer=&quot;pillow&quot;)<br>
+                            plt.show()
+                        </div><br>
+                        実行結果：<br>
+                        <div class="pic"><img src="img/sin_cos.gif" width="60%" alt="sin"></div><br><br>
+                        <br><br><br>
+                        <div class="index_title", id="3">
+                            3. おまけ
+                        </div><hr/>
+                        高校生にsinとcosを説明するときに使えそうなグラフ<br><br>
+                        <div class="code">
+                            <span class="dec0">import</span> numpy <span class="dec1">as</span> np<br>
+                            <span class="dec0">import</span> matplotlib.pyplot <span class="dec1">as</span> plt<br>
+                            <span class="dec0">import</span> matplotlib.animation <span class="dec1">as</span> animation<br>
+                            <br>
+                            <br>
+                            fig = plt.figure(figsize=(10, 10))<br>
+                            <br>
+                            # sin<br>
+                            ax1 = fig.add_subplot(2, 2, 1)<br>
+                            plt.title(&quot;y = sin(x+t)&quot;)<br>
+                            plt.ylabel(&quot;y&quot;)<br>
+                            plt.xlabel(&quot;x&quot;)<br>
+                            <br>
+                            # cos<br>
+                            ax2 = fig.add_subplot(2, 2, 4)<br>
+                            plt.title(&quot;x = cos(y+t)&quot;)<br>
+                            plt.ylabel(&quot;y&quot;)<br>
+                            plt.xlabel(&quot;x&quot;)<br>
+                            <br>
+                            # circle<br>
+                            ax3 = fig.add_subplot(2, 2, 2)<br>
+                            plt.title(&quot;0 ≦ r ≦ 1, θ = t&quot;)<br>
+                            plt.ylabel(&quot;y&quot;)<br>
+                            plt.xlabel(&quot;x&quot;)<br>
+                            <br>
+                            # sin, cosの比較<br>
+                            ax4 = fig.add_subplot(2, 2, 3)<br>
+                            plt.title(&quot;sinとcosの比較&quot;)<br>
+                            plt.ylabel(&quot;y&quot;)<br>
+                            plt.xlabel(&quot;x&quot;)<br>
+                            <br>
+                            <br>
+                            lim: int = 50<br>
+                            images = []<br>
+                            xs = np.linspace(0, 4*np.pi, 50)<br>
+                            <br>
+                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(lim):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;theta = i*2*np.pi/lim<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ys1 = np.sin(xs + theta)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;sin_img = ax1.plot(xs, ys1, c=&quot;#11cccc&quot;)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ys2 = np.cos(xs + theta)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;cos_img = ax2.plot(ys2, xs, c=&quot;#cccc11&quot;)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;cos = np.cos(theta)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;sin = np.sin(theta)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs3 = [0, cos]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ys3 = [0, sin]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;circle_img = ax3.plot(xs3, ys3, c=&quot;#cc11cc&quot;)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs4 = [cos, cos, -1]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ys4 = [-1, sin, sin]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;circle_img_2 = ax3.plot(xs4, ys4, c=&quot;#cccccc&quot;)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;sin_cos_img = ax4.plot(xs, ys1, c=&quot;#11cccc&quot;)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;sin_cos_img_2 = ax4.plot(xs, ys2, c=&quot;#cccc11&quot;)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(sin_img + cos_img + circle_img + circle_img_2 + sin_cos_img + sin_cos_img_2)<br>
+                            <br>
+                            anime = animation.ArtistAnimation(fig, images, interval=40, blit=<span class="dec3">True</span>, repeat_delay=0)<br>
+                            anime.save(&quot;sin_cos_2.gif&quot;, writer=&quot;pillow&quot;)<br>
+                            plt.show()
+                        </div><br>
+                        実行結果：<br>
+                        <div class="pic"><img src="img/sin_cos_2.gif" width="60%" alt="sin"></div><br><br>
+                        <br><br><br><br>
+                        <a href="../blog.html" class="link">
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

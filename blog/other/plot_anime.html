@@ -1,0 +1,408 @@
+<!-- Brushed up by brushUp.py version:1.2 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="matplotlibのアニメーションで複数のグラフを重ねて描画する方法について">
+    <meta property="og:description" content="matplotlib.animationで複数のグラフを重ねて描画できないとのネット記事が多数見受けられたので、それらへの訂正の意味で方法を紹介する。">
+    <meta property="og:site_name" content="matplotlibのアニメーションで複数のグラフを重ねて描画する方法について">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/other/plot_anime.html">
+    <title>matplotlibのアニメーションで複数のグラフを重ねて描画する方法について</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="../blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../../sorting/sorting.html">
+                    <i class='bx bx-bar-chart'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- tkinterの解説ページ -->
+            <li>
+                <a href="../../Remember/tkinter/tkinter.html">
+                    <i class='bx bxl-python'></i>
+                    <span class="link_name" id="jp_font">tkinterの解説ページ</span>
+                </a>
+                <span class="popup_text" id="jp_font">tkinterの解説ページ</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../../text.html">
+                    <i class='bx bx-pencil'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    matplotlibのアニメーションで複数のグラフを重ねて描画する方法について
+                </div>
+                <div class="caption_text" id="caption">
+                    matplotlibでアニメーションを作成するaminationモジュールについてネット記事を読み漁っていた際、「matplotlib.animationでは複数のグラフを重ねて描画できない」との意見が多数見受けられた。
+                    しかし、方法さえわかれば可能であるので今回はそれを紹介しようと思う。
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <div class="index_content" id="fade_1">
+                    <div class="index_link">
+                        <span id="jp_font">
+                            <a href=#1>1. 一つのグラフの描画</a><br>
+                            <a href=#2>2. 二つのグラフを重ねて描画</a><br>
+                            <a href=#3>3. おまけ</a><br>
+                        </span>
+                    </div><br><br>
+                </div>
+                <div class="fade" id="fade_2">
+                    <div class="title" id="1">
+                        1. 一つのグラフの描画
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            まずは y = sin(x+t) のグラフをアニメーションにして描画し、それにコードを加筆していく形で紹介する。<br><br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_0', 'popup_0')">copy</div>
+                                    <div class="copied" id="popup_0">copied!</div>
+                                </div>
+                                <div class="window_title">plot_anime.py</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_0">
+                                            <span class="dec0">import</span> numpy <span class="dec1">as</span> np<br>
+                                            <span class="dec0">import</span> matplotlib.pyplot <span class="dec1">as</span> plt<br>
+                                            <span class="dec0">import</span> matplotlib.animation <span class="dec1">as</span> animation<br>
+                                            <br>
+                                            fig = plt.figure(figsize=(8, 5))<br>
+                                            ax = fig.add_subplot(111)<br>
+                                            <br>
+                                            lim = 50<br>
+                                            xs = np.linspace(0, 4*np.pi, 100)<br>
+                                            images = []<br>
+                                            <br>
+                                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(lim):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;theta = i*2*np.pi/lim<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;ys = np.sin(xs+theta)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;image = ax.plot(xs, ys, c=&quot;#11cccc&quot;)<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(image)<br>
+                                            <br>
+                                            anime = animation.ArtistAnimation(fig, images, interval=40, blit=<span class="dec3">True</span>, repeat_delay=0)<br>
+                                            anime.save(&quot;sin.gif&quot;, writer=&quot;pillow&quot;)<br>
+                                            plt.show()
+                                        </span>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <br>
+                            実行結果：<br>
+                            <div class="pic"><img src="img/sin0.gif" width="60%" alt="sin"></div>
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_3">
+                    <div class="title" id="2">
+                        2. 二つのグラフを重ねて描画
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            サブプロットのオブジェクトを別の変数に分けてグラフを挿入、その後一つの配列にまとめてanimationを用いて描画を行えばグラフが重なって表示される。<br><br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_1', 'popup_1')">copy</div>
+                                    <div class="copied" id="popup_1">copied!</div>
+                                </div>
+                                <div class="window_title">plot_anime.py</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_1">
+                                            <span class="dec0">import</span> numpy <span class="dec1">as</span> np<br>
+                                            <span class="dec0">import</span> matplotlib.pyplot <span class="dec1">as</span> plt<br>
+                                            <span class="dec0">import</span> matplotlib.animation <span class="dec1">as</span> animation<br>
+                                            <br>
+                                            fig = plt.figure(figsize=(8, 5))<br>
+                                            ax = fig.add_subplot(111)<br>
+                                            <br>
+                                            lim = 50<br>
+                                            xs = np.linspace(0, 4*np.pi, 100)<br>
+                                            images = []<br>
+                                            <br>
+                                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(lim):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;theta = i*2*np.pi/lim<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;ys1 = np.sin(xs+theta)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;ys2 = np.cos(xs+theta)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2" style="font-weight: bold">image1</span> = ax.plot(xs, ys1, c=&quot;#11cccc&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2" style="font-weight: bold">image2</span> = ax.plot(xs, ys2, c=&quot;#dd8888&quot;)<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(<span class="dec2" style="font-weight: bold">image1 + image2</span>)<br>
+                                            <br>
+                                            anime = animation.ArtistAnimation(fig, images, interval=40, blit=<span class="dec3">True</span>, repeat_delay=0)<br>
+                                            anime.save(&quot;sin_cos.gif&quot;, writer=&quot;pillow&quot;)<br>
+                                            plt.show()
+                                        </span>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <br>
+                            実行結果：<br>
+                            <div class="pic"><img src="img/sin_cos.gif" width="60%" alt="sin"></div>
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_4">
+                    <div class="title" id="3">
+                        3. おまけ
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            高校生にsinとcosを説明するときに使えそうなグラフ<br><br>
+                            <div class="code_window_details" id="window_2">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_2', 'popup_2')">copy</div>
+                                    <div class="copied" id="popup_2">copied!</div>
+                                </div>
+                                <div class="window_title">sin_cos_anime.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_2')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_2">
+                                            <span class="dec0">import</span> numpy <span class="dec1">as</span> np<br>
+                                            <span class="dec0">import</span> matplotlib.pyplot <span class="dec1">as</span> plt<br>
+                                            <span class="dec0">import</span> matplotlib.animation <span class="dec1">as</span> animation<br>
+                                            <br>
+                                            <br>
+                                            fig = plt.figure(figsize=(10, 10))<br>
+                                            <br>
+                                            # sin<br>
+                                            ax1 = fig.add_subplot(2, 2, 1)<br>
+                                            plt.title(&quot;y = sin(x+t)&quot;)<br>
+                                            plt.ylabel(&quot;y&quot;)<br>
+                                            plt.xlabel(&quot;x&quot;)<br>
+                                            <br>
+                                            # cos<br>
+                                            ax2 = fig.add_subplot(2, 2, 4)<br>
+                                            plt.title(&quot;x = cos(y+t)&quot;)<br>
+                                            plt.ylabel(&quot;y&quot;)<br>
+                                            plt.xlabel(&quot;x&quot;)<br>
+                                            <br>
+                                            # circle<br>
+                                            ax3 = fig.add_subplot(2, 2, 2)<br>
+                                            plt.title(&quot;0 ≦ r ≦ 1, θ = t&quot;)<br>
+                                            plt.ylabel(&quot;y&quot;)<br>
+                                            plt.xlabel(&quot;x&quot;)<br>
+                                            <br>
+                                            # sin, cosの比較<br>
+                                            ax4 = fig.add_subplot(2, 2, 3)<br>
+                                            plt.title(&quot;sinとcosの比較&quot;)<br>
+                                            plt.ylabel(&quot;y&quot;)<br>
+                                            plt.xlabel(&quot;x&quot;)<br>
+                                            <br>
+                                            <br>
+                                            lim: int = 50<br>
+                                            images = []<br>
+                                            xs = np.linspace(0, 4*np.pi, 50)<br>
+                                            <br>
+                                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(lim):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;theta = i*2*np.pi/lim<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;ys1 = np.sin(xs + theta)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;sin_img = ax1.plot(xs, ys1, c=&quot;#11cccc&quot;)<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;ys2 = np.cos(xs + theta)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;cos_img = ax2.plot(ys2, xs, c=&quot;#cccc11&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;cos = np.cos(theta)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;sin = np.sin(theta)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;xs3 = [0, cos]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;ys3 = [0, sin]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;circle_img = ax3.plot(xs3, ys3, c=&quot;#cc11cc&quot;)<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;xs4 = [cos, cos, -1]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;ys4 = [-1, sin, sin]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;circle_img_2 = ax3.plot(xs4, ys4, c=&quot;#cccccc&quot;)<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;sin_cos_img = ax4.plot(xs, ys1, c=&quot;#11cccc&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;sin_cos_img_2 = ax4.plot(xs, ys2, c=&quot;#cccc11&quot;)<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(sin_img + cos_img + circle_img + circle_img_2 + sin_cos_img + sin_cos_img_2)<br>
+                                            <br>
+                                            anime = animation.ArtistAnimation(fig, images, interval=40, blit=<span class="dec3">True</span>, repeat_delay=0)<br>
+                                            anime.save(&quot;sin_cos_2.gif&quot;, writer=&quot;pillow&quot;)<br>
+                                            plt.show()
+                                        </span>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <br>
+                            実行結果：<br>
+                            <div class="pic"><img src="img/sin_cos_2.gif" width="60%" alt="sin"></div>
+                            <br><br><br>
+                            <div class="link_content">
+                                <div class="link">
+                                    <a href="../blog.html">
+                                        noteのページに戻る
+                                    </a>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <br><br><br>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/copy.js"></script>
+    <script src="../../js/scroll.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/details.js"></script>
+    <script src="../../js/i_btn.js"></script>
+    <script src="../../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/fade.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on('load scroll', function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

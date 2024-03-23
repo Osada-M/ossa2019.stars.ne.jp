@@ -1,0 +1,920 @@
+<!-- Brushed up by brushUp.py version:1.1 -->
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="最近出てきたPython3.10.0が便利な話">
+    <meta property="og:description" content="最近出てきたPython3.10.0が便利な話">
+    <meta property="og:site_name" content="最近出てきたPython3.10.0が便利な話">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/other/python3_10.html">
+    <title>Python3.10(新しいやつ)が便利な話</title>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="../blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../../sorting/sorting.html">
+                    <i class='bx bx-bar-chart'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- tkinterの解説ページ -->
+            <li>
+                <a href="../../Remember/tkinter/tkinter.html">
+                    <i class='bx bxl-python'></i>
+                    <span class="link_name" id="jp_font">tkinterの解説ページ</span>
+                </a>
+                <span class="popup_text" id="jp_font">tkinterの解説ページ</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../../text.html">
+                    <i class='bx bx-pencil'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    Python3.10が便利な話
+                </div>
+                <div class="caption_text" id="caption">
+                    2021年5月3日に Python 3.10.0 beta 1 がリリースされ、今後３つのベータ版がリリースされることが公表されている。
+                    今回は pyenv でインストールできる一番新しいバージョンである Python 3.10.0 alpha 5 でできる機能を紹介する。
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <div class="index_content" id="fade_1">
+                    <div class="index_link">
+                        <span id="jp_font">
+                            <a href="#0" class="notdec">0. まずインストール</a><br>
+                            <a href="#1" class="notdec">1. 複数の型を指定する方法が簡単になった</a><br>
+                            <a href="#1-1" class="notdec">&nbsp;&nbsp;&nbsp;1-1. アノテーションとしての利用</a><br>
+                            <a href="#1-2" class="notdec">&nbsp;&nbsp;&nbsp;1-2. 複数の型との比較</a><br>
+                            <a href="#2" class="notdec">2. 辞書にmapping属性が追加された</a><br>
+                            <a href="#3" class="notdec">3. int.bit_count() で２進数の１の数が簡単にわかる</a><br>
+                            <a href="#4" class="notdec">4. 2021年10月には match 文が実装される</a><br>
+                        </span>
+                    </div>
+                </div>
+                <br>
+                <div class="fade" id="fade_2">
+                    <div class="title" id="0">
+                        0. まずインストール
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            インストール方法は Python のバージョンを切り替える方法と変わらない。<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_0', 'popup_0')">
+                                        copy</div>
+                                    <div class="copied" id="popup_0">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_0">
+                                            <span class="dec6">$</span> pyenv install --list
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            を実行しインストール可能なバージョンを確認する。<br>
+                            3.10.0a5 が一番最新であったのでそれをインストールする。<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_1', 'popup_1')">
+                                        copy</div>
+                                    <div class="copied" id="popup_1">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_1">
+                                            <span class="dec6">$</span> pyenv install 3.10.0a5<br>
+                                            <span class="dec6">$</span> pyenv local 3.10.0a5<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            一応インストールされたバージョンを確認する。<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_2', 'popup_2')">
+                                        copy</div>
+                                    <div class="copied" id="popup_2">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_2">
+                                            <span class="dec6">$</span> python --version<br>
+                                            <br>
+                                            <span class="dec6">&gt;&gt;</span> Python 3.10.0a5<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            そして Python のソースコードの出力でも確認してみる。<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_3', 'popup_3')">
+                                        copy</div>
+                                    <div class="copied" id="popup_3">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_3">
+                                            <span class="dec0">import</span> sys<br>
+                                            <span class="dec4">print</span>(sys.version)<br>
+                                            <br>
+                                            <span class="dec6">&gt;&gt;</span> 3.10.0a5 (default, May 17 2021, 21:46:58)
+                                            \n[Clang 12.0.5 (clang-1205.0.22.9)]<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            しっかり Python 3.10 がインストールされている。<br>
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_3">
+                    <div class="title" id="1">
+                        1. 複数の型を指定する方法が簡単になった
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            これまで、複数の型を指定するときは typing モジュールを使用する必要があった。<br>
+                            例えば変数 x に int 型と float 型の両方を指定したい時、<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_5', 'popup_5')">
+                                        copy</div>
+                                    <div class="copied" id="popup_5">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_5">
+                                            <span class="dec0">from</span> typing <span class="dec0">import</span>
+                                            TypeVar<br>
+                                            MyType = TypeVar("MyType", int, float)<br>
+                                            x : MyType<br>
+                                            <br>
+                                            #または<br>
+                                            <br>
+                                            <span class="dec0">from</span> typing <span class="dec0">import</span>
+                                            Union<br>
+                                            MyType = Union[int, float]<br>
+                                            x : MyType
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            とする必要があったが、3.10 からは<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_6', 'popup_6')">
+                                        copy</div>
+                                    <div class="copied" id="popup_6">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_6">
+                                            x : int | float
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            これで済むようになった。<br>
+                            <br>
+                            ちなみに<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_7', 'popup_7')">
+                                        copy</div>
+                                    <div class="copied" id="popup_7">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_7">
+                                            <span class="dec4">print</span>( <span class="dec4">type</span>(int | float)
+                                            )<br>
+                                            <br>
+                                            <span class="dec6">&gt;&gt;</span> &lt;class "types.Union"&gt;<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            になる。<br>
+                            そしてこれを利用することでアノテーションと、複数の型との比較が簡単になる。<br>
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_4">
+                    <div class="title" id="1-1">
+                        1-1. アノテーションとしての利用
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            例えば関数の引数に int か float 型を受け取りたい時、<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_8', 'popup_8')">
+                                        copy</div>
+                                    <div class="copied" id="popup_8">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_8">
+                                            <span class="dec0">def</span> func(x:int | float):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> x**2
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            このように書ける。この場合「x は int または float にしてくれ」とアノテーションを入れることができる。<br><br>
+                            更に関数の戻り値にも書けるので、<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_9', 'popup_9')">
+                                        copy</div>
+                                    <div class="copied" id="popup_9">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_9">
+                                            <span class="dec0">def</span> func(x:int | float) -&gt; int | float:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> x**2
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            とすることで「引数は int または float、戻り値も int または float」とまで表現できる。<br>
+                            一応 func() の引数を確認してみると<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_10', 'popup_10')">
+                                        copy</div>
+                                    <div class="copied" id="popup_10">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_10">
+                                            <span class="dec0">import</span> inspect<br>
+                                            <br>
+                                            <span class="dec0">def</span> check(func):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> f(<span
+                                                class="dec2">*</span><span class="dec2">args</span>, <span
+                                                class="dec2">*</span><span class="dec2">*</span><span
+                                                class="dec2">kw</span><span class="dec2">args</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sig =
+                                            inspect.signature(func)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                                class="dec1">for</span> (name, param) <span class="dec1">in</span>
+                                            sig.parameters.items():<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                                class="dec4">print</span>(f"引数: {name}\n型:
+                                            {repr(param.annotation)}")<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                                class="dec4">print</span>(f"結果: {func(<span class="dec2">*</span><span
+                                                class="dec2">args</span>, <span class="dec2">*</span><span
+                                                class="dec2">*</span><span class="dec2">kw</span><span
+                                                class="dec2">args</span>)}")<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                                class="dec0">return</span> func<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> f<br>
+                                            <br>
+                                            <span class="dec2">@</span>check<br>
+                                            <span class="dec0">def</span> func(x:int | float) -&gt; int | float:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> x**2<br>
+                                            <br>
+                                            func(2.0)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            実行結果&darr;<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_11', 'popup_11')">
+                                        copy</div>
+                                    <div class="copied" id="popup_11">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_11">
+                                            引数 : x<br>
+                                            型 : int | float<br>
+                                            結果 : 4.0
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            引数 x のアノテーションが int または float 型になっていることが確認できる。<br>
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_5">
+                    <div class="title" id="1-2">
+                        1-2. 複数の型との比較
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            これまでの書き方で変数 x が int または float 型であることを確認するためには、<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_12', 'popup_12')">
+                                        copy</div>
+                                    <div class="copied" id="popup_12">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_12">
+                                            <span class="dec1">if</span>((<span class="dec4">type</span>(x) <span
+                                                class="dec1">is</span> int) <span class="dec3">or</span> (<span
+                                                class="dec4">type</span>(x) <span class="dec1">is</span> float)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>("ok!")<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# または<br>
+                                            <br>
+                                            <span class="dec1">if</span>(<span class="dec4">isinstance</span>(x, int)
+                                            <span class="dec3">or</span> <span class="dec4">isinstance</span>(x,
+                                            float)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>("ok!")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            などと書く必要があったが、型を複数指定できるようになったので、<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_13', 'popup_13')">
+                                        copy</div>
+                                    <div class="copied" id="popup_13">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_13">
+                                            <span class="dec1">if</span>(<span class="dec4">isinstance</span>(x, int |
+                                            float)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>("ok!")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            このように簡単に書けるようになった。<br>
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_6">
+                    <div class="title" id="2">
+                        2. 辞書にmapping属性が追加された
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            mapping は辞書の keys() 、values() 、items() メソッドの後ろに keys().mapping
+                            と付けることでもとの辞書全体を参照することができる。<br>
+                            <br>
+                            具体的には、<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_14', 'popup_14')">
+                                        copy</div>
+                                    <div class="copied" id="popup_14">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_14">
+                                            # もとの辞書<br>
+                                            x = {1:&quot;a&quot;, 2:&quot;b&quot;}<br>
+                                            <span class="dec4">print</span>(f"dectionaly : {x}")<br>
+                                            <br>
+                                            # そのキー<br>
+                                            key = x.keys()<br>
+                                            <span class="dec4">print</span>(f"key : {list(key)}")<br>
+                                            <br>
+                                            # キー.mappnig<br>
+                                            key_mapping = key.mapping<br>
+                                            <span class="dec4">print</span>(f"key.mapping : {key_mapping}")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            実行結果&darr;<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_15', 'popup_15')">
+                                        copy</div>
+                                    <div class="copied" id="popup_15">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_15">
+                                            dictionaly : {0: "a", 1: "b"}<br>
+                                            key : [0, 1]<br>
+                                            key.mapping : {0: "a", 1: "b"}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            このようにもとの辞書が復元されている。クラスの内と外のようなスコープの違う場所にある辞書全体を持ってきたいときに使えそうだ。
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_7">
+                    <div class="title" id="3">
+                        3. int.bit_count() で２進数の１の数が簡単にわかる
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            まず動作を見てもらうと、<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_16', 'popup_16')">
+                                        copy</div>
+                                    <div class="copied" id="popup_16">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_16">
+                                            int.bit_count(1)&nbsp;&nbsp;# 1<br>
+                                            <span class="dec6">&gt;&gt;</span> 1<br>
+                                            <br>
+                                            int.bit_count(2)&nbsp;&nbsp;# 10<br>
+                                            <span class="dec6">&gt;&gt;</span> 2<br>
+                                            <br>
+                                            int.bit_count(15)&nbsp;&nbsp;# 1111<br>
+                                            <span class="dec6">&gt;&gt;</span> 4<br>
+                                            <br>
+                                            int.bit_count(1000)&nbsp;&nbsp;# 1111101000<br>
+                                            <span class="dec6">&gt;&gt;</span> 6
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            このように２進数にした際の１の数が返される。<br>
+                            <br>
+                            １の数を返すアルゴリズムはそんなに難しくないが、この bit_count() はパッケージ化され動作が速い。
+                            では実際に bit_count() と自作の１を数える処理をそれぞれ100万回実行し、時間を比べてみる。<br>
+                            <br>
+                            <br>
+                            自作の処理１
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_17', 'popup_17')">
+                                        copy</div>
+                                    <div class="copied" id="popup_17">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_17">
+                                            func1 = <span class="dec0">lambda</span> x : <span
+                                                class="dec4">len</span>([i <span class="dec1">for</span> i <span
+                                                class="dec1">in</span> str(bin(x))[2:] <span class="dec1">if</span> i is
+                                            1])<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            処理２
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_18', 'popup_18')">
+                                        copy</div>
+                                    <div class="copied" id="popup_18">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_18">
+                                            func2 = <span class="dec0">lambda</span> x : <span
+                                                class="dec4">len</span>([i <span class="dec1">for</span> i <span
+                                                class="dec1">in</span> str(bin(x))[2:] <span class="dec1">if</span>
+                                            <span class="dec3">not</span> i])<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            処理３
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_19', 'popup_19')">
+                                        copy</div>
+                                    <div class="copied" id="popup_19">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_19">
+                                            <span class="dec0">def</span> func3(x):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;x -= (x &gt;&gt; 1) &amp; 0x5555555555555555<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;x = (x &amp; 0x3333333333333333) + ((x &gt;&gt; 2)
+                                            &amp; 0x3333333333333333)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;x = (x + (x &gt;&gt; 4)) &amp;
+                                            0x0f0f0f0f0f0f0f0f<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;x += x &gt;&gt; 8<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;x += x &gt;&gt; 16<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;x += x &gt;&gt; 32<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> x &amp; 0x0000007f
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            処理４
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_20', 'popup_20')">
+                                        copy</div>
+                                    <div class="copied" id="popup_20">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_20">
+                                            func4 = <span class="dec0">lambda</span> x : str(bin(x))[2:].count(1)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            比較結果&darr;<br>
+                            <br>
+                            <div class="pic"><img src="img/bitcount.png" width="70%" alt="mandelblot^2の画像"></div>
+                            <br>
+                            このように結構速い。<br><br><br>
+                            このアルゴリズムはインターネット通信のパリティによく使われるので、もしかしたらその方向へのアプローチかもしれない。<br>
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_8">
+                    <div class="title" id="4">
+                        4. 2021年10月には match 文が実装される
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            10月にリリース予定の Python 3.10.0 final には match 文が含まれることがわかっている。match 文は他の言語でいう switch
+                            文のことである。<br>
+                            もし実装されたら、<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_21', 'popup_21')">
+                                        copy</div>
+                                    <div class="copied" id="popup_21">copied!</div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content">
+
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_21">
+                                            <span class="dec0">match</span> x:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">case</span> 0:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                                class="dec4">print</span>("zero")<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">case</span> 1:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                                class="dec4">print</span>("one")<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">case</span> 2:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                                class="dec4">print</span>("two")<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">case</span> _:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                                class="dec4">print</span>("default")
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            このような処理が可能になる。<br>
+                            <br>
+                            楽しみ！！！！！
+                            <br><br><br>
+                            <div class="link_content">
+                                <div class="link">
+                                    <a href="../blog.html">
+                                        noteのページに戻る
+                                    </a>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <br><br><br>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/copy.js"></script>
+    <script src="../../js/scroll.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/details.js"></script>
+    <script src="../../js/i_btn.js"></script>
+    <script src="../../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/fade.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on('load scroll', function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="../../count/count.php"></script>
+</body>
+
+</html>

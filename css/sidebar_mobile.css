@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;400;900&family=Source+Code+Pro:wght@300&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Source Code Pro', monospace;
+}
+
+/* 日本語フォント id="jp_font" */
+#jp_font{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 100;
+}
+#jp_font_400{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 400;
+}
+#jp_font_900{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+}
+
+/* コード用フォント id="code_font" */
+#code_font{
+    font-family: 'Source Code Pro', sans-serif;
+    font-weight: 100;
+    color: #fff;
+    background: #414;
+    padding: 0 10px;
+    border-radius: 5px;
+}
+
+body{
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* サイドバー width: 300px; */
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    background: #11101d;
+    transition: all 0.5s ease;
+    padding: 0;
+    z-index: 999;
+}
+.sidebar.active{
+    width: 300px;
+    background: #11101d;
+    padding: 6px 14px;
+    z-index: 2;
+}
+
+/* サイドバー > ロゴ、ハンバーガー */
+.sidebar .logo_content .logo{
+    color: #fff;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s ease;
+    padding-left: 14px;
+}
+.sidebar.active .logo_content .logo{
+    opacity: 1;
+    pointer-events: none;
+}
+.sidebar .logo_content .logo img{
+    height: 20px;
+    width: 20px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-right: 10px;
+}
+.sidebar .logo_content .logo .logo_name{
+    font-size: 20px;
+    font-weight: 400;
+}
+.sidebar #open_btn{
+    position: absolute;
+    color: #fff;
+    background: #11101da0;
+    left: 20px;
+    top: 0px;
+    font-size: 20px;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    line-height: 40px;
+    transform: translateX(-50%);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    cursor: hand;
+    opacity: 1;
+    border-radius: 10px;
+    z-index: 999;
+}
+.sidebar.active #open_btn{
+    opacity: 0;
+    left: 70%;
+}
+.sidebar #open_btn:hover{
+    color: #9ff;
+}
+.sidebar #close_btn{
+    position: absolute;
+    color: #fff;
+    left: -20%;
+    top: 6px;
+    font-size: 20px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    line-height: 50px;
+    transform: translateX(-50%);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    cursor: hand;
+    opacity: 0;
+}
+.sidebar.active #close_btn{
+    opacity: 1;
+    left: 88%;
+}
+.sidebar #close_btn:hover{
+    transform: scale(1.5) translateX(-17px) rotate(180deg);
+    color: #f88;
+}
+
+/* サイドバー > リンク */
+.sidebar ul{
+    margin-top: 20px;
+}
+.sidebar ul li{
+    position: relative;
+    height: 50%;
+    width: 100%;
+    list-style: none;
+    line-height: 50px;
+    left: -50px;
+    transition: all 0.4s ease;
+}
+.sidebar.active ul li{
+    height: 50px;
+    width: 100%;
+    left: 0px;
+}
+.sidebar ul li input{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+    background: #2a2845;
+    padding: 0 0px;
+    font-size: 18px;
+    color: #fff;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 100;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+.sidebar.active ul li input{
+    opacity: 1;
+    padding: 0 20%;
+}
+.sidebar ul li .bx-search{
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    font-size: 20px;
+    transition: all 0.5s ease;
+    background: #2a2845;
+    cursor: pointer;
+    cursor: hand;
+}
+.sidebar ul li .bx-search:hover{
+    background: #fff;
+    color: #11101d;
+}
+.sidebar ul li .bx-right-arrow-circle{
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    font-size: 30px;
+    transition: all 0.5s ease;
+    opacity: 0;
+    left: 218px;
+    padding: 0 12px;
+    cursor: pointer;
+    cursor: hand;
+}
+.sidebar.active ul li .bx-right-arrow-circle{
+    opacity: 1;
+}
+.sidebar ul li i#search_btn:hover{
+    background: #fff;
+    color: #f03030;
+    transform: scale(1.2);
+}
+.sidebar ul li a{
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    border-radius: 12px;
+}
+.sidebar ul li a:hover{
+    color: #11101d;
+    background: #fff;
+}
+.sidebar ul li#now a{
+    color: #fff;
+    display: flex;
+    align-items: center;
+    transition: all 0.4s ease;
+    border-radius: 12px;
+}
+.sidebar ul li#now a i{
+    text-decoration: underline #f08080;
+}
+.sidebar ul li#now a:hover{
+    color: #11101d;
+    background: #fff;
+}
+.sidebar ul li#now a:hover i{    
+    transform: none;
+}
+.sidebar ul li#secret a i{
+    transition: all 0.6s ease;
+}
+.sidebar ul li#secret a:hover i{    
+    transform: rotateZ(-360deg);
+}
+.sidebar ul li i{
+    height: 50px;
+    min-width: 30px;
+    border-radius: 12px;
+    line-height: 50px;
+    list-style: none;
+    text-align: center;
+    padding: 0 15px;
+    font-size: 20px;
+}
+.sidebar .link_name{
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    height: 50px;
+    /* padding-left: 10px; */
+}
+.sidebar.active .link_name{
+    opacity: 1;
+    pointer-events: auto;
+}
+.sidebar ul li #secret_page{
+    color: #fff;
+}
+.sidebar ul li #secret_page:hover{
+    color: #000;
+    background: #aaa;
+}
+.sidebar ul li .popup_text{
+    display: none;
+}
+.sidebar ul li .popup_text_secret{
+    display: none;
+}
+
+/* サイドバー > 左下プロフィール */
+.sidebar .profile_content{
+    position: absolute;
+    color: #fff;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    transition: all 0.4s ease;
+    background-color: #333;
+    width: 100%;
+}
+.sidebar.active .profile_content{
+    opacity: 1;
+}
+.sidebar .profile_content .profile{
+    position: relative;
+    padding: 10px 6px;
+    height: 60px;
+}
+.sidebar .profile_content .profile .profile_details{
+    display: flex;
+    align-items: center;
+}
+.sidebar .profile_content .profile .profile_details .subscript{
+    padding-right: 20px;
+    padding-left: 10px;
+}
+.sidebar .profile_content .profile .profile_details a{
+    color: #2affff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.4s ease;
+}
+.sidebar .profile_content .profile .profile_details a:hover{
+    color: #000;
+    background-color: #2affff;
+    text-decoration: none;
+}
+
+/* メインコンテンツ */
+.main_content{
+    position: absolute;
+    height: 100%;
+    width: calc(100% - 78px);
+    left: 78px;
+    transition: all 0.5s ease;
+}
+.sidebar.active ~ .main_content{
+    width: calc(100% - 300px);
+    left: 300px;
+}

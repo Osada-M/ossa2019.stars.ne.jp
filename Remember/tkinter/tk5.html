@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterのエントリーの使い方'>
+        <meta property='og:description' content='tkinterのエントリーの使い方について'>
+        <meta property='og:site_name' content='tkinterのエントリーの使い方'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk5.html'>
+        <title>tkinterのエントリーの使い方：Entry()について【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                5. tkinterのエントリーの使い方
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月10日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <a href='tk2.html' class='a1'>2. 基本的な構文</a><br>
+                    <a href='tk3.html' class='a1'>3. ラベル</a><br>
+                    <a href='tk4.html' class='a1'>4. ボタン</a><br>
+                    <bl>
+                    <a href='#i5' class='a1'>5. エントリー</a><br>
+                    <a href='#i5-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;エントリーの定義、カスタマイズ</a><br>
+                    <a href='#i5-2' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;エントリーからの入力を受け取る</a><br>
+                    <a href='#i5-3' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;エントリーに文字列を挿入する</a><br>
+                    <a href='#i5-4' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;エントリーの内容を削除する</a><br>
+                    <a href='#i5-5' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;左右寄せ、中央寄せにする</a><br>
+                    <a href='#i5-6' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;文字を伏字にする</a><br>
+                    <a href='#i5-7' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;スクロールバーを作る</a><br>
+                    <a href='#i5-8' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;その他のオプション</a><br>
+                    </bl>
+                    <br>
+                    <a href='tk6.html' class='a1'>6. テキスト</a><br>
+                    <a href='tk7.html' class='a1'>7. スクロールバー</a><br>
+                    <a href='tk8.html' class='a1'>8. チェックボックス</a><br>
+                    <a href='tk9.html' class='a1'>9. アプリへのバインドについて</a><br>
+                    <a href='tk10.html' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <a href='tk11.html' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i5'>エントリー</p>
+                <div class='list0'>
+                    <li id='i5-1'>
+                        エントリーの定義、カスタマイズ
+                    </li><br>
+                    <p1>
+                        エントリーとはPythonの input() にのようにユーザーからの入力を受け付けるものだ。使用するには <bl>Entry()</bl> を用いる。
+                        <br><br><div class='t0'>ent = t.Entry()</div><br>
+                        <br>エントリーの設置にも <bl>pack()</bl> か <bl>place()</bl> を用いる。そしてこれまでと同じように <bl>width</bl> 、 <bl>height</bl> 、 <bl>font</bl> 、 <bl>foreground</bl> などのオプションが利用できる。
+                        詳しくは<a href='tk3.html#i3-2'>第３章：ラベルのカスタマイズ</a>を参照。
+                    </p1><br><br>
+                    <div class='t2' id='j1'>
+                        &nbsp;実行例１
+                        <div class='t1'>
+                            import tkinter as t<br>
+                            <br>
+                            app = t.Tk()<br>
+                            app.title( 'テスト' )<br>
+                            app.geometry( '250x150' )<br>
+                            <br><koko>
+                            ent = t.Entry( foreground = 'red' )<br>
+                            ent.place( x = 10, y = 20 )<br>
+                            <br></koko>
+                            app.mainloop()
+                        </div>
+                        <br>&nbsp;実行結果
+                        <div class='pic'>
+                            <img src='entry1.PNG' width='250px'>
+                            <img src='entry1-1.PNG' width='250px'>
+                        </div>
+                    </div><br><br>
+                    <li id='i5-2'>
+                        エントリーからの入力を受け取る
+                    </li><br>
+                    <p1>
+                        エントリーに入力した内容を受け取るには <bl>get()</bl> を用いる。
+                        <br><br><div class='t0'>s = ent.get()</div><br>
+                        <br>また、get() で取得した値は全てstr型だ。
+                        <br><br><div class='t0'>
+                            >> print( type( ent.get() ) )<br>
+                            &lt;class 'str'&gt;<br>
+                        </div><br><br>
+                        なので、入力値を数値として扱いたいときは下記のようにするとよい。
+                        <br><br><div class='t0'>
+                            <nbl>#整数値として受け取る</nbl><br>
+                            s = int( ent.get() )<br>
+                            <br>
+                            <nbl>#小数点ありで受け取る</nbl><br>
+                            s = float( ent.get() )<br>
+                        </div><br>
+                    </p1><br>
+                    <li id='i5-3'>
+                        エントリーに文字列を挿入する。
+                    </li><br>
+                    <p1>
+                        エントリーに文字列を挿入するには <bl>insert()</bl> を用いる。insert() の構文は下記だ。
+                        <br><br><div class='t0'>ent.insert(「挿入したい箇所」,「挿入する文字列」)</div><br>
+                        <br>例えば 'あ' を挿入したければ下記だ。
+                        <br><br><div class='t0'>
+                            <nbl>#１文字目に挿入</nbl><br>
+                            ent.insert( 0, 'あ' )<br>
+                            <br>
+                            <nbl>#２文字目に挿入</nbl><br>
+                            ent.insert( 1, 'あ' )<br>
+                            <br>
+                            <nbl>#末尾に挿入</nbl><br>
+                            ent.insert( t.END, 'あ' )<br>
+                        </div><br>
+                        <bl>t.END</bl> とはtkinterにて文字列の末尾をあらわすもので、使用する機会が多いと思うので覚えておきたい。
+                        <br><br><br>また、文字列の挿入は<bl><koko>もともとそこにあった文字が上書きされる</koko></bl>ことを留意する必要がある。
+                        <br>「 'あ' ＋ 入力した文字列 」 にしたければ下記のようにすればよい。
+                        <br><br><div class='t0'>
+                            <nbl>#「'あ' + 入力した文字列」を変数に格納</nbl><br>
+                            s = 'あ' + ent.get()<br>
+                            <br>
+                            <nbl>#エントリーの内容を削除する</nbl><br>
+                            ent.delete( 0, t.END )<br>
+                            <br>
+                            <nbl>#エントリーにsを挿入する</nbl><br>
+                            ent.insert( 0, s )<br>
+                        </div><br>
+                        ここで使用した delete() の説明は次節"エントリーの内容を削除する"にて行う。
+                    </p1><br><br><br>
+                    <li id='i5-4'>
+                        エントリーの内容を削除する。
+                    </li><br>
+                    <p1>
+                        エントリーの内容を削除するには <bl>delete()</bl> を用いる。delete() の構文は下記だ。
+                        <br><br><div class='t0'>ent.delete(「開始位置」,「終了位置」) <nbl>#開始位置から終了位置までにある文字列を削除する</nbl></div><br>
+                        <br>使用例を挙げる。
+                        <br><br><div class='t0'>
+                            <nbl>#１文字目を削除</nbl><br>
+                            ent.delete( 0, 1 )<br>
+                            <br>
+                            <nbl>#２～３文字目を削除</nbl><br>
+                            ent.delete( 2, 4 )<br>
+                            <br>
+                            <nbl>#全てを削除</nbl><br>
+                            ent.delete( 0, t.END )<br>
+                        </div><br><br>
+                        ここまでの知識を用いて、ボタンを押すとエントリーの文字列をラベルに表示し、エントリーの内容をリセットするプログラムを記載する。
+                    </p1><br><br>
+                    <div class='t2' id='j2'>
+                        &nbsp;実行例２
+                        <div class='t1'>
+                            import tkinter as t<br>
+                            <br>
+                            def func(event):<br><koko>
+                            &nbsp;&nbsp;&nbsp;&nbsp;s = ent.get()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lab[ 'text' ] = s<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ent.delete( 0, t.END )<br>
+                            <br></koko>
+                            app = t.Tk()<br>
+                            app.title( 'テスト' )<br>
+                            app.geometry( '250x150' )<br>
+                            <br>
+                            ent = t.Entry( foreground = 'red' )<br>
+                            ent.place( x = 10, y = 20 )<br>
+                            <br>
+                            but = t.Button( text = '実行', background = '#CFDFFF' )<br>
+                            but.place( x = 10, y = 55, width = 230, height = 25 )<br>
+                            but.bind( '&lt;Button-1&gt;', func )<br>
+                            <br>
+                            lab = t.Label( background = '#FFC0C0' )<br>
+                            lab.place( x = 10, y = 100, width = 230, height = 25 )<br>
+                            <br>
+                            app.mainloop()
+                        </div>
+                        <br>&nbsp;実行結果（gif画像）
+                        <div class='pic'><img src='entry.gif' width='250px'></div>
+                    </div><br><br>
+                    <li id='i5-5'>
+                        左右寄せ、中央寄せにする
+                    </li><br>
+                    <p1>
+                        文字を寄せるには <bl>justify</bl> オプションを用いる。
+                        <br><br><div class='t0'>
+                            <nbl>#左寄せ</nbl><br>
+                            ent[ 'justify' ] = t.LEFT<br>
+                            <br>
+                            <nbl>#中央寄せ</nbl><br>
+                            ent[ 'justify' ] = t.CENTER<br>
+                            <br>
+                            <nbl>#右寄せ</nbl><br>
+                            ent[ 'justify' ] = t.RIGHT<br>
+                            <br>
+                            <nbl>#また、エントリーの定義時に指定することもできる。</nbl><br>
+                            <nbl>#左寄せ</nbl><br>
+                            ent = t.Entry( justify = t.LEFT )<br>
+                            <br>
+                            <nbl>#中央寄せ</nbl><br>
+                            ent = t.Entry( justify = t.CENTER )<br>
+                            <br>
+                            <nbl>#右寄せ</nbl><br>
+                            ent = t.Entry( justify = t.RIGHT )<br>
+                        </div><br>
+                    </p1><br><br>
+                    <li id='i5-6'>
+                        文字を伏字にする
+                    </li><br>
+                    <p1>
+                        パスワードなどを入力する際に文字を伏字にすることがある。それには <bl>show</bl> オプションを用いる。
+                        <br><br><div class='t0'>
+                            <nbl>#全て「*」で表記する</nbl><br>
+                            ent[ 'show' ] = '*'<br>
+                            <br>
+                            <nbl>#全て「？」で表記する</nbl><br>
+                            ent[ 'show' ] = '？'<br>
+                            <br>
+                            <nbl>#また、エントリーの定義時に指定することもできる。</nbl><br>
+                            <nbl>#全て「●」で表記する</nbl><br>
+                            ent = t.Entry( show = '●' )<br>
+                            <br>
+                        </div>
+                    </p1><br><br>
+                    <li id='i5-7'>
+                        スクロールバーを作る
+                    </li><br>
+                    <p1>
+                        スクロールバーの作成には複数のステップを要する。詳しくは<a href='tk7.html'>第７章："スクロールバー"</a>を参照。
+                    </p1><br><br><br>
+                    <li id='i5-8'>
+                        その他オプション
+                    </li><br>
+                    <p1>
+                        代表的なものをいくつか挙げる。<br><br>
+                        <table border='1' width='520px'>
+                            <tr>
+                                <th>キーワード</th>
+                                <th>意味</th>
+                            </tr>
+                            <tr>
+                                <td>cursor</td>
+                                <td>マウスカーソルの形を指定する<br>arrow→通常、wait→待ち状態、など</td>
+                            </tr>
+                            <tr>
+                                <td>invalidcommand</td>
+                                <td>入力値が正しくない場合に実行する関数を指定する</td>
+                            </tr>
+                            <tr>
+                                <td>validatecommand</td>
+                                <td>入力値が正しくないかどうかを判定する関数を指定する</td>
+                            </tr>
+                            <tr>
+                                <td>xscrollcommand</td>
+                                <td>横軸にスクロールバーを紐づける。<br>詳しくは<a href='tk7.html'>第７章</a>を参照</td>
+                            </tr>
+                        </table>
+                        <br><br>
+                        その他のオプションに関しては外部サイトで詳しいものが複数あるので下記リンク先などをご参照いただきたい。<br><br>
+                        <a href='https://suzutaka-programming.com/tkinter-ttk-entry-option/'>
+                            "【Python GUI Tkinterリファレンス】ttk.Entry(エントリー:テキストボックス)のオプション"
+                            <br>(https://suzutaka-programming.com/tkinter-ttk-entry-option/)</a>
+                    </p1><br><br>
+                </div><br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

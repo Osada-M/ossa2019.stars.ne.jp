@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterのテキストの使い方'>
+        <meta property='og:description' content='tkinterのテキストの使い方について'>
+        <meta property='og:site_name' content='tkinterのテキストの使い方'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk6.html'>
+        <title>tkinterのテキストの使い方：Text()について【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                6. tkinterのテキストの使い方
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月10日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <a href='tk2.html' class='a1'>2. 基本的な構文</a><br>
+                    <a href='tk3.html' class='a1'>3. ラベル</a><br>
+                    <a href='tk4.html' class='a1'>4. ボタン</a><br>
+                    <a href='tk5.html' class='a1'>5. エントリー</a><br>
+                    <bl>
+                    <a href='#i6' class='a1'>6. テキスト</a><br>
+                    <a href='#i6-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;テキストの定義、カスタマイズ</a><br>
+                    <a href='#i6-2' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;テキストからの入力を受け取る</a><br>
+                    <a href='#i6-3' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;テキストに文字列を挿入する</a><br>
+                    <a href='#i6-4' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;テキストの内容を削除する</a><br>
+                    <a href='#i6-5' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;左右寄せ、中央寄せにする</a><br>
+                    <a href='#i6-6' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;スクロールバーを作る</a><br>
+                    <a href='#i6-7' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;その他のオプション</a><br>
+                    </bl>
+                    <br>
+                    <a href='tk7.html' class='a1'>7. スクロールバー</a><br>
+                    <a href='tk8.html' class='a1'>8. チェックボックス</a><br>
+                    <a href='tk9.html' class='a1'>9. アプリへのバインドについて</a><br>
+                    <a href='tk10.html' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <a href='tk11.html' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i6'>テキスト</p>
+                <div class='list0'>
+                    <li id='i6-1'>
+                        テキストの定義、カスタマイズ
+                    </li><br>
+                    <p1>
+                        テキストの作成には <bl>Text()</bl> を用いる。
+                        <br><br><div class='t0'>tex = t.Text()</div><br>
+                        <br>テキストの設置にも <bl>pack()</bl> か <bl>place()</bl> を用いる。そしてこれまでと同じように <bl>width</bl> 、 <bl>height</bl> 、 <bl>font</bl> 、 <bl>foreground</bl> などのオプションが利用できる。詳しくは<a href='tk3.html#i3-2'>第３章</a>
+                    </p1><br><br>
+                    <div class='t2' id='j1'>
+                        &nbsp;実行例１
+                        <div class='t1'>
+                            import tkinter as t<br>
+                            <br>
+                            app = t.Tk()<br>
+                            app.title( 'テスト' )<br>
+                            app.geometry( '250x150' )<br>
+                            <br><koko>
+                            tex = t.Text( background = '#DFDFFF' )<br>
+                            tex.place( x = 10, y = 10, width = 230, height = 130 )<br>
+                            <br></koko>
+                            app.mainloop()
+                        </div>
+                        <br>&nbsp;実行結果
+                        <div class='pic'><img src='text1.PNG' width='250px'></div>
+                    </div><br><br>
+                    <li id='i6-2'>
+                        テキストからの入力を受け取る
+                    </li><br>
+                    <p1>
+                        テキストに入力した内容を受け取るには <bl>get()</bl> を用いる。構文は下記だ。
+                        <br><br><div class='t0'>s = tex.get(「開始位置」、「終了位置」) <nbl>#開始位置から終了位置までにある文字列を取得する</nbl></div><br>
+                        <br>例えばテキストの内容を最初から最後まで全部取得したければ下記のようにする。
+                        <br><br><div class='t0'>s = tex.get( 0., t.END )</div>
+                        <br>t.END</bl> とはtkinterにて文字列の末尾をあらわすもので、使用する機会が多いと思うので覚えておきたい。
+                        <br><br>また、<bl><koko>
+                            テキストはエントリーと異なり、開始位置や終了位置を「行番号.左からの文字数」で表記する
+                        </bl></koko>
+                        なので、テキストの<bl><koko>１行目の１文字目＝0.0番目、３行目の２文字目＝2.1番目</bl></koko>になる。<br>
+                        （※ Pythonでは「0.0」や「1.0」などを略して「0.」、「1.」と記すことができる。上の例ではこれを利用し小数点を短く書いている。）
+                        <br><br><br>get() で取得した値は全てstr型だ。
+                        <br><br><div class='t0'>
+                            >> print( type( tex.get( 0., t.END ) ) )<br>
+                            &lt;class 'str'&gt;<br>
+                        </div><br><br>
+                        なので、入力値を数値として扱いたいときは下記のようにするとよい。
+                        <br><br><div class='t0'>
+                            <nbl>#整数値として受け取る</nbl><br>
+                            s = int( tex.get( 0., t.END ) )<br>
+                            <br>
+                            <nbl>#小数点ありで受け取る</nbl><br>
+                            s = float( tex.get( 0., t.END ) )<br>
+                        </div><br>
+                    </p1><br>
+                    <li id='i6-3'>
+                        テキストに文字列を挿入する。
+                    </li><br>
+                    <p1>
+                        テキストに文字列を挿入するには <bl>insert()</bl> を用いる。insert() の構文は下記だ。
+                        <br><br><div class='t0'>tex.insert(「挿入したい箇所」,「挿入する文字列」)</div><br>
+                        <br>例えば 'あ' を挿入したければ下記だ。
+                        <br><br><div class='t0'>
+                            <nbl>#１行目１文字目に挿入</nbl><br>
+                            tex.insert( 0., 'あ' )<br>
+                            <br>
+                            <nbl>#２行目３文字目に挿入</nbl><br>
+                            tex.insert( 1.2, 'あ' )<br>
+                            <br>
+                            <nbl>#末尾に挿入</nbl><br>
+                            tex.insert( t.END, 'あ' )<br>
+                        </div><br>
+                        <br>また、文字列の挿入は<bl><koko>もともとそこにあった文字が上書きされる</koko></bl>ことを留意する必要がある。
+                        <br>「 'あ' ＋ 入力した文字列 」 にしたければ下記のようにすればよい。
+                        <br><br><div class='t0'>
+                            <nbl>#「'あ' + 入力した文字列」を変数に格納</nbl><br>
+                            s = 'あ' + tex.get( 0., t.END)<br>
+                            <br>
+                            <nbl>#テキストの内容を削除する</nbl><br>
+                            tex.delete( 0., t.END )<br>
+                            <br>
+                            <nbl>#テキストにsを挿入する</nbl><br>
+                            tex.insert( 0., s )<br>
+                        </div><br>
+                        ここで使用した delete() の説明は次節"テキストの内容を削除する"にて行う。
+                    </p1><br><br><br>
+                    <li id='i6-4'>
+                        テキストの内容を削除する。
+                    </li><br>
+                    <p1>
+                        テキストの内容を削除するには <bl>delete()</bl> を用いる。delete() の構文は下記だ。
+                        <br><br><div class='t0'>tex.delete(「開始位置」,「終了位置」) <nbl>#開始位置から終了位置までにある文字列を削除する</nbl></div><br>
+                        <br>使用例を挙げる。
+                        <br><br><div class='t0'>
+                            <nbl>#１行目１文字目を削除</nbl><br>
+                            tex.delete( 0., 0.1 )<br>
+                            <br>
+                            <nbl>#１行目２～３文字目を削除</nbl><br>
+                            tex.delete( 0.1, 0.3 )<br>
+                            <br>
+                            <nbl>#全てを削除</nbl><br>
+                            tex.delete( 0., t.END )<br>
+                        </div><br><br>
+                        ここまでの知識を用いて、ボタンを押すとテキスト内の文字数を数えてラベルに表示するプログラムを記載する。
+                    </p1><br>
+                    <div class='t2' id='j2'>
+                        &nbsp;実行例２
+                        <div class='t1'>
+                            import tkinter as t<br>
+                            <br>
+                            def func(event):<br><koko>
+                            &nbsp;&nbsp;&nbsp;&nbsp;s = len( tex.get( 0., t.END ) ) - 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;cnt['text'] = '文字数 : ' + str(s)<br>
+                            <br></koko>
+                            app = t.Tk()<br>
+                            app.title( 'テスト' )<br>
+                            app.geometry( '250x<koko>180</koko>' )<br>
+                            <br>
+                            tex = t.Text( background = '#DFDFFF')<br>
+                            tex.place( x = 10, y = 10, width = 230, height = 130 )<br>
+                            <br>
+                            cnt = t.Label( text=u'文字数 : 0', font=( 'Arial', 20 ) )<br>
+                            cnt.place( x=10, y=140 )<br>
+                            <br>
+                            but = t.Button( text=u'カウント', background='#FFDFDF' )<br>
+                            but.place( x=190, y=140, height=40 )<br>
+                            but.bind( '&lt;Button-1&gt;', func )<br>
+                            <br>
+                            app.mainloop()
+                        </div>
+                        <br>&nbsp;実行結果（gif画像）
+                        <div class='pic'><img src='text.gif' width='250px'></div>
+                    </div><br><br>
+                    <pl>
+                        ボタンではなくアプリにキー入力をバインドする（<a href='tk9.html'>第９章</a>）ことで、キー入力に反応して即座に文字数を数えるプログラムが作成可能だ。
+                    </pl><br><br>
+                    <div class='t2' id='j3'>
+                        &nbsp;実行例３
+                        <div class='t1'>
+                            import tkinter as t<br>
+                            <br>
+                            def func(event):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;s = len( tex.get( 0., t.END ) ) - 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;cnt['text'] = '文字数 : ' + str(s)<br>
+                            <br>
+                            app = t.Tk()<br>
+                            app.title( 'テスト' )<br>
+                            app.geometry( '250x<koko>180</koko>' )<br>
+                            <br>
+                            tex = t.Text( background = '#DFDFFF')<br>
+                            tex.place( x = 10, y = 10, width = 230, height = 130 )<br>
+                            <br>
+                            cnt = t.Label( text=u'文字数 : 0', font=( 'Arial', 20 ) )<br>
+                            cnt.place( x=10, y=140 )<br>
+                            <br><koko>
+                            app.bind( '&lt;Key&gt;', func )<br>
+                            <br></koko>
+                            app.mainloop()
+                        </div>
+                        <br>&nbsp;実行結果（gif画像）
+                        <div class='pic'><img src='text2.gif' width='250px'></div>
+                    </div><br><br><br>
+                    <li id='i6-5'>
+                        左右寄せ、中央寄せにする
+                    </li><br>
+                    <p1>
+                        文字を寄せるには <bl>justify</bl> オプションを用いる。
+                        <br><br><div class='t0'>
+                            <nbl>#左寄せ</nbl><br>
+                            tex[ 'justify' ] = t.LEFT<br>
+                            <br>
+                            <nbl>#中央寄せ</nbl><br>
+                            tex[ 'justify' ] = t.CENTER<br>
+                            <br>
+                            <nbl>#右寄せ</nbl><br>
+                            tex[ 'justify' ] = t.RIGHT<br>
+                            <br>
+                            <nbl>#また、エントリーの定義時に指定することもできる。</nbl><br>
+                            <nbl>#左寄せ</nbl><br>
+                            tex = t.Text( justify = t.LEFT )<br>
+                            <br>
+                            <nbl>#中央寄せ</nbl><br>
+                            tex = t.Text( justify = t.CENTER )<br>
+                            <br>
+                            <nbl>#右寄せ</nbl><br>
+                            tex = t.Text( justify = t.RIGHT )<br>
+                        </div><br>
+                    </p1><br><br>
+                    <li id='i6-6'>
+                        スクロールバーを作る
+                    </li><br>
+                    <p1>
+                        スクロールバーの作成には複数のステップを要する。詳しくは<a href='tk7.html'>第７章："スクロールバー"</a>を参照。
+                    </p1><br><br>
+                    <li id='i6-7'>
+                        その他オプション
+                    </li><br>
+                    <p1>
+                        代表的なものをいくつか挙げる。<br><br>
+                        <table border='1' width='600px'>
+                            <tr>
+                                <th>キーワード</th>
+                                <th>意味</th>
+                            </tr>
+                            <tr>
+                                <td>blockcursor</td>
+                                <td>テキスト内のカーソルを四角にするかどうか</td>
+                            </tr>
+                            <tr>
+                                <td>spacing1</td>
+                                <td>テキストの最初に使用する空白の数<br>spacing2→行間、spacing3→最後</td>
+                            </tr>
+                            <tr>
+                                <td>undo</td>
+                                <td>元に戻す機能（Windowsの Ctrl + z 等）を許可するかどうか</td>
+                            </tr>
+                            <tr>
+                                <td>maxundo</td>
+                                <td>undoの最大回数回数を指定する<br>０未満を指定した場合は無限</td>
+                            </tr>
+                            <tr>
+                                <td>xscrollcommand</td>
+                                <td>横軸にスクロールバーを紐づける。<br>詳しくは<a href='tk7.html'>第７章</a>を参照</td>
+                            </tr>
+                        </table>
+                        <br><br>
+                        その他のオプションに関しては外部サイトで詳しいものが複数あるので下記リンク先などをご参照いただきたい。<br><br>
+                        <a href='https://suzutaka-programming.com/tkinter-text-option/'>
+                            "【Python GUI Tkinterリファレンス】Text(入力テキストボックス)のオプション"
+                            <br>(https://suzutaka-programming.com/tkinter-text-option/)</a>
+                    </p1><br><br>
+                </div><br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../pic/o.ico">
+    <link rel="shortcut icon" href="../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../css/sorting.css">
+    <!-- <link rel="stylesheet" href="../css/mainContent.css" media="screen and (min-width:600px)"> -->
+    <!-- モバイル版css -->
+    <!-- <link rel="stylesheet" href="../css/sotring_mobile.css" media="screen and (max-width:599px)"> -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="Sorting Simulator｜ソートアルゴリズムのシミュレーター">
+    <meta property="og:description" content="JavaScriptの練習で作りました。">
+    <meta property="og:site_name" content="Sorting Simulator｜ソートアルゴリズムのシミュレーター">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/sorting/sorting.html">
+    <title>Simulator｜色々なソートアルゴリズムのシミュレーター【おさだのホームページ</title>
+</head>
+<body>
+    <div class="search_result" style="position:absolute; opacity:0;">
+        <div class="title_text">
+            Sorting Simulator｜色々なソートアルゴリズムのシミュレーター【おさだのホームページ】
+        </div>
+        <div class="text">
+            バブルソート、マージソート、クイックソートが実際に動いている様子を観察できます。
+        </div>
+    </div>
+    <div class="header">
+        <div class="item" id="shuffle">
+            <div class="shuffle_btn" onclick="clickToShuffle()">
+                <div class="text">
+                    shuffle
+                </div>
+            </div>
+        </div>
+        <div class="item" id="bubble">
+            <div class="sorting_btn" onclick="clickToSort('bubble')">
+                <div class="text">
+                    bubble sort
+                </div>
+            </div>
+        </div>
+        <div class="item" id="merge">
+            <div class="sorting_btn" onclick="clickToSort('merge')">
+                <div class="text">
+                    merge sort
+                </div>
+            </div>
+        </div>
+        <div class="item" id="quick">
+            <div class="sorting_btn" onclick="clickToSort('quick')">
+                <div class="text">
+                    quick sort
+                </div>
+            </div>
+        </div>
+        <div class="item" id="speed">
+            <ul class="slider">
+                <li><div class="text">speed</div></li>
+                <li><input type="range" id="speed_slider" value="80" min="1" max="100" step="1"></li>
+                <li><div class="text" id="speed_number"></div></li>
+                <li>
+                    <div class="smooth_btn" id="smooth_btn" onclick="smooth_activate()">
+                        smoothly
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div class="simulator">
+            <ul class="bar_content">
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar"></div></li>
+                <li><div class="bar_height"></div></li>
+            </ul>
+        </div>
+    </div>
+    <a href="../index.html" class="link">
+        home page
+    </a>
+    <script src="../js/sorting.js"></script>
+    <script src="../count/count.php"></script>
+</body>
+</html>

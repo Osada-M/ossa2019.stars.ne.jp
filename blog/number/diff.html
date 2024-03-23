@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='../../pic/o.ico'>
+    <link rel='apple-touch-icon-precomposed' href='../../pic/o.png'>
+    <link rel='stylesheet' href='../../css/main2.css'>
+    <link rel='stylesheet' href='../../css/main2_half.css' media='screen and (max-width:1360px)'>
+    <link rel='stylesheet' href='../../css/main2_quarter.css' media='screen and (max-width:850px)'>
+    <link rel='stylesheet' href='../../css/main2_mobile.css' media='screen and (max-width:550px)'>
+    <meta property='og:title' content='Pythonで導関数をプロットする'>
+    <meta property='og:description' content='導関数を描画するコードを紹介します。'>
+    <meta property='og:site_name' content='Pythonで導関数をプロットする'>
+    <meta property='og:type' content='blog'>
+    <meta property='og:url' content='https://ossa2019.stars.ne.jp/blog/number/diff.html'>
+    <title>Pythonで導関数をプロットする【おさだのホームページ】</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='tab'>
+            <p>おさだのホームページ</p>
+            <a href='../../index.html' id='home'>
+                ホーム
+            </a>
+            <a href='../../apps.html' id='home'>
+                倉　庫
+            </a>
+            <a href='../../Remember/Remember.html' id='home'>
+                備忘録
+            </a>
+            <a href='../blog.html' id='home' class='tab_now'>
+                にっき
+            </a>
+        </div>
+        <div class='page'>
+            <div class='caption'>
+                Pythonで微分した値を求めてプロットしたい
+            </div>
+            <div class='article'>
+                <p>微分した値と、導関数のプロット</p><br>
+                    <section>
+                        このページでは、微分した値の導出と導関数のプロットをする機能をクラスを用いて一般化するところまでを行う。<br><br>
+                        <a href=#code>完成したコードまで読み飛ばす</a><br><br><br>
+                        まず微分の定義通りに関数diff()を書いた。<br><br>
+                        <div class='code'>
+                            <span class="dec0">def</span> diff( f, x ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;d = 1e-10  # 0に近い数字<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;keta = 5  # 出力する小数点以下の桁数<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> (( f(x+n) - f(x) )/d) // 10**(-1*keta) / 10**keta
+                        </div><br>
+                        これは引数 f に関数かラムダ式を、x に数値を入力すると微分した際の傾きの数値を戻す関数だ。<br>
+                        この関数に式と適当な範囲での数値を入れてプロットすれば導関数のグラフが描けるはずである。<br><br>
+                        では実際に f(x) = x^3　の場合を試してみる。実行するコードは下記だ。<br><br>
+                        <div class='code'>
+                            <span class="dec0">import</span> numpy as np, matplotlib.pyplot as plt<br>
+                            <br>
+                            <span class="dec0">def</span> diff( f, x ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;d = 1e-10<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;keta = 5<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> int((( f(x+n) - f(x) )/d) // 10**(-1*keta)) / 10**keta<br>
+                            <br>
+                            for_range = np.linspace(-10, 10, 100)<br>
+                            xs, ys = [], []<br>
+                            <br>
+                            <span class="dec1">for</span> i <span class="dec1">in</span> for_range:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs.append( i )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ys.append( diff( <span class="dec0">lambda</span> x:x**3, i ) )<br>
+                            <br>
+                            plt.grid()<br>
+                            plt.plot( xs, ys )<br>
+                        </div><br>
+                        実行結果は、<br><br>
+                        <div class='pic'><img src='images/x**3.png' alt='x^3の実行結果', width=60%></div><br>
+                        x^3の導関数は3x^2であるので良さそうだ。ついでに f(x) = sin(x) で実行してみると、<br><br>
+                        <div class='pic'><img src='images/sinx.png' alt='sin(x)の実行結果', width=60%></div><br>
+                        con(x)になっているのがわかる。<br><br><br>
+                        最後にクラスを使って一般化する。<br><br>
+                        <div style='font-weight:bold;', id='code'>
+                            プログラム全文
+                        </div>
+                        <div class='code'>
+                            <span class="dec0">class</span> Diff:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">import</span> numpy as np, matplotlib.pyplot as plt, math<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> <span class="dec4">__init__</span>( <span class="dec2">self</span>, f=<span class="dec3">None</span> ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.f = <span class="dec3">None</span> <span class="dec1">if</span> ( f == <span class="dec3">None</span> ) <span class="dec1">else</span> f<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> point( <span class="dec2">self</span>, x, d=1e-10, keta=5, f=<span class="dec3">None</span> ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f_new = <span class="dec2">self</span>.f <span class="dec1">if</span> ( f == <span class="dec3">None</span> ) <span class="dec1">else</span> f<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> (( f_new(x+d) - f_new(x) )/d) // 10**(-1*keta) / 10**keta<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> plot( <span class="dec2">self</span>, f=<span class="dec3">None</span> ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f_new = <span class="dec2">self</span>.f <span class="dec1">if</span> ( f == <span class="dec3">None</span> ) <span class="dec1">else</span> f<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for_range = <span class="dec2">self</span>.np.linspace(-10, 10, 100)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs, ys = [], []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> for_range:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs.append( i )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys.append( <span class="dec2">self</span>.point( i, f=f_new ) )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.grid()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( [0, 0], [-1.1*max(ys), 1.1*max(ys)], c='#ffbbbb' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( [-10, 10], [0, 0], c='#ffbbbb' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( xs, ys )
+                        </div><br>
+                        point()が微分した値の計算で、plot()が導関数のプロットを行う関数である。ここではより使いやすいようにpoint()やplot()関数に直接式を入れても機能するようにしてある。<br><br>
+                        実際にjupyter notebookにて実行する。<br><br>
+                        <div class='pic'><img src='images/diff_class.png' width='50%' alt='Diffの画像'></div><br>
+                        
+                        <br><br><br>
+                        <a href='../blog.html' class='link'>
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src='../../count/count.php'></script>
+</body>
+</html>

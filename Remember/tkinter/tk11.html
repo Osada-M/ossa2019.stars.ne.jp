@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterで作ったUIを消す方法'>
+        <meta property='og:description' content='tkinterで作ったUIを消す方法（デストロイ）について'>
+        <meta property='og:site_name' content='tkinterで作ったUIを消す方法'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk11.html'>
+        <title>tkinterで作ったUI・ウィジェットを消す：destroy()について【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                11. 作ったUIを消す（デストロイについて）
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月21日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <a href='tk2.html' class='a1'>2. 基本的な構文</a><br>
+                    <a href='tk3.html' class='a1'>3. ラベル</a><br>
+                    <a href='tk4.html' class='a1'>4. ボタン</a><br>
+                    <a href='tk5.html' class='a1'>5. エントリー</a><br>
+                    <a href='tk6.html' class='a1'>6. テキスト</a><br>
+                    <a href='tk7.html' class='a1'>7. スクロールバー</a><br>
+                    <a href='tk8.html' class='a1'>8. チェックボックス</a><br>
+                    <a href='tk9.html' class='a1'>9. バインドについて</a><br>
+                    <a href='tk10.html' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <bl>
+                    <a href='#i11' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                    <a href='#i11-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;デストロイの方法</a><br>
+                    <a href='#i11-2' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;よくあるエラー</a><br>
+                    </bl>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i11'>
+                    作ったUIを消す
+                </p>
+                <div class='list0'>
+                    <li id='i11-1'>
+                        デストロイの方法
+                    </li><br>
+                    <p1>
+                        アプリのUIを消すには&nbsp;<bl>destroy()</bl>&nbsp;を用いる。例えばボタンを消すには下のようにする。
+                        <br><br><div class='t0'>
+                            but = t.Button()<br>
+                            <br>
+                            but.destroy()<br>
+                        </div><br>
+                        UIを生成する関数とそれを破壊する関数を用意すれば、UIの生成と破壊が自由に行える。
+                        <br><br><div class='t0'>
+                            <nbl>
+                            #UIの生成を行う関数<br>
+                            #butをグローバル変数とし、全ての関数で共通して使えるようにしている</nbl><br>
+                            def func_make():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;global but<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;but = t.Button()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;but.pack()<br>
+                            <br><nbl>
+                            #UIの破壊を行う関数<br></nbl>
+                            def func_destroy():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;but.destroy()<br>
+                        </div>
+                        <br><br><br>
+                    </p1>
+                    <li id='i11-2'>
+                        よくあるエラー
+                    </li><br>
+                    <p1>
+                        <a href='#e1'>デストロイ前後でのエラー</a><br>
+                        <a href='#e2'>関数を用いた際のエラー</a><br>
+                        <br><div id='e1'></div>
+                        <koko><bl>一度デストロイしたUIはその変数ごと消える</bl></koko>ので、そのUIに対して何か操作を行ったり再びデストロイしたりするとエラーを起こす。
+                        例えば下のようなコードは実行できない。
+                        <br><br><div class='t0'>
+                            but = t.Button()<br>
+                            <br>
+                            but.pack()<br>
+                            <br>
+                            but.destroy()<br>
+                            <br>
+                            but.pack()<br>
+                        </div><br>
+                        一度butをデストロイするとbutは変数ごと消えるので、pack()で再び表示させようとしてもエラーとなる。
+                        上の例を実行できるように修正すると下の通りだ。
+                        <br><br><div class='t0'>
+                            but = t.Button()<br>
+                            <br>
+                            but.pack()<br>
+                            <br>
+                            but.destroy()<br>
+                            <br>
+                            but = t.Button()<br>
+                            <br>
+                            but.pack()<br>
+                        </div><br><br><div id='e2'></div>
+                        続いて、関数を用いてデストロイしたときによく起こるエラーについてだ。<br>
+                        <br>
+                        例えば下のように関数を定義したとする。
+                        <br><br><div class='t0'>
+                            def func_make():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;global but<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;but = t.Button()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;but.pack()<br>
+                            <br>
+                            def func_destroy():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;but.destroy()<br>
+                        </div><br>
+                        これはfunc_make()にてボタンの生成を行い、func_destroy()にでボタンの破壊を行うものだ。<br>
+                        交互に呼び出されれば問題はないが、func_make()が二度連続して呼び出されるとボタンが重複して作られてしまうし、func_destroy()が二度連続して呼び出されるとbutは既に破壊されているのでエラーを起こす。<br>
+                        この二つを解決する方法の一例は下の通りだ。
+                        <br><br><div class='t0'>
+                            boo = True<br>
+                            <br>
+                            def func_make():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;global but, boo<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if( boo ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;but = t.Button()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;but.pack()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo = False<br>
+                            <br>
+                            def func_destroy():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;try:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;but.destroy()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo = True<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;except:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pass<br>
+                        </div><br><br>
+                        <br>
+                    </p1>
+                    <p1>
+                        ここで、ボタンを押すたびにラベルの生成と破壊を繰り返すプログラムを記載する。<br>
+                    </p1><br>
+                    <div class='t2' id='j1'>
+                        &nbsp;実行例
+                        <div class='t1'>
+                            import tkinter as t<br>
+                            <br>
+                            boo = True<br>
+                            <br><nbl>
+                            #ボタンが押されると呼び出される関数</nbl><br>
+                            def func( event ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;global boo<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if( boo ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;func_make()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo = False<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;func_destroy()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo = True<br>
+                            <br><nbl>
+                            #ラベルを生成する関数</nbl><br>
+                            def func_make():<br><koko>
+                            &nbsp;&nbsp;&nbsp;&nbsp;global lab<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lab = t.Label( text = u'ラベル', font = ('Arail',20) )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lab.pack( pady = 10 )<br></koko>
+                            &nbsp;&nbsp;&nbsp;&nbsp;trigger[ 'text' ] = '破壊'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;trigger[ 'background' ] = '#f8d0d0'<br>
+                            <br><nbl>
+                            #ラベルを破壊する関数</nbl><br>
+                            def func_destroy():<br><koko>
+                            &nbsp;&nbsp;&nbsp;&nbsp;try:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lab.destroy()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;except:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pass<br></koko>
+                            &nbsp;&nbsp;&nbsp;&nbsp;trigger[ 'text' ] = '生成'<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;trigger[ 'background' ] = '#d0f8d0'<br>
+                            <br>
+                            app = t.Tk()<br>
+                            app.title( 'テスト' )<br>
+                            app.geometry( '200x100' )<br>
+                            <br>
+                            trigger = t.Button( text = u'生成', font = ('Arial',15), background = '#d0f8d0' )<br>
+                            trigger.place( x = 20, y = 60, width = 160, height = 30 )<br>
+                            trigger.bind( '&lt;Button-1&gt;', func )<br>
+                            <br>
+                            app.mainloop()<br>
+                        </div>
+                        <br>&nbsp;実行結果（gif画像）<br>
+                        <div class='pic'><img src='destroy.gif' width='250px'></div>
+                    </div>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

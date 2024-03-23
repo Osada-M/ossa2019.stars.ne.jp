@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <link rel="stylesheet" href="../../css/main2.css">
+    <link rel="stylesheet" href="../../css/main2_half.css" media="screen and (max-width:1360px)">
+    <link rel="stylesheet" href="../../css/main2_quarter.css" media="screen and (max-width:850px)">
+    <link rel="stylesheet" href="../../css/main2_mobile.css" media="screen and (max-width:550px)">
+    <meta property="og:title" content="PythonやJavaScriptなどのソースコードをHTMLに変換し、さらに単語を色付き文字にして表示する試み">
+    <meta property="og:description" content="PythonやJavaScriptなどのソースコードをHTMLに変換し、さらに単語を色付き文字にして表示する方法について">
+    <meta property="og:site_name" content="PythonやJavaScriptなどのソースコードをHTMLに変換し、さらに単語を色付き文字にして表示する試み">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/other/toHtml.html">
+    <title>プログラムのソースコードをHTML形式に変換し、さらに特定の単語を色付きで表示させる試み</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class="tab">
+            <p>おさだのホームページ</p>
+            <a href="../../index.html" id="home">
+                ホーム
+            </a>
+            <a href="../../apps.html" id="home">
+                倉　庫
+            </a>
+            <a href="../../Remember/Remember.html" id="home">
+                備忘録
+            </a>
+            <a href="../blog.html" id="home" class="tab_now">
+                にっき
+            </a>
+        </div>
+        <div class="page">
+            <div class="caption">
+                ホームページ内に貼るソースコードの可読性を向上させたい
+            </div>
+            <div class="article">
+                <p>ソースコードをHTMLに変換し、色付き文字で出力する</p><br>
+                    <section>
+                        <a href="https://github.com/Osada-M/shere/blob/8e270bc8b5e464394408a4b60753bb8bc89669ae/apps/toHtml.py">アプリ全体のソースコード(GitHub)</a><br><br><hr/><br><br>
+                        Python や JavaScript などのソースコードをそのまま HTML に貼ると、記号が変な風に認識されて文字が崩れたり、全部同じ色なので読みにくくなったりする。
+                        今回はその悩みの(とりあえずの)解決手段となる Python アプリを紹介する。また、このアプリのソースコードは<a href="https://github.com/Osada-M/shere/blob/8e270bc8b5e464394408a4b60753bb8bc89669ae/apps/toHtml.py" class="newlink" target="_blank" rel="noopener noreferrer">GitHub</a>にて公開している。<br><br><br>
+                        まず、&lt; や &amp; などの記号を HTML で表示できるようにするには「&lt;」は「&amp;lt;」、「&amp;」は「&amp;amp;」のように表記しなければならない。<br><br>
+                        それを考慮し文字列をその形式に変換する関数 func() を書いた。<br>
+                        <div class="code">
+                            <span class="dec0">def</span> func(xs:str='', *, new:str=''):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> rep(xs):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;', '&amp;amp;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\t', '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&emsp;', '&amp;emsp;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&lt;', '&amp;lt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&gt;', '&amp;gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&yen;', '&amp;yen;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&larr;', '&amp;larr;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&uarr;', '&amp;uarr;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&rarr;', '&amp;rarr;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&darr;', '&amp;darr;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&circ;', '&amp;circ;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&tilde;', '&amp;tilde;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&mdash;', '&amp;mdash;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&quot;', '&amp;quot;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\n', '&lt;br&gt;\n')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs
+                            <br>
+
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;boo = [ <span class="dec3">True</span>, <span class="dec3">True</span> ]
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[1] = <span class="dec3">True</span>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(boo[0]):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(x <span class="dec1">is</span> ' '):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new += '&amp;nbsp;'
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[1] = <span class="dec3">False</span>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[0] = <span class="dec3">False</span>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(x <span class="dec1">is</span> '\n'):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[0] = <span class="dec3">True</span>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(boo[1]):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new += rep(x)
+                            <br>
+
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> new
+                        </div>
+                        <br>
+                        func( 変換したい文字列 ) とすることで HTML に変換することができる。<br><br>
+                        <br>
+                        実際に、過去に私が書いた Python のソースコードを変換してみる。<br>
+                        <div style="font-weight:bold;", id="1">
+                            変換前：
+                        </div>
+                        <div class="code">
+                            #!/usr/bin/env python3
+                            # -*- coding: utf-8 -*-
+                            
+                            def xor(a, b):
+                                return 1 if not(a is b) else 0
+                            
+                            def func(n):
+                                n = list(str(n))
+                                re = int(n[0])
+                                for i in range(len(n) - 1):
+                                    re = xor(re, int( n[i+1]))
+                                return re
+                            
+                            while True:
+                                inp = input('> ')
+                                if not(inp is ''):
+                                    print(func(inp))
+                                else:
+                                    break
+                        </div><br>
+                        <div style="font-weight:bold;", id="2">
+                            変換後：
+                        </div>
+                        <div class="code">
+                            #!/usr/bin/env python3<br>
+                            # -*- coding: utf-8 -*-<br>
+                            <br>
+                            def xor(a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return 1 if not(a is b) else 0<br>
+                            <br>
+                            def func(n):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;n = list(str(n))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;re = int(n[0])<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;for i in range(len(n) - 1):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re = xor(re, int( n[i+1]))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return re<br>
+                            <br>
+                            while True:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;inp = input('&gt; ')<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if not(inp is ''):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(func(inp))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;else:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break
+                        </div>
+                        <br>
+                        改行やインデント、記号などが正しく表示されるように校正できた。
+                        これで Python などのソースコードを HTML に変換することは可能になったが、文字が全て同じ色なので読みにくく感じる。
+                        そこで、import や def など特定の文字だけに色をつける。<br><br>
+                        まず、CSS では文字列の探索が不可能なので HTML に装飾をつけることを考える。<br><br><br>
+                        例えば、HTML を
+                        <div class="code">
+                            &lt;span class=&quot;dec&quot;&gt;import&lt;/span&gt;
+                        </div>
+                        とし、CSS を<br>
+                        <div class="code">
+                            .dec{color : orange}
+                        </div>
+                        とすれば
+                        <div class="code">
+                            <span class="dec0">import</span>
+                        </div>
+                        「import」がオレンジ色で表示される。<br><br><br>
+                        これを利用し、Python 、HTML、JavaScript それぞれでよく使う単語を &lt;span class=&quot;クラス名&quot;&gt;その単語&lt;/span&gt; の形式に変換するプログラムを作成する。<br><br>
+                        また、様々な色で表示させたいので色のクラスを dec0 〜 dec5 までの６種類用意した。<br><br>
+                        <div style="font-weight:bold;", id="3">
+                            CSS
+                        </div>
+                        <div class="code">
+                            .dec0{color : orange;}&nbsp;&nbsp;&nbsp;/* オレンジ */<br>
+                            .dec1{color : cyan;}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* 水色 */<br>
+                            .dec2{color : #fd7f7f;}&nbsp;&nbsp;/* 赤 */<br>
+                            .dec3{color : #9dff76;}&nbsp;&nbsp;/* 黄緑 */<br>
+                            .dec4{color : #fdff83;}&nbsp;&nbsp;/* 黄色 */<br>
+                            .dec5{color : #e784eb;}&nbsp;/* ピンク */
+                        </div><br>
+                        <div style="font-weight:bold;", id="4">
+                            Python の単語変換
+                        </div>
+                        <div class="code">
+                            <span class="dec0">def</span> rep_py(xs):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# ValueError
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('ValueError', '&lt;span class=&quot;dec4&quot;&gt;ValueError&lt;/span&gt;')
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec0
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis0 = ['def', 'return', 'import', 'pass', 'yield', 'lambda', 'raise', 'break', 'continue', 'with', 'while']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis0:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec0&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('class ', '&lt;span class=&quot;dec0&quot;&gt;class&lt;/span&gt; ')
+                            <br>
+
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec1
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('elif', '&lt;span class=&quot;dec1&quot;&gt;el&lt;/span&gt;if')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('if(', '&lt;span class=&quot;dec1&quot;&gt;if&lt;/span&gt;(')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis1 = ['else', 'try', 'except']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis1_space = ['if', 'for', 'in', 'is', 'as']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis1:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec1&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis1_space:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l+' ', '&lt;span class=&quot;dec1&quot;&gt;'+l+'&lt;/span&gt; ')
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec2
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis2 = ['self', '@', 'event']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis2:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec2&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec3
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis3 = ['True', 'False', 'None']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis3_space = ['not', 'and', 'or']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis3_kakko = ['not', 'and', 'or']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec3&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3_space:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l+' ', '&lt;span class=&quot;dec3&quot;&gt;'+l+'&lt;/span&gt; ')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3_kakko:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l+'(', '&lt;span class=&quot;dec3&quot;&gt;'+l+'&lt;/span&gt;(')
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec4
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis4_underScore = ['init', 'name', 'main', 'del', 'new']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis4_kakko = ['print', 'range', 'type', 'super', 'replace', 'open', 'read', 'write']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis4_underScore:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('__'+l+'__', '&lt;span class=&quot;dec4&quot;&gt;'+l+'&lt;/span&gt; ')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis4_kakko:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l+'(', '&lt;span class=&quot;dec4&quot;&gt;'+l+'&lt;/span&gt;(')
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec5
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# なし
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs
+                        </div><br>
+                        <div style="font-weight:bold;", id="5">
+                            HTML の単語変換
+                        </div>
+                        <div class="code">
+                            <span class="dec0">def</span> rep_html(xs):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> rep_html_1(xs):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# dec3
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lis3 = ['ensp', 'lt', 'gt', 'emsp', 'amp', '#9', 'yen', 'larr', 'uarr', 'rarr', 'darr', 'circ', 'tilde', 'mdash', 'quot']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;amp;'+l+';', '&lt;span class=&quot;dec3&quot;&gt;&amp;amp;'+l+';&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs
+                            <br>
+
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# space
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;', '&amp;ensp;&amp;ensp;')
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# class, span
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(' class', ' &lt;span class=&quot;dec1&quot;&gt;class&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;lt;/span', '&amp;lt;/&lt;span class=&quot;dec0&quot;&gt;span&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;lt;span', '&amp;lt;&lt;span class=&quot;dec0&quot;&gt;span&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec0
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis0 = ['html', 'body', 'head', 'meta', '!DOCTYPE html', 'link', 'title', 'div', 'p1', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p', 'p0', 'a', 'section', 'br', 'hr', 'script',
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10', 'details', 'summary', 'form', 'table', 'tr', 'td', 'input', 'textarea', 'img', 'select', 'label', 'area', 'button', 'frameset', 'main']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis0:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;lt;'+l, '&amp;lt;&lt;span class=&quot;dec0&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;lt;/'+l, '&amp;lt;/&lt;span class=&quot;dec0&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec1
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis1 = ['lang', 'charset', 'name', 'content', 'rel', 'href', 'media', 'property', 'id', 'style', 'src', 'action', 'type', 'value', 'size', 'checked', 'target', 'width', 'height',
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;'onclick', 'ondbclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmouseout', 'onkeypress', 'onkeyup', 'onkeydown', 'onload', 'onunload', 'onfocus', 'onblur', 'onsubmit', 'onreset', 'onselect', 'onchange', 'align', 'border']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis1:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(' '+l, ' &lt;span class=&quot;dec1&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec2
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# なし
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec3
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# rep_html_1()
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec4
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# なし
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec5
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis5 = ['altername', 'canonial', 'author', 'bookmark', 'icon', 'shortcut icon', 'stylesheet', 'og:title', 'og:description', 'og:site_name', 'og:type', 'og:url', 'apple-touch-icon-precomposed', 'UTF-8', 'SHIFT-JIS', 'viewport', 'ja', 'en']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis5:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\''+l+'\'', '\'&lt;span class=&quot;dec5&quot;&gt;'+l+'&lt;/span&gt;\'')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;quot;'+l+'&amp;quot;', '&amp;quot;&lt;span class=&quot;dec5&quot;&gt;'+l+'&lt;/span&gt;&amp;quot;')
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> rep_html_1(xs)
+                        </div><br>
+                        <div style="font-weight:bold;", id="6">
+                            JavaScript の単語変換
+                        </div>
+                        <div class="code">
+                            <span class="dec0">def</span> rep_js(xs):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec0
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis0 = ['function', 'let', 'const', 'var']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis0:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec0&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec1
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis1 = ['for', 'else', 'try', 'catch', 'return', 'break', 'continue']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis1:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec1&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('elif', '&lt;span class=&quot;dec1&quot;&gt;el&lt;/span&gt;if')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('if(', '&lt;span class=&quot;dec1&quot;&gt;if&lt;/span&gt;(')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('if (', '&lt;span class=&quot;dec1&quot;&gt;if&lt;/span&gt; (')
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec2
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\'use strict\';', '&lt;span class=&quot;dec2&quot;&gt;\'use strict\';&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;quot;use strict&amp;quot;;', '&lt;span class=&quot;dec2&quot;&gt;&amp;quot;use strict&amp;quot;;&lt;/span&gt;')
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec3
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis3 = ['true', 'false', 'none', 'String', 'Boolean', 'int', 'float', 'any', 'Number']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec3&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec4
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;lis4 = ['window', 'console', 'log', 'confirm', 'alert', 'document', 'body', 'documentElement', 'scrollLeft', 'scrollRight', 'scrollTop', 'scrollBottom', 'location', 'href', 'Math', 'round'
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;,'getElementById', 'getElementsByName', 'getElementsByClassName', 'event', 'innerHTML', 'value', 'onsubmit', 'onclick', 'onkeyup', 'onkeydown', 'replace', 'length', 'textContent', 'checked',
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;'fromCharCode', 'charCodeAt', 'keyup', 'click', 'submit', 'keydown', 'execCommand', 'addEventListener', 'select', 'innerText']
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis4:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec4&quot;&gt;'+l+'&lt;/span&gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('pr&lt;span class=&quot;dec4&quot;&gt;event&lt;/span&gt;Default', '&lt;span class=&quot;dec4&quot;&gt;preventDefault&lt;/span&gt;')
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# dec5
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# なし
+                            <br>
+                            
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs                            
+                        </div><br><br><br>
+                        上記の３つの関数をまとめる。<br><br>
+                        <div style="font-weight:bold;", id="7">
+                            まとめた関数 func()
+                        </div>
+                        <div class="code">
+                            <span class="dec0">def</span> func(xs:str='', code:str=<span class="dec3">None</span>, *, new:str=''):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> rep(xs):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;', '&amp;amp;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\t', '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&emsp;', '&amp;emsp;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&lt;', '&amp;lt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&gt;', '&amp;gt;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&yen;', '&amp;yen;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&larr;', '&amp;larr;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&uarr;', '&amp;uarr;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&rarr;', '&amp;rarr;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&darr;', '&amp;darr;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&circ;', '&amp;circ;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&tilde;', '&amp;tilde;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&mdash;', '&amp;mdash;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&quot;', '&amp;quot;')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\n', '&lt;br&gt;\n')
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs
+                            <br>
+
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;boo = [ <span class="dec3">True</span>, <span class="dec3">True</span> ]
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[1] = <span class="dec3">True</span>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(boo[0]):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(x <span class="dec1">is</span> ' '):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new += '&amp;nbsp;'
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[1] = <span class="dec3">False</span>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[0] = <span class="dec3">False</span>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(x <span class="dec1">is</span> '\n'):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[0] = <span class="dec3">True</span>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(boo[1]):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new += rep(x)
+                            <br>
+
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(code <span class="dec1">is</span> 'py'):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new = rep_py(new)
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(code <span class="dec1">is</span> 'html'):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new = rep_html(new)
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(code <span class="dec1">is</span> 'js'):
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new = rep_js(new)
+                            <br>
+
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> new
+                        </div><br><br>
+                        記号のみの変換ならば&nbsp;&nbsp;&nbsp;func( コード )<br>
+                        Python ならば&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;func( コード, 'py' )<br>
+                        HTML ならば&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;func( コード, 'html' )<br>
+                        JavaScript ならば&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;func( コード, 'js' )<br>
+                        と実行する<br><br><br>
+                        ここでまた過去に私が描いた Python のコードを変換してみる。<br>
+                        <div style="font-weight:bold;", id="8">
+                            変換前：
+                        </div>
+                        <div class="code">
+                            #!/usr/bin/env python3
+                            # -*- coding: utf-8 -*-
+                            
+                            def xor(a, b):
+                                return 1 if not(a is b) else 0
+                            
+                            def func(n):
+                                n = list(str(n))
+                                re = int(n[0])
+                                for i in range(len(n) - 1):
+                                    re = xor(re, int( n[i+1]))
+                                return re
+                            
+                            while True:
+                                inp = input('> ')
+                                if not(inp is ''):
+                                    print(func(inp))
+                                else:
+                                    break
+                        </div><br>
+                        <div style="font-weight:bold;", id="9">
+                            変換後：
+                        </div>
+                        <div class="code">
+                            #!/usr/bin/env python3<br>
+                            # -*- coding: utf-8 -*-<br>
+                            <br>
+                            <span class="dec0">def</span> xor(a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> 1 <span class="dec1">if</span> <span class="dec3">not</span>(a <span class="dec1">is</span> b) <span class="dec1">else</span> 0<br>
+                            <br>
+                            <span class="dec0">def</span> func(n):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;n = list(str(n))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;re = int(n[0])<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(len(n) - 1):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re = x<span class="dec3">or</span>(re, int( n[i+1]))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re<br>
+                            <br>
+                            <span class="dec0">while</span> <span class="dec3">True</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;inp = input('&gt; ')<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span>(inp <span class="dec1">is</span> ''):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(func(inp))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">break</span>
+                        </div><br>
+                        色付きでかなり見えやすくなったと思う。<br><br><br><br>
+                        <details>
+                            <summary>tkinter を用いたアプリ版のソースコード</summary>
+                            <div class="code">
+                                #! /usr/local/bin/env python3
+                                <br>
+                                #! encode : -*- utf-8 -*-)
+                                <br>
+                                <br>
+                                
+                                <br>
+                                <span class="dec0">import</span> tkinter <span class="dec1">as</span> t
+                                <br>
+                                
+                                <br>
+                                <span class="dec0">def</span> func(code:str=<span class="dec3">None</span>):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# 通常変換
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> rep(xs):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;', '&amp;amp;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\t', '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&emsp;', '&amp;emsp;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&lt;', '&amp;lt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&gt;', '&amp;gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&yen;', '&amp;yen;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&larr;', '&amp;larr;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&uarr;', '&amp;uarr;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&rarr;', '&amp;rarr;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&darr;', '&amp;darr;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&circ;', '&amp;circ;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&tilde;', '&amp;tilde;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&mdash;', '&amp;mdash;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&quot;', '&amp;quot;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\n', '&lt;br&gt;\n')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;frm = inp.get(0., t.END)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;boo = [ <span class="dec3">True</span>, <span class="dec3">True</span> ]
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;new = ''
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> frm:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[1] = <span class="dec3">True</span>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(boo[0]):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(i == ' '):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new += '&amp;nbsp;'
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[1] = <span class="dec3">False</span>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[0] = <span class="dec3">False</span>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(i == '\n'):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;boo[0] = <span class="dec3">True</span>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(boo[1]):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new += rep(i)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(code=='py'):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new = rep_py(new)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(code=='html'):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new = rep_html(new)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new = rep_html_1(new)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(code=='js'):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new = rep_js(new)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(new[ len(new)-5: ] == '&lt;br&gt;\n'):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new = new[ :len(new)-5 ]
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;out.delete(0., t.END)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;out.insert(0., new)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(len(new) == 0):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first()
+                                <br>
+                                
+                                <br>
+                                <span class="dec0">def</span> func_py(<span class="dec2">event</span>):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;func('py')
+                                <br>
+                                <span class="dec0">def</span> func_html(<span class="dec2">event</span>):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;func('html')
+                                <br>
+                                <span class="dec0">def</span> func_js(<span class="dec2">event</span>):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;func('js')
+                                <br>
+                                
+                                <br>
+                                # Python
+                                <br>
+                                <span class="dec0">def</span> rep_py(xs):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# <span class="dec4">ValueError</span>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('<span class="dec4">ValueError</span>', '&lt;span class=&quot;dec4&quot;&gt;<span class="dec4">ValueError</span>&lt;/span&gt;')
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec0
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis0 = ['<span class="dec0">def</span>', '<span class="dec0">return</span>', '<span class="dec0">import</span>', '<span class="dec0">pass</span>', '<span class="dec0">yield</span>', '<span class="dec0">lambda</span>', '<span class="dec0">raise</span>', '<span class="dec0">break</span>', '<span class="dec0">continue</span>', '<span class="dec0">with</span>', '<span class="dec0">while</span>']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis0:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec0&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('<span class="dec0">class</span> ', '&lt;span class=&quot;dec0&quot;&gt;class&lt;/span&gt; ')
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec1
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('<span class="dec1">el</span>if', '&lt;span class=&quot;dec1&quot;&gt;el&lt;/span&gt;if')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('<span class="dec1">if</span>(', '&lt;span class=&quot;dec1&quot;&gt;if&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis1 = ['<span class="dec1">else</span>', '<span class="dec1">try</span>', '<span class="dec1">except</span>(']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis1_space = ['if', 'for', 'in', 'is', 'as']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis1:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec1&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis1_space:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l+' ', '&lt;span class=&quot;dec1&quot;&gt;'+l+'&lt;/span&gt; ')
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec2
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis2 = ['<span class="dec2">self</span>', '<span class="dec2">@</span>', '<span class="dec2">event</span>']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis2:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec2&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec3
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis3 = ['<span class="dec3">True</span>', '<span class="dec3">False</span>', '<span class="dec3">None</span>']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis3_space = ['not', 'and', 'or']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis3_kakko = ['not', 'and', 'or']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec3&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3_space:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l+' ', '&lt;span class=&quot;dec3&quot;&gt;'+l+'&lt;/span&gt; ')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3_kakko:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l+'(', '&lt;span class=&quot;dec3&quot;&gt;'+l+'&lt;/span&gt;(')
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec4
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis4_underScore = ['init', 'name', 'main', 'del', 'new']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis4_kakko = ['print', 'range', 'type', 'super', 'replace', 'read', 'write']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis4_underScore:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('__'+l+'__', '&lt;span class=&quot;dec4&quot;&gt;'+l+'&lt;/span&gt; ')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis4_kakko:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l+'(', '&lt;span class=&quot;dec4&quot;&gt;'+l+'&lt;/span&gt;(')
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec5
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# なし
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs
+                                <br>
+                                
+                                <br>
+                                # HTMl
+                                <br>
+                                <span class="dec0">def</span> rep_html(xs):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# space
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;', '&amp;ensp;&amp;ensp;')
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# class, span
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(' class', ' &lt;span class=&quot;dec1&quot;&gt;class&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;lt;/span', '&amp;lt;/&lt;span class=&quot;dec0&quot;&gt;span&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;lt;span', '&amp;lt;&lt;span class=&quot;dec0&quot;&gt;span&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec0
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis0 = ['html', 'body', 'head', 'meta', '!DOCTYPE html', 'link', 'title', 'div', 'p1', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p', 'p0', 'a', 'section', 'br', 'hr', 'script',
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10', 'details', 'summary', 'form', 'table', 'tr', 'td', 'input', 'textarea', 'img', 'select', 'label', 'area', 'button', 'frameset', 'main']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis0:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;lt;'+l, '&amp;lt;&lt;span class=&quot;dec0&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;lt;/'+l, '&amp;lt;/&lt;span class=&quot;dec0&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec1
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis1 = ['lang', 'charset', 'name', 'content', 'rel', 'href', 'media', 'property', 'id', 'style', 'src', 'action', 'type', 'value', 'size', 'checked', 'target', 'width', 'height',
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;'onclick', 'ondbclick', 'onmousedown', 'onmouseup', 'onmouseover', 'onmouseout', 'onkeypress', 'onkeyup', 'onkeydown', 'onload', 'onunload', 'onfocus', 'onblur', 'onsubmit', 'onreset', 'onselect', 'onchange', 'align', 'border']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis1:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(' '+l, ' &lt;span class=&quot;dec1&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec2
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# なし
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec3
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# rep_html_1()
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec4
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# なし
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec5
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis5 = ['altername', 'canonial', 'author', 'bookmark', 'icon', 'shortcut icon', 'stylesheet', 'og:title', 'og:description', 'og:site_name', 'og:type', 'og:url', 'apple-touch-icon-precomposed', 'UTF-8', 'SHIFT-JIS', 'viewport', 'ja', 'en']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis5:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\''+l+'\'', '\'&lt;span class=&quot;dec5&quot;&gt;'+l+'&lt;/span&gt;\'')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;quot;'+l+'&amp;quot;', '&amp;quot;&lt;span class=&quot;dec5&quot;&gt;'+l+'&lt;/span&gt;&amp;quot;')
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs
+                                <br>
+                                
+                                <br>
+                                # HTML 特殊文字
+                                <br>
+                                <span class="dec0">def</span> rep_html_1(xs):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec3
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis3 = ['ensp', 'lt', 'gt', 'emsp', 'amp', '#9', 'yen', 'larr', 'uarr', 'rarr', 'darr', 'circ', 'tilde', 'mdash', 'quot']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;amp;'+l+';', '&lt;span class=&quot;dec3&quot;&gt;&amp;amp;'+l+';&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs
+                                <br>
+                                
+                                <br>
+                                # JavaScript
+                                <br>
+                                <span class="dec0">def</span> rep_js(xs):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec0
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis0 = ['function', 'let', 'const', 'var']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis0:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec0&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec1
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis1 = ['for', '<span class="dec1">else</span>', '<span class="dec1">try</span>', 'catch', '<span class="dec0">return</span>', '<span class="dec0">break</span>', '<span class="dec0">continue</span>']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis1:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec1&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('<span class="dec1">el</span>if', '&lt;span class=&quot;dec1&quot;&gt;el&lt;/span&gt;if')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('<span class="dec1">if</span>(', '&lt;span class=&quot;dec1&quot;&gt;if&lt;/span&gt;(')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('<span class="dec1">if</span> (', '&lt;span class=&quot;dec1&quot;&gt;if&lt;/span&gt; (')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec2
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('\'use strict\';', '&lt;span class=&quot;dec2&quot;&gt;\'use strict\';&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('&amp;quot;use strict&amp;quot;;', '&lt;span class=&quot;dec2&quot;&gt;&amp;quot;use strict&amp;quot;;&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec3
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis3 = ['true', 'false', 'none', 'String', 'Boolean', 'int', 'float', 'any', 'Number']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis3:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec3&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec4
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;lis4 = ['window', 'console', 'log', 'confirm', 'alert', 'document', 'body', 'documentElement', 'scrollLeft', 'scrollRight', 'scrollTop', 'scrollBottom', 'location', 'href', 'Math', 'round'
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;,'getElementById', 'getElementsByName', 'getElementsByClassName', '<span class="dec2">event</span>', 'innerHTML', 'value', 'onsubmit', 'onclick', 'onkeyup', 'onkeydown', 'replace', 'length', 'textContent', 'checked',
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;'fromCharCode', 'charCodeAt', 'keyup', 'click', 'submit', 'keydown', 'execCommand', 'addEventListener', 'select', 'innerText']
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> l <span class="dec1">in</span> lis4:
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>(l, '&lt;span class=&quot;dec4&quot;&gt;'+l+'&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = xs.<span class="dec4">replace</span>('pr&lt;span class=&quot;dec4&quot;&gt;<span class="dec2">event</span>&lt;/span&gt;Default', '&lt;span class=&quot;dec4&quot;&gt;pr<span class="dec2">event</span>Default&lt;/span&gt;')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# dec5
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> xs
+                                <br>
+                                
+                                <br>
+                                <span class="dec0">def</span> first():
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;out.insert(0., '&larr;左画面にHtmlに変換したい文章を入力')
+                                <br>
+                                
+                                <br>
+                                <span class="dec0">def</span> main():
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;global app, inp, out
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;app = t.Tk()
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;app.geome<span class="dec1">try</span>('1300x625')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;app.title('Text to Html 変換アプリ')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;app.resizable(width=<span class="dec3">False</span>, height=<span class="dec3">False</span>)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;inp = t.Text(app, background='#f0f0e0', font=('Arial',12))
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;inp.place(x=0, y=0, width=500, height=600)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;out = t.Text(app, background='#d0d0f8', font=('Arial',12))
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;out.place(x=500, y=0, width=800, height=600)
+                                <br>
+                                
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but = t.Button(text=u'通常変換', background='#ffaaaa')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but.place(x=5, y=600, width=70, height=20)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but.bind('&lt;Button-1&gt;', func)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but_py = t.Button(text=u'Python', background='#ffaaaa')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but_py.place(x=75, y=600, width=70, height=20)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but_py.bind('&lt;Button-1&gt;', func_py)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but_html = t.Button(text=u'HTML', background='#ffaaaa')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but_html.place(x=145, y=600, width=70, height=20)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but_html.bind('&lt;Button-1&gt;', func_html)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but_js = t.Button(text=u'JavaScript', background='#ffaaaa')
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but_js.place(x=215, y=600, width=70, height=20)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;but_js.bind('&lt;Button-1&gt;', func_js)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;app.bind('&lt;Key-v&gt;', func)
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;first()
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;app.mainloop()
+                                <br>
+                                
+                                <br>
+                                <span class="dec1">if</span>(<span class="dec4">name</span>  == '<span class="dec4">main</span> '):
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;main()
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                        </details>
+                        <br><br><br><br>
+                        <a href="../blog.html" class="link">
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

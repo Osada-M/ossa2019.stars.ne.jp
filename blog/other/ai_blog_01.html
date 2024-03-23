@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../pic/o.ico">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:site_name" content="">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/ai_blog_01.html">
+    <title>人間にできて人工知能にできないことってなんなのか【おさだのホームページ】</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="../blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../../sorting/sorting.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../../text.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    人間にできて人工知能にできないことってなんなのか
+                </div>
+                <div class="caption_text" id="jp_font">
+                    
+                </div>
+            </div>
+            <br>
+            <div class="article">
+                <br>
+                <div class="index_content" id="fade_1">
+                    <div class="index_link">
+                        <span id="jp_font">
+                            <a href=#1>1. 人間の得意分野は、問題解決の最適化</a><br>
+                            <a href=#2>2. Google翻訳の中間言語は何語なのか</a><br>
+                            <a href=#3>3. コンピュータをどう利用するのか</a><br>
+                        </span>
+                    </div>
+                </div>
+                <br>
+                <div class="fade", id="fade_2">
+                    <div class="title" id="1">人間の得意分野は、問題解決の最適化</div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            まず、人間の問題解決能力について認知心理学の名付け親であるナイサーが提した実験がある。<br>
+                            <br>
+                            <br>
+                            下の(a)、(b)の中からそれぞれ"Z"を見つけてほしい。<br>
+                            <br>
+                            <div class="neisser_content">
+                                <div class="neisser">
+                                    <div class="left">
+                                        (a)<br>
+                                        <br>
+                                        OGCGGOG<br>
+                                        GQGOQQO<br>
+                                        QGGQOCQ<br>
+                                        OGOCZOQ<br>
+                                        CQOCQGQ<br>
+                                        GCOCCGQ<br>
+                                        CCCQOGO<br>
+                                        GGOOOOC<br>
+                                        COOQOGG
+                                    </div>
+                                    <div class="right">
+                                        (b)<br>
+                                        <br>
+                                        NXXFXTT<br>
+                                        XFNFTFN<br>
+                                        XTNTTFX<br>
+                                        FXNNXTT<br>
+                                        FTFXNNX<br>
+                                        TNZNNNX<br>
+                                        XTFTFTX<br>
+                                        FXFFXXN<br>
+                                        XXXNTFX
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            (a)の方が見つけやすく感じたであろう。
+                        </span>
+                    </div>
+                </div>
+                <br>
+                <div class="fade", id="fade_3">
+                    <div class="title" id="2">Google翻訳の中間言語は何語なのか</div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            重要なのは言語の識別ではなく、意味の伝達である。<br>
+                            <br>
+                            <div class="link">1)
+                            <a href="https://ai.googleblog.com/2016/11/zero-shot-translation-with-googles.html" target="_blank" rel="noopener noreferrer" class="link">
+                                Zero-Shot Translation with Google’s Multilingual Neural Machine Translation System | Google AI Blog
+                            </a></div>
+                            <!-- https://jp.techcrunch.com/2016/11/23/20161122googles-ai-translation-tool-seems-to-have-invented-its-own-secret-internal-language/ -->
+                        </span>
+                    </div>
+                </div>
+                <br>
+                <div class="fade", id="fade_4">
+                    <div class="title" id="3">コンピュータをどう利用するのか</div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            左、上、右方向にのみ移動でき、来た道は戻れないものとする。
+                            この時、図のXからYまでの道順は何通りあるだろうか。<br>
+                            <br>
+                            やってはいけない解法は、Xから深さ優先探索などで全通りをしらみ潰しに調べ上げる方法である。<br>
+                            <br>
+                            <br>
+                            <br>
+                            等差数列、縦n、横m、A[n][m] = 1 + 0~mの∑nの問題に帰着する
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/copy.js"></script>
+    <script src="../../js/scroll.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/details.js"></script>
+    <script src="../../js/i_btn.js"></script>
+    <script src="../../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/fade.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on('load scroll', function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="count/count.php"></script>
+</body>
+</html>

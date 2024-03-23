@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../pic/o.ico">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="Pythonのtkinterで迷路制作（４）">
+    <meta property="og:description" content="前回から結構時間が経ったので、思い出しがてらアーキテクチャの見直し">
+    <meta property="og:site_name" content="Pythonのtkinterで迷路制作（４）">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/meiro/meiro4.html">
+    <title>Pythonのtkinterで迷路制作（４）【おさだのホームページ】</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="../blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../../sorting/sorting.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../../text.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    迷路制作（４）<br>
+                    思い出しがてらアーキテクチャの見直し
+                </div>
+                <div class="caption_text" id="jp_font">
+                    前回更新から結構時間が経ったので思い出しがてらアルゴリズム[2]の実装に向けてプログラムを書き変えていく
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <div class="index_content" id="fade_1">
+                    <div class="index_link">
+                        <span id="jp_font">
+                            <a href="meiro3.html">&lt;&lt; 前回</a>
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="meiro5.html">続き&nbsp;&nbsp;アルゴリズム[2]の実装と幅優先探索&nbsp;&gt;&gt;</a><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade", id="fade_2">
+                    <!-- <div class="title" id="1"></div> -->
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            前回の迷路制作の記事投稿から７ヶ月程経っていたので、まずは思い出しがてらアルゴリズム[2]を実装しやすいようにアーキテクチャを見直していこうと思う。<br>
+                            <br>
+                            全てのプログラムを各々関数にし、グローバル変数を使っていた部分は全体をクラスにすることで置き換えた。<br>
+                            <br>
+                            次回以降からこれに肉付けをし、迷路アプリを作成していく。<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_0', 'popup_0')">
+                                        copy</div>
+                                    <div class="copied" id="popup_0">copied!</div>
+                                </div>
+                                <div class="window_title">meiro.py</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_0">
+                                            # このプログラムのみでは迷路で遊ぶことはできません。<br>
+                                            #! /usr/local/bin/env python3<br>
+                                            #! encode : -*- utf-8 -*-<br>
+                                            <br>
+                                            <br>
+                                            <span class="dec0">import</span> tkinter <span class="dec1">as</span> tk<br>
+                                            <span class="dec0">import</span> random<br>
+                                            <span class="dec0">import</span> sys<br>
+                                            <br>
+                                            <br>
+                                            <span class="dec0">class</span> Meiro:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> <span class="dec4">__init__</span>(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.height, <span class="dec2">self</span>.width = 23, 23<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.block_size = 25<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.pad = (3, 3)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.meiro_width = <span class="dec2">self</span>.width - 2<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.x0, <span class="dec2">self</span>.y0, <span class="dec2">self</span>.x1, <span class="dec2">self</span>.y1 = 0, 0, 1, 1<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.xs = <span class="dec4">list</span>(<span class="dec4">range</span>(<span class="dec2">self</span>.meiro_width+1))<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.ys = <span class="dec4">list</span>(<span class="dec4">range</span>(<span class="dec2">self</span>.meiro_width+1))<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# アプリの定義、起動<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> meiro(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app = tk.Tk()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.title(&quot;迷路&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.geome<span class="dec1">try</span>(&quot;530x530&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.resizable(<span class="dec3">False</span>, <span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.canv<span class="dec1">as</span> = tk.Canvas(<span class="dec2">self</span>.app, width=525, height=525)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.canvas.place(x=0, y=0)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.x0, <span class="dec2">self</span>.y0, <span class="dec2">self</span>.x1, <span class="dec2">self</span>.y1 = 0, 0, 1, 1<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.put_start()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.put_goal()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.put_block()        <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# [矢印キー] : 上下左右<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.bind(&quot;&lt;Key-Left&gt;&quot;, <span class="dec2">self</span>.left)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.bind(&quot;&lt;Key-Right&gt;&quot;, <span class="dec2">self</span>.right)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.bind(&quot;&lt;Key-Up&gt;&quot;, <span class="dec2">self</span>.up)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.bind(&quot;&lt;Key-Down&gt;&quot;, <span class="dec2">self</span>.down)<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# [a] : 答えの表示<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.bind(&quot;&lt;Key-a&gt;&quot;, <span class="dec2">self</span>.answer)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# [Enter] : 迷路の再生成<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.bind(&quot;&lt;Return&gt;&quot;, <span class="dec2">self</span>.reset)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# [ESC] : アプリの終了<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.bind(&quot;&lt;Key-Escape&gt;&quot;, <span class="dec2">self</span>.quit)<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.mainloop()<br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# 迷路の生成<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> make_meiro(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# プレイヤーの左移動<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> left(<span class="dec2">self</span>, <span class="dec2">event</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# プレイヤーの右移動<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> right(<span class="dec2">self</span>, <span class="dec2">event</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# プレイヤーの上移動<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> up(<span class="dec2">self</span>, <span class="dec2">event</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# プレイヤーの下移動<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> down(<span class="dec2">self</span>, <span class="dec2">event</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# 壁を表示<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> put_block(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# 迷路の再生成<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> re<span class="dec4">set</span>(<span class="dec2">self</span>, <span class="dec2">event</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.canvas.delete(&quot;wall&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.canvas.delete(&quot;answer&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.x0, <span class="dec2">self</span>.y0, <span class="dec2">self</span>.x1, <span class="dec2">self</span>.y1 = 0, 0, 1, 1<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.put_start()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.put_block()<br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# ゴール到達時に迷路を再生成<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> restart(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span class="dec2">self</span>.x0 == <span class="dec2">self</span>.meiro_width - 1) <span class="dec3">and</span> (<span class="dec2">self</span>.y0 == <span class="dec2">self</span>.meiro_width - 1):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.canvas.delete(&quot;wall&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.canvas.delete(&quot;answer&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.x0, <span class="dec2">self</span>.y0, <span class="dec2">self</span>.x1, <span class="dec2">self</span>.y1 = 0, 0, 1, 1<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.put_start()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.put_block()<br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# スタート地点にプレイヤーを表示<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> put_start(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# ゴールの表示<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> put_goal(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# 答えの表示<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> answer(<span class="dec2">self</span>, <span class="dec2">event</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# 壁に当たった時にアラートを鳴らす<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> alert(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sys.stdout.<span class="dec4">write</span>(&quot;\a&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# アプリの終了<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> quit(<span class="dec2">self</span>, <span class="dec2">event</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.app.destroy()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;# インスタンス破壊時にアプリも終了<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> __delete__(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.quit()<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="link">
+                                <a href="meiro5.html">続き&nbsp;:&nbsp;迷路制作（５）　アルゴリズム[2]の実装と幅優先探索</a>
+                            </div><br>
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/copy.js"></script>
+    <script src="../../js/scroll.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/details.js"></script>
+    <script src="../../js/i_btn.js"></script>
+    <script src="../../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/fade.js"></script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

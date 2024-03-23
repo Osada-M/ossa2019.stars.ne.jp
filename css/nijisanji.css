@@ -1,0 +1,67 @@
+.nijisanji{
+    padding: 30px 0;
+    margin: 0;
+    width: 100%;
+}
+.nijisanji .logo_content{
+    position: relative;
+    width: 50%;
+    height: auto;
+}
+.nijisanji .nijisanji_pic{
+    position: relative;
+    width: 50%;
+    height: auto;
+    top: 10px;
+    left: 50%;
+}
+
+
+.nijisanji .logo_content .logo{
+    position: absolute;
+    left: 50px;
+    top: 0px;
+    width: 350px;
+    height: 350px;
+    border: 1px solid #000;
+}
+.nijisanji .logo_content .logo .circle{
+    position: absolute;
+    left: 25px;
+    top: 25px;
+    width: 300px;
+    height: 300px;
+    background: rgb(60, 80, 114);
+    border-radius: 50%;
+    z-index: 0;
+}
+.nijisanji .logo_content .logo .eye{
+    position: absolute;
+    left: 80px;
+    top: 80px;
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border-radius: 50%;
+    z-index: 1;
+}
+.nijisanji .logo_content .logo .eye_1{
+    position: absolute;
+    left: 113px;
+    top: 85px;
+    width: 45px;
+    height: 45px;
+    background: rgb(60, 80, 114);
+    border-radius: 50%;
+    z-index: 2;
+}
+.nijisanji .logo_content .logo .back{
+    position: absolute;
+    background: rgb(60, 80, 114);
+    height: 100px;
+    width: 100px;
+    top: 250px;
+    clip-path: polygon(30px 0, 100% 0%, 50% 100%);
+    /* transform: translateZ(30deg); */
+    z-index: 3;
+}

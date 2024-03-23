@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../pic/o.png">
+    <link rel="stylesheet" href="../css/main2.css">
+    <link rel="stylesheet" href="../css/main2_half.css" media="screen and (max-width:1360px)">
+    <link rel="stylesheet" href="../css/main2_quarter.css" media="screen and (max-width:850px)">
+    <link rel="stylesheet" href="../css/main2_mobile.css" media="screen and (max-width:550px)">
+    <meta property="og:title" content="プログラムの制作過程や成果などを綴る日記のページ">
+    <meta property="og:description" content="Pythonを中心にプログラムの制作過程や成果などを綴っています。">
+    <meta property="og:site_name" content="プログラムの制作過程や成果などを綴る日記のページ">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="http://ossa2019.stars.ne.jp/blog/blog.html">
+    <title>【おさだのホームページ】プログラムの制作過程や成果などを綴る日記のページ</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class="tab">
+            <p>おさだのホームページ</p>
+            <a href="../index.html" id="home">
+                ホーム
+            </a>
+            <a href="../apps.html" id="home">
+                倉　庫
+            </a>
+            <a href="../Remember/Remember.html" id="home">
+                備忘録
+            </a>
+            <a href="blog.html" id="home" class="tab_now">
+                にっき
+            </a>
+        </div>
+        <div class="page">
+            <div class="caption" id="fade_0">
+                Pythonにおける数学やプログラムの制作過程と成果などを上げるページ
+            </div>
+            <form action="../result.html" id="fade_1">
+                <input id="search-input" placeholder="サイト内検索" name="search-key">
+                <input id="search-buttom" class="fas" type="submit" value="検索">
+            </form>
+            <div class="article" id="fade_2">
+                <p>プログラミング</p>
+                <a href="other/font_class.html" class="link">
+                    Pythonでのフォント作成を楽にするモジュールを自作する
+                </a><br><div class="hajimeni">最終的に画像認識を用いて、画像からフォントへの変換を可能にしたい</div>
+                <br>
+                <a href="other/rsa.html" class="link">
+                    RSA暗号を作ってみる
+                </a><br><div class="hajimeni">スレッドの活用と既解読暗号の再利用</div>
+                <br>
+                <a href="other/linear_separation.html" class="link">
+                    ２次元の簡単な線形分離モデルを自作する
+                </a><br><div class="hajimeni">人工知能（深層学習）の構成単位であるパーセプトロンについて少し理解する</div>
+                <br>
+                <a href="other/plot_anime.html" class="link">
+                    matplotlibのアニメーションで複数のグラフを重ねて描画する方法について
+                </a><br><br><br>
+                <a href="other/python3_10.html" class="link">
+                    新しいPython3.10が便利な話
+                </a><br><br><br>
+                <a href="chromeEx/chromeEx1.html" class="link">
+                    Google Chromeの拡張機能を作ってみる
+                </a><br><br><br>
+                <a href="other/python_benri.html" class="link">
+                    あるとちょっと使えるかもしれないPythonのプログラム
+                </a><br>
+                <br></br>
+            </div>
+            <div class="article" id="fade_3">
+                <p>数学</p>
+                <a href="number/comp_binomial.html" class="link">
+                    複素数における二項定理について考える
+                </a><br><div class="hajimeni">複素数のベクトルの積から考える二項定理</div>
+                <br>
+                <a href="number/mandelblot.html" class="link">
+                    マンデルブロ集合のプロット
+                </a><br><div class="hajimeni">
+                    ※サイズの大きい画像が複数枚あります。<br>
+                    複素数の二項定理を使ったn次マンデルブロ集合の計算と、双曲線関数による発散速度のより良い可視化について</div>
+                <br>
+                <a href="number/complex.html" class="link">
+                    極座標平面上の図形のプロット
+                </a>
+                <br><br><br>
+                <a href="number/diff.html" class="link">
+                    微分した値と、導関数のプロット
+                </a>
+                <br><br><br>
+                <a href="number/isprime.html" class="link">
+                    効率的な素数探索を目指して
+                </a>
+                <br><br><br>
+                <a href="number/long_division.html" class="link">
+                    筆算を使って方程式の展開を簡単に解く
+                </a>
+                <br>
+                <br><br>
+            </div>
+            <div class="article" id="fade_4">
+                <p>迷路制作</p>
+                <a href="meiro/meiro1.html" class="link">
+                    迷路制作（１）　大筋のアルゴリズムの決定
+                </a><br><br><br>
+                <a href="meiro/meiro2.html" class="link">
+                    迷路制作（２）　迷路アプリの下地の制作
+                </a><br><br><br>
+                <a href="meiro/meiro3.html" class="link">
+                    迷路制作（３）　アルゴリズム[1]の実装
+                </a><br>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../js/main.js"></script>
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src="../js/fade.js"></script>
+    <script src="../count/count.php"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='../../pic/o.ico'>
+    <link rel='apple-touch-icon-precomposed' href='../../pic/o.png'>
+    <link rel='stylesheet' href='../../css/main2.css'>
+    <link rel='stylesheet' href='../../css/main2_half.css' media='screen and (max-width:1360px)'>
+    <link rel='stylesheet' href='../../css/main2_quarter.css' media='screen and (max-width:850px)'>
+    <link rel='stylesheet' href='../../css/main2_mobile.css' media='screen and (max-width:550px)'>
+    <meta property='og:title' content='Pythonで極座標平面の図形をプロットする'>
+    <meta property='og:description' content='複素数平面上の図形をxy平面に落とし込んで描画するコードを紹介します。'>
+    <meta property='og:site_name' content='Pythonで極座標平面の図形をプロットする'>
+    <meta property='og:type' content='blog'>
+    <meta property='og:url' content='https://ossa2019.stars.ne.jp/blog/number/complex.html'>
+    <title>Pythonで極座標平面の図形をプロットする【おさだのホームページ】</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='tab'>
+            <p>おさだのホームページ</p>
+            <a href='../../index.html' id='home'>
+                ホーム
+            </a>
+            <a href='../../apps.html' id='home'>
+                倉　庫
+            </a>
+            <a href='../../Remember/Remember.html' id='home'>
+                備忘録
+            </a>
+            <a href='../blog.html' id='home' class='tab_now'>
+                にっき
+            </a>
+        </div>
+        <div class='page'>
+            <div class='caption'>
+                Pythonで極座標平面の図形をプロットしたい
+            </div>
+            <div class='article'>
+                <p>極座標平面上の図形のプロット</p><br>
+                    <section>
+                        このページではこのような
+                        <div class='pic'><img src='images/comp_2.png' width='30%' alt='1+cos(d)の画像'></div>
+                        極座標平面上の図形をプロットする機能をクラスを用いて一般化するところまでを行う。<br><br>
+                        <a href=#code>完成したコードまで読み飛ばす</a><br><br><br>
+                        まず三角関数を用いて半径、角度をxy座標に変換する関数comp()を書いた。<br><br>
+                        <div class='code'>
+                            <span class="dec0">import</span> math<br>
+                            <span class="dec0">def</span> comp( r, d ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> r * math.cos(math.radians(d)), r * math.sin(math.radians(d))
+                        </div><br>
+                        この関数の引数は半径(radians)：r と角度(degrees)：d の二つで、戻り値はx座標とy座標のタプルだ。
+                        一方で、Pythonでのsin(90度)の計算結果は0.999...となってしまうので、小数点3桁までの絶対値で切り上げる関数rnd()を作成した。<br>
+                        この二つの関数を含んだクラスComplexを下記のようにした。<br><br>
+                        <div class='code'>
+                            <span class="dec0">class</span> Complex:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">import</span> math<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> comp( <span class="dec2">self</span>, r, d ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec2">self</span>.rnd( r * <span class="dec2">self</span>.math.cos( <span class="dec2">self</span>.math.radians(d) ) ), <span class="dec2">self</span>.rnd( r * <span class="dec2">self</span>.math.sin( <span class="dec2">self</span>.math.radians(d) ) )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> rnd( <span class="dec2">self</span>, n, keta=-3 ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> ( n // 10**keta ) * 10**keta
+                        </div><br><br>
+                        次に図形のプロットを実装する。<br>
+                        角度のみに従属する式を受け取れば、その式に0から360度までの角度を代入していくことでそれぞれの半径を求めることができる。角度と求めた半径をcomp関数でxy座標に変換すれば極座標平面上の図形をプロットできるはずである。
+                        それを実行する関数plot()を作成した。<br>
+                        <br>
+                        <div class='code'>
+                            <span class="dec0">def</span> plot( <span class="dec2">self</span>, f ): # f = f(d) = r<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs, ys = [], []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>( 361 ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">try</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x, y = <span class="dec2">self</span>.comp( f( <span class="dec2">self</span>.math.radians(i) ), i )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs.append( x )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys.append( y )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">except</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.figure( figsize=( 5, 5 ) )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( xs, ys )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec3">None</span>
+                        </div><br><br>
+                        ここまでのコードを実行し、f(d)=1のグラフをプロットしてみる。<br><br>
+                        <div class='pic'><img src='images/fd=1.png' width='40%' alt='fd=1の画像'></div><br>
+                        半径1の綺麗な円を描くことができた。しかしこのままでは見にくいのでグリッドを描画する。<br>
+                        半径を等間隔に、角度は30、45、60度などの代表角をグリッドとして描画する関数grid_plot()を作成した。x_mはx座標の最大値、y_mはy座標の最大値である。<br><br>
+                        <div class='code'>
+                            <span class="dec0">def</span> grid_plot( <span class="dec2">self</span>, x_m, y_m ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;z = <span class="dec2">self</span>.math.sqrt( x_m**2 + y_m**2 )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;z_count = 0<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;dr = 10**(int( <span class="dec2">self</span>.math.log( z, 10 )))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;while <span class="dec3">True</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>( z_count &gt; z ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">break</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs, ys = [], []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>( 361 ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x, y = <span class="dec2">self</span>.comp( z_count, i )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs.append( x )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys.append( y )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( xs, ys, c='#dddddd' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z_count += dr<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ds = [ 30, 45, 60, 120, 135, 150 ]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> d <span class="dec1">in</span> ds:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x, y = <span class="dec2">self</span>.comp( z, d )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( [ -1*x, x ], [ -1*y, y ], c='#dddddd' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( [ 0, 0 ], [ -1*z, z ], c='#ff9999' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( [ -1*z, z ], [ 0, 0 ], c='#ff9999' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec3">None</span>
+                        </div><br>
+                        <br><br>
+                        以上のコードをまとめたものは下記だ。<br><br>
+                        <div style='font-weight:bold;', id='code'>
+                            プログラム全文
+                        </div>
+                        <div class='code'>
+                            <span class="dec0">class</span> Complex:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">import</span> math, matplotlib.pyplot as plt, numpy as np<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> comp( <span class="dec2">self</span>, r, d ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec2">self</span>.rnd( r * <span class="dec2">self</span>.math.cos( <span class="dec2">self</span>.math.radians(d) ) ), <span class="dec2">self</span>.rnd( r * <span class="dec2">self</span>.math.sin( <span class="dec2">self</span>.math.radians(d) ) )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> rnd( <span class="dec2">self</span>, n, keta=-3 ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> ( n // 10**keta ) * 10**keta<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> plot( <span class="dec2">self</span>, f ): # f = f(d) = r<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs, ys = [], []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>( 361 ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">try</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x, y = <span class="dec2">self</span>.comp( f( <span class="dec2">self</span>.math.radians(i) ), i )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs.append( x )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys.append( y )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">except</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">pass</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.figure( figsize=( 5, 5 ) )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.grid_plot( max(xs), max(ys) )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( xs, ys )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec3">None</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> grid_plot( <span class="dec2">self</span>, x_m, y_m ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z = <span class="dec2">self</span>.math.sqrt( x_m**2 + y_m**2 )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z_count = 0<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dr = 10**(int( <span class="dec2">self</span>.math.log( z, 10 )))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while <span class="dec3">True</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>( z_count &gt; z ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">break</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs, ys = [], []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>( 361 ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x, y = <span class="dec2">self</span>.comp( z_count, i )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs.append( x )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys.append( y )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( xs, ys, c='#dddddd' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z_count += dr<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ds = [ 30, 45, 60, 120, 135, 150 ]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> d <span class="dec1">in</span> ds:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x, y = <span class="dec2">self</span>.comp( z, d )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( [ -1*x, x ], [ -1*y, y ], c='#dddddd' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( [ 0, 0 ], [ -1*z, z ], c='#ff9999' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.plot( [ -1*z, z ], [ 0, 0 ], c='#ff9999' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec3">None</span>
+                        </div><br>
+                        <div class='det'>    
+                            ＜使い方＞<br>
+                            まずインスタンスを生成<br>
+                            comp = Complex()<br>
+                            その後に式を入力する。<br>
+                            comp.plot(lambda d : dの式)<br><br>
+                            例えば半径 2 の円を描きたければ lambda d : 2 と入力すれば良い。
+                            また、Complexクラス内にmathモジュールを用意したので、comp.math.~~ のように書けばmathモジュール内の関数を用いることができる。
+                            詳しい例は下に添付した画像をご参照いただきたい。
+                        </div><br><br>
+                        実際にjupyter notebookにて実行する。<br><br>
+                        <div class='pic'><img src='images/comp_1.png' width='40%' alt='半径50の円の画像'></div><br><br>
+                        また、下に示すような面白い図形もプロットできる。<br><br>
+                        <section style='text-align:center;'>f(d) = 1 + cos(d)</section><br>
+                        <div class='pic'><img src='images/1+cos.png' width='40%' alt='1+cos(d)の画像'></div><br><br>
+                        <section style='text-align:center;'>f(d) = d</section><br>
+                        <div class='pic'><img src='images/r=d.png' width='40%' alt='r=dの画像'></div><br>
+                        <br><br><br>
+                        <a href='../blog.html' class='link'>
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src='../../count/count.php'></script>
+</body>
+</html>

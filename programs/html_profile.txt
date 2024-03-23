@@ -1,0 +1,25 @@
+## directory ( /Users/osadamasashi/Desktop/ossa2019.stars.ne.jp/ ~~ )
+
+## file name ( ~~ .html )
+
+## title
+
+## tab_now ( 0:index, 1:note, 2:programs, 3:remember )
+0
+## og:title ( shortcut name )
+
+## og:description ( site's introduction )
+
+## og:site_name ( 2nd shortcut name )
+
+## og:type
+website
+## page title
+
+## caption
+
+## insert preset ( 't' or 'f' )
+t
+## reset ( 't' or 'f' )
+t
+#% end

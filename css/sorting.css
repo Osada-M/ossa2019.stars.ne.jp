@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;400;900&family=Source+Code+Pro:wght@300&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Source Code Pro', monospace;
+}
+
+.header{
+    margin: 20px;
+    display: grid;
+    grid-template-rows: 1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.header #shuffle{
+    grid-column: 1/4;
+    grid-row: 1;
+}
+.header #bubble{
+    grid-column: 1;
+    grid-row: 2;
+}
+.header #merge{
+    grid-column: 2;
+    grid-row: 2;
+}
+.header #quick{
+    grid-column: 3;
+    grid-row: 2;
+}
+.header #speed{
+    grid-column: 1/4;
+    grid-row: 3;
+}
+.header .item{
+    margin: 10px;
+}
+
+.shuffle_btn{
+    border-radius: 5px;
+    background: #fbe8;
+    padding: 10px 0;
+    font-size: 25px;
+    text-align: center;
+    user-select: none;
+    color: #000;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 10px #fafa;
+}
+.shuffle_btn:hover{
+    background: #f2e;
+    color: #ff9;
+    box-shadow: 0 5px 15px #f6f;
+    transform: translateY(2px);
+}
+
+.sorting_btn{
+    border-radius: 5px;
+    background: #befc;
+    padding: 10px 0;
+    font-size: 25px;
+    grid-column: 2;
+    grid-row: 1;
+    text-align: center;
+    user-select: none;
+    color: #000;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 10px #8ffa;
+    text-shadow: -20px -20px 0px #fff0;
+}
+.sorting_btn:hover{
+    background: #48d;
+    color: #ff9;
+    box-shadow: 0 5px 15px #28f;
+    transform: translateY(2px);
+}
+
+.slider{
+    width: 100%;
+    user-select: none;
+    margin-left: 25px;
+}
+.slider li{
+    display: inline-block;
+    width: auto;
+    text-align: center;
+}
+.slider .text{
+    font-size: 25px;
+}
+.slider input{
+    width: calc(100vw - 400px);
+    background: #f0f;
+}
+.slider .smooth_btn{
+    font-size: 20px;
+    padding: 5px 20px;
+    margin-left: 20px;
+    color: #aaa;
+    background: #fff;
+    box-shadow: 0 5px 10px #0001;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+.slider .smooth_btn:hover{
+    background: #fff;
+    color: #000;
+    box-shadow: 0 5px 10px #fdaf;
+}
+.slider .smooth_btn.active{
+    color: #000;
+    background: #fda;
+    box-shadow: inset 2px 3px 8px #000;
+    text-shadow: 0 0 5px #fff;
+}
+.slider .smooth_btn.active:hover{
+    color: #000;
+    background: #fda5;
+    box-shadow: inset 2px 3px 4px #000a;
+    text-shadow: 0 0 5px #fff;
+}
+
+.simulator{
+    width: calc(100% - 40px);
+    height: 600px;
+    margin: 20px;
+}
+
+.bar_content{
+    height: 600px;
+    margin-top: 100px;
+    text-align: center;
+    user-select: none;
+}
+
+.bar_content li{
+    display: inline-block;
+    width: 10px;
+    text-align: center;
+}
+
+.bar_content .bar{
+    width: 15px;
+    height: 100px;
+    background: #555;
+    margin: 0 auto;
+    border-radius: 4px;
+}
+.bar_content.active .bar{
+    transition: height 0.1s ease;
+}
+.bar_height{
+    width: 0;
+    height: 600px;
+    background: #f55;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+}
+
+.link{
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    text-decoration: none;
+    color: #08a;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    padding: 10px 20px;
+}
+.link:hover{
+    color: #a20;
+    background: #faa6;
+}
+
+@media screen and (max-width: 850px){
+    .simulator{
+        width: calc(100% - 30px);
+        height: 500px;
+        margin: 10px;
+    }
+    .bar_content{
+        height: 500px;
+        margin-top: 10px;
+        text-align: center;
+        user-select: none;
+    }
+    .bar_content li{
+        display: inline-block;
+        width: 3px;
+        text-align: center;
+    }
+    .bar_content .bar{
+        width: 10px;
+        height: 100px;
+        background: #555;
+        margin: 0 auto;
+        border-radius: 3px;
+    }
+    .slider{
+        width: 100%;
+        user-select: none;
+        margin-left: 10px;
+    }
+    .slider li{
+        display: inline-block;
+        width: auto;
+        text-align: center;
+    }
+    .slider .text{
+        font-size: 20px;
+    }
+    .slider input{
+        width: 60vw;
+        background: #f0f;
+    }
+}

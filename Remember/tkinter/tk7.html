@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterのスクロールバーの使い方'>
+        <meta property='og:description' content='tkinterのスクロールバーの使い方について'>
+        <meta property='og:site_name' content='tkinterのスクロールバーの使い方'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk7.html'>
+        <title>tkinterのスクロールバーの使い方：Scrollbar()について【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                7. tkinterのスクロールバーの使い方
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月10日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <a href='tk2.html' class='a1'>2. 基本的な構文</a><br>
+                    <a href='tk3.html' class='a1'>3. ラベル</a><br>
+                    <a href='tk4.html' class='a1'>4. ボタン</a><br>
+                    <a href='tk5.html' class='a1'>5. エントリー</a><br>
+                    <a href='tk6.html' class='a1'>6. テキスト</a><br>
+                    <bl>
+                    <a href='#i7' class='a1'>7. スクロールバー</a><br>
+                    <!--<a href='#i7-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;スクロールバーの作成</a><br>-->
+                    </bl>
+                    <br>
+                    <a href='tk8.html' class='a1'>8. チェックボックス</a><br>
+                    <a href='tk9.html' class='a1'>9. アプリへのバインドについて</a><br>
+                    <a href='tk10.html' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <a href='tk11.html' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i7'>
+                    スクロールバー
+                </p>
+                <div class='list0'>
+                    <!--
+                    <li id='i7-1'>
+                        スクロールバーの作成
+                    </li><br>
+                    -->
+                    <p1><br>
+                        スクロールバーの作成にはまず <bl>Scrollber()</bl> を用いて定義を行う。
+                        <br><br><div class='t0'>
+                            <nbl>#横軸のスクロールバー</nbl><br>
+                            scroll_X = t.Scrollbar( orient = 'horizontal' )<br>
+                            <br>
+                            <nbl>#縦軸のスクロールバー</nbl><br>
+                            scroll_Y = t.Scrollbar( orient = 'vertical' )
+                        </div><br><br>
+                        続いてエントリーやテキストにスクロールバーを紐づける。
+                        <br><br><div class='t0'>
+                            <nbl>#エントリーの横軸にスクロールバーを紐づける</nbl><br>
+                            ent = t.Entry( xscrollcommand = scroll_X.set )<br>
+                            <nbl>#または</nbl><br>
+                            ent = t.Entry()<br>
+                            ent[ 'xscrollcommand' ] = scroll_X.set<br>
+                            <br>
+                            <nbl>#テキストの縦軸にスクロールバーを紐づける</nbl><br>
+                            tex = t.Text( yscrollcommand = scroll_Y.set )<br>
+                            <nbl>#または</nbl><br>
+                            tex = t.Text()<br>
+                            tex[ 'yscrollcommand' ] = scroll_Y.set
+                        </div><br><br>
+                        次にスクロールバーをエントリーやテキストの横軸または縦軸に紐づける。
+                        <br><div class='t0'>
+                            <nbl>#スクロールバーをエントリーの横軸に紐づける</nbl><br>
+                            scroll_X[ 'command' ] = ent.xview<br>
+                            <br>
+                            <nbl>#スクロールバーをテキストの縦軸に紐づける</nbl><br>
+                            scroll_Y[ 'command' ] = tex.yview
+                        </div><br>
+                        <br>縦軸のスクロースバーを設置したテキストに、２０行の数列を打ち込むプログラムを記載する。右端のスクロースバーをいじることにより下まで読むことができる。
+                    </p1><br><br>
+                    <div class='t2' id='j1'>
+                        &nbsp;実行例
+                        <div class='t1'>
+                            import tkinter as t<br>
+                            <br>
+                            app = t.Tk()<br>
+                            app.title( 'テスト' )<br>
+                            app.geometry( '250x150' )<br>
+                            <br><koko>
+                            scroll_Y = t.Scrollbar( orient = 'vertical' )<br>
+                            tex = t.Text( background = '#DFDFFF', yscrollcommand = scroll_Y.set)<br>
+                            tex.place( x = 10, y = 10, width = 220, height = 130 )<br>
+                            scroll_Y[ 'command' ] = tex.yview<br>
+                            scroll_Y.place( x = 230, y = 10, height = 130 )<br>
+                            <br></koko><nbl>
+                            #０～１９までの数字を１行ごとに挿入している</nbl><koko><br>
+                            s = [ tex.insert( t.END, str(x) + '\n' ) for x in range(20) ]<br>
+                            <br></koko>
+                            app.mainloop()
+                        </div>
+                        <br>&nbsp;実行結果（gif画像）
+                        <div class='pic'><img src='scroll.gif' width='250px'></div>
+                    </div>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

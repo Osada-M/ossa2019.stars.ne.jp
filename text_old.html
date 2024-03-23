@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='pic/o.ico'>
+    <link rel='apple-touch-icon-precomposed' href='pic/o.png'>
+    <link rel='stylesheet' href='css/text.css'>
+    <meta property='og:title' content='リアルタイムに文字数を数えるだけ'>
+    <meta property='og:description' content='リアルタイムで入力した文字数を数えます'>
+    <meta property='og:site_name' content='文字数を数えるだけ'>
+    <meta property='og:type' content='website'>
+    <meta property='og:url' content='http://ossa2019.stars.ne.jp/text.html'>
+    <title>リアルタイムで文字数を数えるだけ【おさだのホームページ】</title>
+</head>
+<body>
+    <div class='top'><h1>リアルタイムで文字数を数えるだけ</h1></div>
+    <div class='home'><p><a href='index.html'>ホームに戻る</a></p></div>
+    <div class='page'></div>
+    <div class=text>
+        <div class=others>
+            <div class='box'>
+                <div id="strLen">0 文字</div>
+            </div>
+            <div class='box' id='output'></div>
+            <div class='box'>
+                <p><button onclick="copyToClipboard()">&ensp;&ensp;&ensp;書いた文章をクリップボードにコピー&ensp;&ensp;&ensp;</button></p>
+            </div>
+        </div>
+        <textarea id="textArea" onkeyup="count();"></textarea>
+        <details>
+            <summary>置換</summary>
+            <form id='shift' action='#'>
+                <input id='before' size=20>&ensp;-&gt;&ensp;<input id='after' size=20>&ensp;<input type='submit' value='　全て置き換える　'>
+            </form>
+        </details>
+    </div>
+    <!--<div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>-->
+    <script src='js/main.js'></script>
+    <script src='js/text.js'></script>
+    <script src='count/count.php'></script>
+</body>
+</html>

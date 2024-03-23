@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang='ja'>
+<head>
+<meta charset='utf-8'>
+<link rel="shortcut icon" href="..\pic\o.ico">
+<link rel='apple-touch-icon-precomposed' href='..\pic\o.png'>
+<link rel='stylesheet' href='..\css\code.css'>
+<title>ソースコード</title>
+</head>
+<body class='back'>
+<h1>
+pythonのソースコードをhtmlに変換するアプリ
+</h1>
+<div class='a0'>
+<a href='..\apps.html' class='a2'>
+戻る
+</a>
+</div>
+<div class='main'>
+<p>
+def func( event ):<br>
+&ensp;&ensp;&ensp;&ensp;frm = inp.get( 0., t.END )<br>
+&ensp;&ensp;&ensp;&ensp;boo = [ True, True ]<br>
+&ensp;&ensp;&ensp;&ensp;new = ''<br>
+&ensp;&ensp;&ensp;&ensp;for i in frm:<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;boo[1] = True<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;if( boo[0] ):<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;if( i == ' ' ):<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;new += '&amp;ensp;'<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;boo[1] = False<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;else:<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;boo[0] = False<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;if( i == '\n' ):<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;boo[0] = True<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;if( boo[1] ):<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;new += rep( i )<br>
+&ensp;&ensp;&ensp;&ensp;if( new[ len(new)-5: ] == '&lt;br&gt;\n' ):<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;new = new[ :len(new)-5 ]<br>
+&ensp;&ensp;&ensp;&ensp;out.delete( 0., t.END )<br>
+&ensp;&ensp;&ensp;&ensp;out.insert( 0., new )<br>
+&ensp;&ensp;&ensp;&ensp;if( len(new) == 0 ):<br>
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;first()<br>
+&ensp;&ensp;&ensp;&ensp;<br>
+def rep( xs ):<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&amp;', '&amp;amp;' )<br>
+&ensp;&ensp;&ensp;&ensp;#xs = xs.replace( '\t', '&amp;#9' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '\t', '&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&emsp;', '&amp;emsp;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&lt;', '&amp;lt;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&gt;', '&amp;gt;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&yen;', '&amp;yen;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&larr;', '&amp;larr;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&uarr;', '&amp;uarr;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&rarr;', '&amp;rarr;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&darr;', '&amp;darr;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&circ;', '&amp;circ;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&tilde;', '&amp;tilde;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&mdash;', '&amp;mdash;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '&quot;', '&amp;quot;' )<br>
+&ensp;&ensp;&ensp;&ensp;xs = xs.replace( '\n', '&lt;br&gt;\n' )<br>
+&ensp;&ensp;&ensp;&ensp;return xs<br>
+
+<br>
+def first():<br>
+&ensp;&ensp;&ensp;&ensp;out.insert( 0., '&larr;左画面にHtmlに変換したい文章を入力' )<br>
+
+<br>
+def main():<br>
+&ensp;&ensp;&ensp;&ensp;global app, inp, out<br>
+&ensp;&ensp;&ensp;&ensp;<br>
+&ensp;&ensp;&ensp;&ensp;app = t.Tk()<br>
+&ensp;&ensp;&ensp;&ensp;app.geometry( '1300x600' )<br>
+&ensp;&ensp;&ensp;&ensp;app.title( 'PythonCode-Html変換' )<br>
+&ensp;&ensp;&ensp;&ensp;app.resizable( width=False, height=False )<br>
+&ensp;&ensp;&ensp;&ensp;<br>
+&ensp;&ensp;&ensp;&ensp;inp = t.Text( app, background='#f0f0e0', font=('Arial',12) )<br>
+&ensp;&ensp;&ensp;&ensp;inp.place( x=0, y=0, width=500, height=600 )<br>
+&ensp;&ensp;&ensp;&ensp;out = t.Text( app, background='#d0d0f8', font=('Arial',12) )<br>
+&ensp;&ensp;&ensp;&ensp;out.place( x=500, y=0, width=800, height=600 )<br>
+&ensp;&ensp;&ensp;&ensp;<br>
+&ensp;&ensp;&ensp;&ensp;but = t.Button( text=u'変換' )<br>
+&ensp;&ensp;&ensp;&ensp;but.place( x=450, y=0, width=50 )<br>
+&ensp;&ensp;&ensp;&ensp;but.bind( '&lt;Button-1&gt;', func )<br>
+&ensp;&ensp;&ensp;&ensp;<br>
+&ensp;&ensp;&ensp;&ensp;app.bind( '&lt;Return&gt;', func )<br>
+&ensp;&ensp;&ensp;&ensp;app.bind( '&lt;Key-v&gt;', func )<br>
+&ensp;&ensp;&ensp;&ensp;<br>
+&ensp;&ensp;&ensp;&ensp;first()<br>
+&ensp;&ensp;&ensp;&ensp;<br>
+&ensp;&ensp;&ensp;&ensp;app.mainloop()<br>
+
+<br>
+import tkinter as t
+<br>
+if __name__ == '__main__':<br>
+&ensp;&ensp;&ensp;&ensp;main()<br>
+
+</p>
+</div>
+</body>
+</html>

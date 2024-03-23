@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <link rel="stylesheet" href="../../css/main2.css">
+    <link rel="stylesheet" href="../../css/main2_half.css" media="screen and (max-width:1360px)">
+    <link rel="stylesheet" href="../../css/main2_quarter.css" media="screen and (max-width:850px)">
+    <link rel="stylesheet" href="../../css/main2_mobile.css" media="screen and (max-width:550px)">
+    <meta property="og:title" content="２次元の簡単な線形分離モデルを自作し、人工知能(深層学習)の構成単位パーセプトロンについて少し理解する">
+    <meta property="og:description" content="深層学習（ディープラーニング、Deep Learning）の構成単位であるパーセプトロンの構造から２次元の線形分離モデルを自作し、AND回路とOR回路を実装する。">
+    <meta property="og:site_name" content="線形分離とパーセプトロン">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="http://ossa2019.stars.ne.jp/blog/other/linear_separation.html">
+    <title>２次元の簡単な線形分離モデルを自作し、人工知能(深層学習)の構成単位であるパーセプトロンについて少し理解する</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class="tab">
+            <p>おさだのホームページ</p>
+            <a href="../../index.html" id="home">
+                ホーム
+            </a>
+            <a href="../../apps.html" id="home">
+                倉　庫
+            </a>
+            <a href="../../Remember/Remember.html" id="home">
+                備忘録
+            </a>
+            <a href="../blog.html" id="home" class="tab_now">
+                にっき
+            </a>
+        </div>
+        <div class="page">
+            <div class="caption">
+                「会社の業務、AIでなんとかしといて」
+            </div>
+            <div class="article">
+                <p>２次元の簡単な線形分離モデルを自作し、<br>人工知能(深層学習)の構成単位であるパーセプトロンについて少し理解する</p><br>
+                    <section>
+                        <div class="hajimeni">
+                            はじめに<br>
+                            巷で”人工知能(AI)”と言えばもっぱら深層学習を指すようになり、ユーザーの趣向に合わせた広告表示や指紋認証、天気予報、企業戦略、工場での品質管理などその応用分野は多岐に渡る。
+                            それと同時に、深層学習が社会に出回っていくにつれて実際にそれらに触れる機会が増え、SFの世界にあった人間のように生活したり会話したりする”人工知能”の姿はだいぶ薄れたと思う。
+                            今回はそんな深層学習の基礎的研究である「パーセプトロン」について具体的なコードを中心に解説し、深層学習を理解することの一助になれば良いなと思う。
+                        </div><br>
+                        <div class="pic" >
+                            <img src="img/and_learn_normal_1.gif" width="30%" alt="andサンプル"><br>
+                            (AND素子の学習の様子)<br>
+                            このページでは上の画像のような線形分離モデルを作成する。
+                        </div><br>
+                        <div class='a_list'>
+                            <a href=#1>1. パーセプトロンとは</a><br>
+                            <a href=#2>2. AND素子の学習</a><br>
+                            <a href=#2-1>&nbsp;&nbsp;&nbsp;2-1. AND素子の学習コード</a><br>
+                            <a href=#2-2>&nbsp;&nbsp;&nbsp;2-2. 解説</a><br>
+                            <a href=#2-3>&nbsp;&nbsp;&nbsp;2-3. 学習の様子を可視化する</a><br>
+                            <a href=#3>3. OR素子の学習</a><br>
+                            <a href=#3-1>&nbsp;&nbsp;&nbsp;3-1. OR素子の学習コード</a><br>
+                            <a href=#3-2>&nbsp;&nbsp;&nbsp;3-2. 学習の様子を可視化する</a><br>
+                            <a href=#4>4. 線形分離モデルと非線形分離モデル</a><br>
+                        </div><br><br>
+                        <br>
+                        <div class="index_title", id="1">
+                            1. パーセプトロンとは
+                        </div><hr/><br>
+                        深層学習（特にニューラルネットワーク）は人間の脳細胞の構造を再現し、人間が赤ちゃんから大人になるまでに様々なものを学習していくことと同じように、データから法則性を学習していくプログラムである。
+                        人間の脳細胞はニューロンと呼ばれ、各ニューロンがネットワーク上に繋がってシナプスという電気信号を伝え合い、最終的にシナプスがどこに到達したかによって人間は様々に思考している。
+                        それと似たように深層学習の構成単位はパーセプトロンと呼ばれ、各パーセプトロンがネットワーク上に繋がって数値を伝え合い、最終的に数値がどうなっているかによって様々な出力を実現している。
+                        <br><br>
+                        ではまず、ニューロンを数式として表す。<br>
+                        ニューロンは下の画像のような構造をしている。<br><br>
+                        <a class="a_list" href="http://www.gifu-nct.ac.jp/elec/deguchi/sotsuron/oguri/node4.html" target='_blank' rel='noopener noreferrer'>
+                            <img src="img/neulon.png" width="60%" alt="neulonの画像">
+                        </a>
+                        <br><br>
+                        ニューロンは各シナプスの入力値の合計が一定値を超えると次のニューロンへシナプスを出す仕組みになっている。
+                        ここで、シナプスの入力をX1, X2, X3, •••とし、出力をY、しきい値をZとすると、<br><br>
+                        <div class="det">
+                            Xの合計 = a*X1 + b*X2 + c*X3 + ••• + 定数<br>
+                            <br>
+                            if( Xの合計 > Z ){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Y = 1<br>
+                            }else{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Y = 0<br>
+                            }<br>
+                            <br>
+                            シナプスの出力( Y )
+                        </div><br>
+                        上記のアルゴリズムで表すことができる。このようなアルゴリズムによって動くものをパーセプトロンと呼び、たくさんのパーセプトロンがネットワーク上に繋がったものをニューラルネットワークと呼ぶ。<br>
+                        <br><br>
+                        これ以降でAND素子とOR素子のパーセプトロンを作成していく。その理由は、全ての電子回路はこのAND素子、OR素子、そしてNOT素子で構成されていて、ニューラルネットワークもその例外ではないからである。
+                        NOT素子の作成は簡単であるので今回は紹介しない。
+                        <br><br><br><br>
+                        <div class="index_title", id="2">
+                            2. AND素子の学習
+                        </div><hr/><br>
+                        AND演算とは入力が全て１であった時のみ１を出力し、それ以外の時は０を出力するものである。また、記号は「 &#x2227; 」で表される。<br>
+                        よって、期待される結果は<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;0 &#x2227; 0 = 0<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;1 &#x2227; 0 = 0<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;0 &#x2227; 1 = 0<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;1 &#x2227; 1 = 1<br>
+                        である。<br>
+                        <br>
+                        まずはいきなりAND素子の学習コードをそのまま紹介する。
+                        <br><br><br><br>
+                        <div class="index_title", id="2-1">
+                            2-1. AND素子の学習コード
+                        </div><hr/><br>
+                        入力はx, yの二つ。
+                        <div class="code">
+                            <span class="dec0">import</span> random<br>
+                            <br>
+                            # ANDのパーセプトロンの定義<br>
+                            <span class="dec0">def</span> _and_(x, y, coe_x, coe_y, intercept):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> 1 <span class="dec1">if</span>(coe_x*x + coe_y*y + intercept &gt; 0) <span class="dec1">else</span> 0<br>
+                            <br>
+                            # coe_x:xの係数、coe_y:yの係数、intercept:z軸の切片、LEARNING_RATE:一回の学習で変動させる数値、LIMIT:実行回数<br>
+                            coe_x = random.random()<br>
+                            coe_y = random.random()<br>
+                            intercept = random.random()<br>
+                            LEARNING_RATE = 0.01<br>
+                            LIMIT = 1000<br>
+                            <br>
+                            # 学習<br>
+                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(LIMIT):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;x = random.rand<span class="dec4">int</span>(0, 1)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;y = random.rand<span class="dec4">int</span>(0, 1)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(_and_(x, y, coe_x, coe_y, intercept)):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span> x <span class="dec3">or</span> <span class="dec3">not</span> y: # x = 0 または y = 0<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span> x <span class="dec3">and</span> y: # x,y = 0,1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> x <span class="dec3">and</span> <span class="dec3">not</span> y : # x,y = 1,0<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> x <span class="dec3">and</span> y:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x += LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y += LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept += LEARNING_RATE<br>
+                            <br>
+                            #　結果の出力<br>
+                            <span class="dec4">print</span>(f&quot;0 \u2227 0 = {_and_(0, 0, coe_x, coe_y, intercept)}&quot;)<br>
+                            <span class="dec4">print</span>(f&quot;1 \u2227 0 = {_and_(1, 0, coe_x, coe_y, intercept)}&quot;)<br>
+                            <span class="dec4">print</span>(f&quot;0 \u2227 1 = {_and_(0, 1, coe_x, coe_y, intercept)}&quot;)<br>
+                            <span class="dec4">print</span>(f&quot;1 \u2227 1 = {_and_(1, 1, coe_x, coe_y, intercept)}&quot;)
+                        </div><br>
+                        実行結果
+                        <div class="det">
+                            0 &#x2227; 0 = 0<br>
+                            1 &#x2227; 0 = 0<br>
+                            0 &#x2227; 1 = 0<br>
+                            1 &#x2227; 1 = 1
+                        </div><br>
+                        期待通りの出力なので、学習成功である。
+                        <br><br><br><br>
+                        <div class="index_title", id="2-2">
+                            2-2. 解説
+                        </div><hr/><br>
+                        まずはAND素子のパーセプトロンを定義する。<br>
+                        <div class="code">
+                            <span class="dec0">def</span> _and_(x, y, coe_x, coe_y, intercept):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> 1 <span class="dec1">if</span>(coe_x*x + coe_y*y + intercept &gt; 0) <span class="dec1">else</span> 0<br>
+                        </div>
+                        先程紹介したアルゴリズム通り (係数*入力)の合計 > しきい値 の判定となるように、<br>
+                        <br>
+                        if( coe_x*x + coe_y*y + 切片 > 0 ){<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return 1<br>
+                        }else{<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;return 0<br>
+                        }<br>
+                        <br>
+                        ※ coe : coefficient(係数)<br>
+                        <br>
+                        とした。
+                        <br><br><hr/><br>
+                        次に変数、定数の定義である。各変数の初期値は乱数で決める。
+                        <div class="code">
+                            coe_x = random.random()<br>
+                            coe_y = random.random()<br>
+                            intercept = random.random()<br>
+                            LEARNING_RATE = 0.01<br>
+                            LIMIT = 1000<br>
+                        </div><br>
+                        xの係数　：　coe_x = random.random()<br><br>
+                        yの係数　：　coe_y = random.random()<br><br>
+                        z軸の切片：　intercept = random.random()<br><br>
+                        一回の学習で各変数に加えたり引いたりする数(この数値が小さければ小さいほど正確な学習となる)　：　<br>
+                        LEARNING_RATE = 0.01<br><br>
+                        学習の繰り返し回数(この数値が大きければ大きいほど正確な学習となる)　：　<br>
+                        LIMIT = 1000
+                        <br><br><hr/><br>
+                        そしてLIMITの値の分だけ学習をする。
+                        <div class="code">
+                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(LIMIT):
+                        </div><br>
+                        xとyを、0か1のどちらかにランダムで決める。
+                        <div class="code">
+                            &nbsp;&nbsp;&nbsp;&nbsp;x = random.rand<span class="dec4">int</span>(0, 1)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;y = random.rand<span class="dec4">int</span>(0, 1)<br>
+                        </div><br>
+                        そして、AND素子のパーセプトロンにxとyを通し、その結果から係数や切片の値を変更していく。
+                        <div class="code">
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(_and_(x, y, coe_x, coe_y, intercept)):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# もし _and_(x, y) == 1 の時<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span> x <span class="dec3">or</span> <span class="dec3">not</span> y:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# もし x == 0 または y == 0 ならば<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# zの切片を下げる<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span> x <span class="dec3">and</span> y:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# もし x == 0, y == 1 ならば<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yの係数を下げる<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> x <span class="dec3">and</span> <span class="dec3">not</span> y:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# もし x == 1, y == 0 ならば<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xの係数を下げる<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# もし _and_(x, y) == 0 の時<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> x <span class="dec3">and</span> y:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# もし x == 1, y == 1 ならば<br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x += LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y += LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept += LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 全変数を上げる<br>
+                        </div>
+                        <br><br><br>
+                        <div class="index_title", id="2-3">
+                            2-3. 学習の様子を可視化する
+                        </div><hr/><br>
+                        グラフに描画して学習の様子を可視化してみる。下の折り畳み欄にコードを記載したが読みとばしていただいても構わない。<br>
+                        <details>
+                            <summary>可視化するコード</summary>
+                            <div class="code">
+                                <span class="dec0">import</span> random<br>
+                                <span class="dec0">import</span> matplotlib.pyplot <span class="dec1">as</span> plt<br>
+                                <span class="dec0">import</span> matplotlib.animation <span class="dec1">as</span> animation<br>
+                                <span class="dec0">import</span> os<br>
+                                <br>
+                                # 作業ディレクトリの指定。自分の好きなところに設定してください。<br>
+                                os.chdir(&quot;../images&quot;)<br>
+                                <br>
+                                <br>
+                                # AND素子のパーセプトロンの定義<br>
+                                <span class="dec0">def</span> _and_(x, y, coe_x, coe_y, intercept):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> 1 <span class="dec1">if</span>(coe_x*x + coe_y*y + intercept &gt; 0) <span class="dec1">else</span> 0<br>
+                                <br>
+                                # 同じ要素が続いているかどうかの判定<br>
+                                <span class="dec0">def</span> conse(ps):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;result = [1]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(1, <span class="dec4">len</span>(ps)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(0 <span class="dec1">if</span> (ps[i-1] == ps[i]) <span class="dec1">else</span> 1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result<br>
+                                <br>
+                                # x,yの二変数関数からxの一変数関数への変換<br>
+                                <span class="dec0">def</span> linear_func(x, coe_x, coe_y, intercept):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> (-1*coe_x*x - intercept)/coe_y<br>
+                                <br>
+                                coe_x = random.random()<br>
+                                coe_y = random.random()<br>
+                                intercept = random.random()<br>
+                                LEARNING_RATE = 0.01<br>
+                                LIMIT = 1000<br>
+                                <br>
+                                params = {&quot;coe_x&quot;:[coe_x], &quot;coe_y&quot;:[coe_y], &quot;intercept&quot;:[intercept]}<br>
+                                <br>
+                                # 学習<br>
+                                <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(LIMIT):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;x = random.rand<span class="dec4">int</span>(0, 1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;y = random.rand<span class="dec4">int</span>(0, 1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(_and_(x, y, coe_x, coe_y, intercept)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span> x <span class="dec3">or</span> <span class="dec3">not</span> y: # x,y = ?,0 <span class="dec3">or</span> 0,?<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span> x <span class="dec3">and</span> y: # x,y = 0,1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> x <span class="dec3">and</span> <span class="dec3">not</span> y: # x,y = 1,0<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> x <span class="dec3">and</span> y:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x += LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y += LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept += LEARNING_RATE<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;params[&quot;coe_x&quot;].<span class="dec4">append</span>(coe_x)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;params[&quot;coe_y&quot;].<span class="dec4">append</span>(coe_y)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;params[&quot;intercept&quot;].<span class="dec4">append</span>(intercept)<br>
+                                <br>
+                                # グラフに描画する配列の定義<br>
+                                params_shaped = {&quot;coe_x&quot;:[], &quot;coe_y&quot;:[], &quot;intercept&quot;:[]}<br>
+                                coe_x_conse = conse(params[&quot;coe_x&quot;])<br>
+                                coe_y_conse = conse(params[&quot;coe_y&quot;])<br>
+                                coe_i_conse = conse(params[&quot;intercept&quot;])<br>
+                                <br>
+                                # 重複する要素を排除して先程の配列に格納<br>
+                                <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(coe_i_conse)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> (coe_x_conse[i] <span class="dec3">or</span> coe_y_conse[i] <span class="dec3">or</span> coe_i_conse[i]):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;params_shaped[&quot;coe_x&quot;].<span class="dec4">append</span>(params[&quot;coe_x&quot;][i])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;params_shaped[&quot;coe_y&quot;].<span class="dec4">append</span>(params[&quot;coe_y&quot;][i])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;params_shaped[&quot;intercept&quot;].<span class="dec4">append</span>(params[&quot;intercept&quot;][i])<br>
+                                <br>
+                                <br>
+                                # 結果の出力<br>
+                                <span class="dec4">print</span>(f&quot;0 \u2227 0 = {_and_(0, 0, coe_x, coe_y, intercept)}&quot;)<br>
+                                <span class="dec4">print</span>(f&quot;1 \u2227 0 = {_and_(1, 0, coe_x, coe_y, intercept)}&quot;)<br>
+                                <span class="dec4">print</span>(f&quot;0 \u2227 1 = {_and_(0, 1, coe_x, coe_y, intercept)}&quot;)<br>
+                                <span class="dec4">print</span>(f&quot;1 \u2227 1 = {_and_(1, 1, coe_x, coe_y, intercept)}&quot;)<br>
+                                <br>
+                                <br>
+                                # グラフの描画領域の定義<br>
+                                fig = plt.figure(figsize=(4, 4))<br>
+                                ax = fig.add_subplot(111)<br>
+                                plt.xlim(-1,2)<br>
+                                plt.ylim(-1,2)<br>
+                                images = []<br>
+                                xs, ys = [], []<br>
+                                xs2, ys2 = [], []<br>
+                                <br>
+                                # グラフの描画<br>
+                                <span class="dec1">for</span> p <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(params_shaped[&quot;intercept&quot;])):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;image = ax.plot([-1, 2],<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[linear_func(-1, params_shaped[&quot;coe_x&quot;][p], params_shaped[&quot;coe_y&quot;][p], params_shaped[&quot;intercept&quot;][p]),<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linear_func(2, params_shaped[&quot;coe_x&quot;][p], params_shaped[&quot;coe_y&quot;][p], params_shaped[&quot;intercept&quot;][p])],<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c=&quot;#cc11cc&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs.<span class="dec4">append</span>(1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ys.<span class="dec4">append</span>(1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;point = ax.scatter(xs, ys, c=&quot;#cc1111&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs2.<span class="dec4">append</span>([0, 1, 0])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ys2.<span class="dec4">append</span>([0, 0, 1])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;point2 = ax.scatter(xs2, ys2, c=&quot;#616161&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(image + [point] + [point2])<br>
+                                <br>
+                                ADD_PLOT = 10<br>
+                                LEN_PARAMS = <span class="dec4">len</span>(params_shaped[&quot;intercept&quot;])-1<br>
+                                <span class="dec1">for</span> a <span class="dec1">in</span> <span class="dec4">range</span>(ADD_PLOT):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;image = ax.plot([-1, 2],<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[linear_func(-1, params_shaped[&quot;coe_x&quot;][LEN_PARAMS], params_shaped[&quot;coe_y&quot;][LEN_PARAMS], params_shaped[&quot;intercept&quot;][LEN_PARAMS]),<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linear_func(2, params_shaped[&quot;coe_x&quot;][LEN_PARAMS], params_shaped[&quot;coe_y&quot;][LEN_PARAMS], params_shaped[&quot;intercept&quot;][LEN_PARAMS])],<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c=&quot;#ff1111&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs.<span class="dec4">append</span>(1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ys.<span class="dec4">append</span>(1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;point = ax.scatter(xs, ys, c=&quot;#cc1111&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs2.<span class="dec4">append</span>([0, 1, 0])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ys2.<span class="dec4">append</span>([0, 0, 1])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;point2 = ax.scatter(xs2, ys2, c=&quot;#616161&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(image + [point] + [point2])<br>
+                                <br>
+                                anime = animation.ArtistAnimation(fig, images, interval=100, repeat_delay=100)<br>
+                                anime.save(&quot;and_learn.gif&quot;, writer=&quot;pillow&quot;)<br>
+                                plt.show()<br>
+                            </div>
+                        </details>
+                        <br>
+                        <div class="img">
+                            <img src="img/and_learn_normal_0.gif" width="24%" alt="学習０">
+                            <img src="img/and_learn_normal_1.gif" width="24%" alt="学習１">
+                            <br><br>
+                            面白い学習をしたもの↓<br>
+                            <img src="img/and_learn_good_0.gif" width="24%" alt="学習２">
+                            <img src="img/and_learn_good_1.gif" width="24%" alt="学習３">
+                            <img src="img/and_learn_good_2.gif" width="24%" alt="学習４">
+                            <img src="img/and_learn_good_3.gif" width="24%" alt="学習５">
+                        </div><br>
+                        上の画像たちを見ていただくと、0と判定する点(黒)と1と判定する点(赤)を一本の直線で分離できるまで学習をしていることがわかる。
+                        このように一本の直線で分離可能なことを<p_ style="color:#ae0606; font-weight:900;">線形分離可能</p_>と呼び、その学習モデルを<p_ style="color:#ae0606; font-weight:900;">線形分離モデル</p_>と呼ぶ。
+                        <br><br><br><br>
+                        <div class="index_title", id="3">
+                            3. OR素子の学習
+                        </div><hr/><br>
+                        OR演算とは入力のいずれかが１であった時に１を出力し、それ以外の時は０を出力するものである。また、記号は「 &#x2228; 」で表される。<br>
+                        よって、期待される結果は<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;0 &#x2228; 0 = 0<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;1 &#x2228; 0 = 1<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;0 &#x2228; 1 = 1<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;1 &#x2228; 1 = 1<br>
+                        である。
+                        <br><br><br><br>
+                        <div class="index_title", id="3-1">
+                            3-1. OR素子の学習コード
+                        </div><hr/><br>
+                        入力はx, yの二つ。
+                        <div class="code">
+                            <span class="dec0">import</span> random<br>
+                            <br>
+                            # OR素子のパーセプトロンの定義<br>
+                            <span class="dec0">def</span> _or_(x, y, coe_x, coe_y, intercept):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> 1 <span class="dec1">if</span>(coe_x*x + coe_y*y + intercept &gt; 0) <span class="dec1">else</span> 0<br>
+                            <br>
+                            coe_x = random.random()<br>
+                            coe_y = random.random()<br>
+                            intercept = random.random()<br>
+                            LEARNING_RATE = 0.01<br>
+                            LIMIT = 1000<br>
+                            <br>
+                            # 学習<br>
+                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(LIMIT):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;x = random.rand<span class="dec4">int</span>(0, 1)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;y = random.rand<span class="dec4">int</span>(0, 1)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(_or_(x, y, coe_x, coe_y, intercept)):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span> x <span class="dec3">and</span> <span class="dec3">not</span> y: # x,y = 0,0<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> x <span class="dec3">and</span> y: # x,y = 1,1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span> x: # x = 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span> y: # y = 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y -= LEARNING_RATE<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                            <br>
+                            # 結果の出力<br>
+                            <span class="dec4">print</span>(f&quot;0 \u2228 0 = {_or_(0, 0, coe_x, coe_y, intercept)}&quot;)<br>
+                            <span class="dec4">print</span>(f&quot;1 \u2228 0 = {_or_(1, 0, coe_x, coe_y, intercept)}&quot;)<br>
+                            <span class="dec4">print</span>(f&quot;0 \u2228 1 = {_or_(0, 1, coe_x, coe_y, intercept)}&quot;)<br>
+                            <span class="dec4">print</span>(f&quot;1 \u2228 1 = {_or_(1, 1, coe_x, coe_y, intercept)}&quot;)
+                        </div><br>
+                        実行結果
+                        <div class="det">
+                            0 &#x2228; 0 = 0<br>
+                            1 &#x2228; 0 = 1<br>
+                            0 &#x2228; 1 = 1<br>
+                            1 &#x2228; 1 = 1
+                        </div><br>
+                        これも期待通りの結果なので学習成功である。
+                        <br><br><br><br>
+                        <div class="index_title", id="3-2">
+                            3-2. 学習の様子を可視化する
+                        </div><hr/><br>
+                        これについてもグラフに描画して学習の様子を可視化してみる。下の折り畳み欄にコードを記載したが読みとばしていただいても構わない。<br>
+                        <details>
+                            <summary>可視化するコード</summary>
+                            <div class="code">
+                                <span class="dec0">import</span> random<br>
+                                <span class="dec0">import</span> matplotlib.pyplot <span class="dec1">as</span> plt<br>
+                                <span class="dec0">import</span> matplotlib.animation <span class="dec1">as</span> animation<br>
+                                <span class="dec0">import</span> os<br>
+                                <br>
+                                # 作業ディレクトリの指定。自分の好きなところに設定してください。<br>
+                                os.chdir(&quot;../images&quot;)<br>
+                                <br>
+                                <br>
+                                # OR素子のパーセプトロンの定義<br>
+                                <span class="dec0">def</span> _or_(x, y, coe_x, coe_y, intercept):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> 1 <span class="dec1">if</span>(coe_x*x + coe_y*y + intercept &gt; 0) <span class="dec1">else</span> 0<br>
+                                <br>
+                                <br>
+                                # 同じ要素が続いているかどうかの判定<br>
+                                <span class="dec0">def</span> conse(ps):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;result = [1]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(1, <span class="dec4">len</span>(ps)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(0 <span class="dec1">if</span> (ps[i-1] == ps[i]) <span class="dec1">else</span> 1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result<br>
+                                <br>
+                                <br>
+                                # x,yの二変数関数からxの一変数関数への変換<br>
+                                <span class="dec0">def</span> linear_func(x, coe_x, coe_y, intercept):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> (-1*coe_x*x - intercept)/coe_y<br>
+                                <br>
+                                coe_x = random.random()<br>
+                                coe_y = random.random()<br>
+                                intercept = random.random()<br>
+                                LEARNING_RATE = 0.01<br>
+                                LIMIT = 1000<br>
+                                <br>
+                                params = {&quot;coe_x&quot;:[coe_x], &quot;coe_y&quot;:[coe_y], &quot;intercept&quot;:[intercept]}<br>
+                                <br>
+                                <br>
+                                # 学習<br>
+                                <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(LIMIT):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;x = random.rand<span class="dec4">int</span>(0, 1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;y = random.rand<span class="dec4">int</span>(0, 1)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(_or_(x, y, coe_x, coe_y, intercept)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span> x <span class="dec3">and</span> <span class="dec3">not</span> y: # x,y = 0,0<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> x <span class="dec3">and</span> y:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span> x:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_x -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span> y:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coe_y -= LEARNING_RATE<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intercept -= LEARNING_RATE<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;params[&quot;coe_x&quot;].<span class="dec4">append</span>(coe_x)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;params[&quot;coe_y&quot;].<span class="dec4">append</span>(coe_y)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;params[&quot;intercept&quot;].<span class="dec4">append</span>(intercept)<br>
+                                <br>
+                                <br>
+                                # グラフに描画する配列の定義<br>
+                                params_shaped = {&quot;coe_x&quot;:[], &quot;coe_y&quot;:[], &quot;intercept&quot;:[]}<br>
+                                coe_x_conse = conse(params[&quot;coe_x&quot;])<br>
+                                coe_y_conse = conse(params[&quot;coe_y&quot;])<br>
+                                coe_i_conse = conse(params[&quot;intercept&quot;])<br>
+                                <br>
+                                <br>
+                                # 重複する要素を排除して先程の配列に格納<br>
+                                <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(coe_i_conse)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> (coe_x_conse[i] <span class="dec3">or</span> coe_y_conse[i] <span class="dec3">or</span> coe_i_conse[i]):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;params_shaped[&quot;coe_x&quot;].<span class="dec4">append</span>(params[&quot;coe_x&quot;][i])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;params_shaped[&quot;coe_y&quot;].<span class="dec4">append</span>(params[&quot;coe_y&quot;][i])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;params_shaped[&quot;intercept&quot;].<span class="dec4">append</span>(params[&quot;intercept&quot;][i])<br>
+                                <br>
+                                <br>
+                                # 結果の出力<br>
+                                <span class="dec4">print</span>(f&quot;0 \u2228 0 = {_or_(0, 0, coe_x, coe_y, intercept)}&quot;)<br>
+                                <span class="dec4">print</span>(f&quot;1 \u2228 0 = {_or_(1, 0, coe_x, coe_y, intercept)}&quot;)<br>
+                                <span class="dec4">print</span>(f&quot;0 \u2228 1 = {_or_(0, 1, coe_x, coe_y, intercept)}&quot;)<br>
+                                <span class="dec4">print</span>(f&quot;1 \u2228 1 = {_or_(1, 1, coe_x, coe_y, intercept)}&quot;)<br>
+                                <br>
+                                <br>
+                                # グラフの描画領域の定義<br>
+                                fig = plt.figure(figsize=(4, 4))<br>
+                                ax = fig.add_subplot(111)<br>
+                                plt.xlim(-1,2)<br>
+                                plt.ylim(-1,2)<br>
+                                images = []<br>
+                                xs, ys = [], []<br>
+                                xs2, ys2 = [], []<br>
+                                <br>
+                                <br>
+                                # グラフの描画<br>
+                                <span class="dec1">for</span> p <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(params_shaped[&quot;intercept&quot;])):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;image = ax.plot([-1, 2],<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[linear_func(-1, params_shaped[&quot;coe_x&quot;][p], params_shaped[&quot;coe_y&quot;][p], params_shaped[&quot;intercept&quot;][p]),<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linear_func(2, params_shaped[&quot;coe_x&quot;][p], params_shaped[&quot;coe_y&quot;][p], params_shaped[&quot;intercept&quot;][p])],<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c=&quot;#cc11cc&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs.<span class="dec4">append</span>(0)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ys.<span class="dec4">append</span>(0)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;point = ax.scatter(xs, ys, c=&quot;#616161&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs2.<span class="dec4">append</span>([1, 1, 0])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ys2.<span class="dec4">append</span>([1, 0, 1])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;point2 = ax.scatter(xs2, ys2, c=&quot;#cc1111&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(image + [point] + [point2])<br>
+                                <br>
+                                ADD_PLOT = 10<br>
+                                LEN_PARAMS = <span class="dec4">len</span>(params_shaped[&quot;intercept&quot;])-1<br>
+                                <span class="dec1">for</span> a <span class="dec1">in</span> <span class="dec4">range</span>(ADD_PLOT):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;image = ax.plot([-1, 2],<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[linear_func(-1, params_shaped[&quot;coe_x&quot;][LEN_PARAMS], params_shaped[&quot;coe_y&quot;][LEN_PARAMS], params_shaped[&quot;intercept&quot;][LEN_PARAMS]),<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linear_func(2, params_shaped[&quot;coe_x&quot;][LEN_PARAMS], params_shaped[&quot;coe_y&quot;][LEN_PARAMS], params_shaped[&quot;intercept&quot;][LEN_PARAMS])],<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c=&quot;#ff1111&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs.<span class="dec4">append</span>(0)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ys.<span class="dec4">append</span>(0)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;point = ax.scatter(xs, ys, c=&quot;#616161&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs2.<span class="dec4">append</span>([1, 1, 0])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ys2.<span class="dec4">append</span>([1, 0, 1])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;point2 = ax.scatter(xs2, ys2, c=&quot;#cc1111&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;images.<span class="dec4">append</span>(image + [point] + [point2])<br>
+                                <br>
+                                anime = animation.ArtistAnimation(fig, images, interval=100, repeat_delay=100)<br>
+                                anime.save(&quot;or_learn_.gif&quot;, writer=&quot;pillow&quot;)<br>
+                                plt.show()<br>
+                            </div>
+                        </details>
+                        <br>
+                        <div class="img">
+                            <img src="img/or_learn_normal_0.gif" width="24%" alt="学習０">
+                            <img src="img/or_learn_normal_1.gif" width="24%" alt="学習１">
+                            <img src="img/or_learn_normal_2.gif" width="24%" alt="学習２">
+                        </div><br>
+                        条件分岐が単純なのでAND素子の学習を比べると面白みに欠けるが、しっかり線形分離できていることがわかる。
+                        <br><br><br><br>
+                        <div class="index_title", id="4">
+                            4. 線形分離モデルと非線形分離モデル
+                        </div><hr/><br>
+                        これまで紹介したものは線形分離モデルであるが、これの適用が困難であるものが存在する。
+                        例えばXOR素子を学習させようとした際、期待される結果は<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;0 &#x22bb; 0 = 0<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;1 &#x22bb; 0 = 1<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;0 &#x22bb; 1 = 1<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;1 &#x22bb; 1 = 0<br>
+                        である。<br><br>
+                        これらの点を 0=黒、1=赤 でグラフに描画すると、<br>
+                        <br>
+                        <div class="pic">
+                            <img src="img/xor.png" width="25%" alt="xor">
+                        </div><br>
+                        こうなるが、これを一本の直線で分離することは不可能である。（脳トレ的な問題ではなく、本当にできない）<br>
+                        しかし、直線を２本使ったり、曲線を使ったりすれば分離できる。<br>
+                        <br>
+                        <div class="pic">
+                            <img src="img/xor_2_line.PNG" width="25%" alt="xor_2_line">
+                            <img src="img/xor_not_linear.PNG" width="25%" alt="xor_not_linear">
+                            <br>
+                            （手書きのイメージ図）
+                        </div><br>
+                        このような分離方法を<p_ style="color:#ae0606; font-weight:900;">非線形分離</p_>と呼び、その学習モデルを<p_ style="color:#ae0606; font-weight:900;">非線形分離モデル</p_>と呼ぶ。
+                        また、現在「深層学習」と呼ばれるものはこの非線形分離モデルを中心としたものである。
+                        このモデルはパーセプトロンをはじめとするニューロンを階層に分けて学習させることで実装できる。
+                        実際に、XOR素子の学習は入力を受け取る２つのシグモイドニューロンと、その２つをまとめる１つのパーセプトロンで実装可能である。
+                        これにはシグモイド関数や微分、行列計算の利用が不可欠であり複雑になるので、気が向いたら別の記事にしてまとめようと思う。
+                        <br><br><br><br><br>
+                        <a href="../blog.html" class="link">
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

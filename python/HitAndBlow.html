@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang='ja'>
+<head>
+<meta charset='utf-8'>
+<link rel="shortcut icon" href="..\pic\o.ico">
+<link rel='apple-touch-icon-precomposed' href='..\pic\o.png'>
+<link rel='stylesheet' href='..\css\code.css'>
+<title>ソースコード</title>
+</head>
+<body class='back'>
+<h1>
+ヒット　アンド　ブロー（コンソール版）
+</h1>
+<div class='a0'>
+<a href='..\apps.html' class='a2'>
+戻る
+</a>
+</div>
+<div class='main'>
+<p>
+<br>import&ensp;random
+<br>
+<br>def&ensp;hit(&ensp;a,&ensp;s&ensp;):
+<br>&ensp;&ensp;&ensp;&ensp;re&ensp;=&ensp;[0,&ensp;0]
+<br>&ensp;&ensp;&ensp;&ensp;old&ensp;=&ensp;[]
+<br>&ensp;&ensp;&ensp;&ensp;for&ensp;i&ensp;in&ensp;range(&ensp;len(s)&ensp;):
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;if(&ensp;s[i]&ensp;==&ensp;a[i]&ensp;):
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;re[0]&ensp;+=&ensp;1
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;old.append(&ensp;s[i]&ensp;)
+<br>&ensp;&ensp;&ensp;&ensp;for&ensp;i&ensp;in&ensp;range(len(s)):
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;if(&ensp;(&ensp;s[i]&ensp;in&ensp;a&ensp;)&ensp;and&ensp;not&ensp;s[i]&ensp;in&ensp;old&ensp;):
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;re[1]&ensp;+=&ensp;1
+<br>&ensp;&ensp;&ensp;&ensp;return&ensp;re
+<br>
+<br>def&ensp;rad(&ensp;n&ensp;):
+<br>&ensp;&ensp;&ensp;&ensp;global&ensp;color,&ensp;color_ch
+<br>&ensp;&ensp;&ensp;&ensp;color&ensp;=&ensp;['r',&ensp;'b',&ensp;'g',&ensp;'w',&ensp;'p',&ensp;'y']
+<br>&ensp;&ensp;&ensp;&ensp;nihon&ensp;=&ensp;['赤','青','緑','白','ピンク','黄']
+<br>&ensp;&ensp;&ensp;&ensp;color_ch&ensp;=&ensp;dict()
+<br>&ensp;&ensp;&ensp;&ensp;for&ensp;i&ensp;in&ensp;range(&ensp;len(color)&ensp;):
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;color_ch[nihon[i]]&ensp;=&ensp;color[i]
+<br>&ensp;&ensp;&ensp;&ensp;print(&ensp;color_ch&ensp;)
+<br>&ensp;&ensp;&ensp;&ensp;return&ensp;[color.pop(&ensp;random.randint(&ensp;0,&ensp;len(color)-1&ensp;)&ensp;)&ensp;for&ensp;i&ensp;in&ensp;range(&ensp;n&ensp;)]
+<br>
+<br>ans&ensp;=&ensp;rad(&ensp;4&ensp;)
+<br>
+<br>for&ensp;j&ensp;in&ensp;range(&ensp;10&ensp;):
+<br>&ensp;&ensp;&ensp;&ensp;print(&ensp;'\n'+str(j)+'&ensp;回目&ensp;========\n'&ensp;)
+<br>&ensp;&ensp;&ensp;&ensp;inp&ensp;=&ensp;[input(&ensp;str(i)+'&ensp;>&ensp;'&ensp;)&ensp;for&ensp;i&ensp;in&ensp;range(&ensp;4&ensp;)]
+<br>&ensp;&ensp;&ensp;&ensp;for&ensp;i&ensp;in&ensp;range(&ensp;4&ensp;):
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;if&ensp;inp[i]&ensp;in&ensp;color_ch:
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;inp[i]&ensp;=&ensp;color_ch[inp[i]]
+<br>&ensp;&ensp;&ensp;&ensp;re&ensp;=&ensp;hit(ans,&ensp;inp)
+<br>&ensp;&ensp;&ensp;&ensp;print(&ensp;'\n{}&ensp;ヒット，&ensp;{}&ensp;ブロー'.format(&ensp;re[0],&ensp;re[1]&ensp;)&ensp;)
+<br>&ensp;&ensp;&ensp;&ensp;if&ensp;re[0]&ensp;==&ensp;4:
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;print(&ensp;'\n正解！')
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;break
+<br>
+<br>print(&ensp;'\nend'&ensp;)
+
+</p>
+</div>
+<script src='../count/count.php'></script>
+</body>
+</html>

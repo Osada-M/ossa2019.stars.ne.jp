@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../pic/o.ico">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="ゲーミングprint文｜Python">
+    <meta property="og:description" content="Python標準出力の色指定と行操作を利用して虹色のゲーミングprint文を作る。">
+    <meta property="og:site_name" content="ゲーミングprint文｜Python">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/other/rainbow_print.html">
+    <title>ゲーミングprint文を作る｜Pythonのprint()の文字色を虹色にしてゲーミングprint()文を作る。</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="../blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../../sorting/sorting.html">
+                    <i class='bx bx-bar-chart'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- tkinterの解説ページ -->
+            <li>
+                <a href="../../Remember/tkinter/tkinter.html">
+                    <i class='bx bxl-python'></i>
+                    <span class="link_name" id="jp_font">tkinterの解説ページ</span>
+                </a>
+                <span class="popup_text" id="jp_font">tkinterの解説ページ</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../../text.html">
+                    <i class='bx bx-pencil'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    ゲ ー ミ ン グ p r i n t 文
+                </div>
+                <div class="caption_text" id="jp_font">
+                    Python標準出力の色指定と行操作を利用して虹色のゲーミングprint文を作る。
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <div class="index_content" id="fade_1">
+                    <div class="index_link">
+                        <span id="jp_font">
+                            <a href=#code>1. コード</a><br>
+                            <a href=#result>2. 実行結果</a><br>
+                            <a href=#explain>3. ちょっと説明</a><br>
+                        </span>
+                        <br>
+                    </div>
+                </div>
+                <div class="fade", id="fade_2">
+                    <div class="title" id="code">1. コード</div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_0', 'popup_0')">copy</div>
+                                    <div class="copied" id="popup_0">copied!</div>
+                                </div>
+                                <div class="window_title">rainbow_print.py</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_0">
+                                            <span class="dec0">import</span> time<br>
+                                            <br>
+                                            <br>
+                                            # stateの値をカラーコードに変換<br>
+                                            <span class="dec0">def</span> make_colorCode(state, inf, diff):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;red = diff*state[0] + inf<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;green = diff*state[1] + inf<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;blue = diff*state[2] + inf<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;red = <span class="dec4">int</span>(red); green = <span class="dec4">int</span>(green); blue = <span class="dec4">int</span>(blue)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> f&quot;\033[38;2;{red};{green};{blue}m&quot;, f&quot;{red:02x}{green:02x}{blue:02x}&quot;<br>
+                                            <br>
+                                            <br>
+                                            # 色と順番の設定（上から順に表示される。最初と最後が一周する。）<br>
+                                            state = [[1, 0, 0], # 赤<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1, 1, 0], # 黄<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[0, 1, 0], # 緑<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[0, 1, 1], # 青緑<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[0, 0, 1], # 青<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[1, 0, 1]] # 紫<br>
+                                            <br>
+                                            <br>
+                                            state += state[0::-1]<br>
+                                            sup = (1&lt;&lt;8) - 1    # RGBの上限<br>
+                                            inf = 50            # RGBの下限<br>
+                                            diff = sup - inf<br>
+                                            state_map = []<br>
+                                            split_num = 50<br>
+                                            <br>
+                                            <br>
+                                            # stateの値をsplit_numに応じて細かく分ける<br>
+                                            <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(state) - 1):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;red_diff = (state[i+1][0] - state[i][0])/split_num<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;green_diff = (state[i+1][1] - state[i][1])/split_num<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;blue_diff = (state[i+1][2] - state[i][2])/split_num<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;lst = [[red_diff*j + state[i][0],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;green_diff*j + state[i][1],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;blue_diff*j + state[i][2]] <span class="dec1">for</span> j <span class="dec1">in</span> <span class="dec4">range</span>(split_num)]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;state_map += lst<br>
+                                            state_map += state[0::-1]<br>
+                                            <br>
+                                            <br>
+                                            state_length = <span class="dec4">len</span>(state_map)<br>
+                                            index = 0<br>
+                                            <span class="dec4">print</span>(&quot;\n\n&quot;)<br>
+                                            <br>
+                                            # ゲーミングprint開始<br>
+                                            <span class="dec0">while</span> 1:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">try</span>:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color_code, to_hex = make_colorCode(state_map[index], inf, diff)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;\033[2A{color_code}!! rainbow !!\t( #{to_hex} )\033[0m\n&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index = (index+1)%state_length<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time.sleep(0.02)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">except</span> KeyboardInterrupt: # ctrl + C<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(&quot; exit&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">break</span><br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade", id="fade_3">
+                    <div class="title" id="result">2. 実行結果</div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            <div class="pic" id="jp_font">
+                                <img src="img/rainbow_print.gif" width="100%" alt="rainbow_print">
+                            </div>
+                            <br>
+                            KeyboardInterrupt（ctrl + C など）で終了<br>
+                            <br>
+                            <br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade", id="fade_4">
+                    <div class="title" id="explain">3. ちょっと説明</div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            Python標準出力での色の指定方法は、エスケープ（\033 または \x1b）のオプションを用いる。<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_1', 'popup_1')">copy</div>
+                                    <div class="copied" id="popup_1">copied!</div>
+                                </div>
+                                <div class="window_title", id="jp_font">色の指定</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_1">
+                                            <span class="dec4">print</span>(&quot;\033[38;2;(赤);(緑);(青)m (表示したい文字) \033[0m&quot;)<br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            # 例えば<span style="color:#ff7070">赤色（#ff7070）</span>にしたいなら、<br>
+                                            <br>
+                                            <span class="dec4">print</span>(&quot;\033[38;2;255;112;112m (表示したい文字) \033[0m&quot;)<br>
+                                            <br>
+                                            # 実行結果<br>
+                                            # >> <span style="color:#ff7070">（表示したい文字）</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            出力の上書きには、出力行を一つ上にすることで実装できる。<br>
+                            もっと詳しく言えば、print()にて文字列の出力、改行を行なった後、一行上の一番左に移動し再びprint()を実行することで前回の出力が上書きされたように見える。
+                            これについても同様にエスケープを用いる。<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_2', 'popup_2')">copy</div>
+                                    <div class="copied" id="popup_2">copied!</div>
+                                </div>
+                                <div class="window_title", id="jp_font">出力の上書き</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_2">
+                                            <span class="dec4">print</span>(&quot;\033[(遡りたい行数)A&quot;)<br>
+                                            <br>
+                                            <br>
+                                            # 例えば１行遡りたいのなら、<br>
+                                            <span class="dec4">print</span>(&quot;\033[1A&quot;)<br>
+                                            <br>
+                                            # ２行なら、<br>
+                                            <span class="dec4">print</span>(&quot;\033[2A&quot;)<br>
+                                            <br>
+                                            # １０行なら、<br>
+                                            <span class="dec4">print</span>(&quot;\033[10A&quot;)<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/copy.js"></script>
+    <script src="../../js/scroll.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/details.js"></script>
+    <script src="../../js/i_btn.js"></script>
+    <script src="../../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/fade.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on('load scroll', function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

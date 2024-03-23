@@ -1,0 +1,578 @@
+/* 特大 */
+@media screen and (min-width: 1150px){
+    textArea{
+        font-family: 'Noto Sans JP', sans-serif;
+        font-weight: 100;
+        width: 100%;
+        height: 400px;
+        font-size: 30px;
+    }
+
+    .str_length{
+        width: 100%;
+        background: #2d2a50;
+        padding: 10px 30px;
+        justify-content: center;
+        text-align: right;
+    }
+    .str_length #count_number{
+        color: #ffa;
+    }
+    .str_length .count_string{
+        color: #fff;
+    }
+
+    .copy_content{
+        text-align: center;
+        justify-content: center;
+        width: 300px;
+        height: 70px;
+        border: 1px solid #90e0e0;
+        border-radius: 5px;
+        background: #d0f0f060;
+        box-shadow: 0 5px 20px #20a0a060;
+        transition: all 0.4s ease;
+    }
+    .copy_content:hover{
+        border: 1px solid #e090e0;
+        border-radius: 5px;
+        background: #f0d0f0;
+        box-shadow: 0 5px 20px #a020a060;
+    }
+    .copy_content .copy_btn{
+        padding-top: 4px;
+    }
+
+    .output{
+        position: relative;
+    }
+    .output .copied_text{
+        position: absolute;
+        top: -70px;
+        opacity: 0;
+        transition: all 0.4s ease;
+        text-align: center;
+        justify-content: center;
+        width: 300px;
+        height: 70px;
+        left: 0px;
+        padding-top: 20px;
+        border: 1px solid #a000a0;
+        color: #fff;
+        border-radius: 5px;
+        background: #f010f0;
+        box-shadow: 0 5px 20px #f040f0f0;
+        pointer-events: none;
+    }
+    .output .copied_text.active{
+        left: 30px;
+        top: -100px;
+        opacity: 1;
+    }
+    .output .shifted_text{
+        position: absolute;
+        top: -40px;
+        opacity: 0;
+        transition: all 0.4s ease;
+        text-align: center;
+        justify-content: center;
+        width: 400px;
+        height: 40px;
+        left: 350px;
+        padding-top: 4px;
+        border: 1px solid #a000a0;
+        color: #fff;
+        border-radius: 5px;
+        background: #f010f0;
+        box-shadow: 0 5px 20px #f040f0f0;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .output .shifted_text.active{
+        left: 380px;
+        top: -70px;
+        opacity: 1;
+    }
+
+    .shift_content{
+        position: relative;
+        top: 10px;
+    }
+    .shift_content .shift_interface{
+        position: absolute;
+        top: -80px;
+        left: 350px;
+    }
+    .shift_content .shift_interface #before{
+        position: absolute;
+        left: 0;
+        width: 180px;
+    }
+    .shift_content .shift_interface #after{
+        position: absolute;
+        width: 180px;
+        left: 220px;
+    }
+    .shift_content .shift_interface .bx-right-arrow-alt{
+        position: absolute;
+        top: -5px;
+        left: 185px;
+        font-size: 30px;
+        width: 10px;
+    }
+    .shift_content .shift_interface .shift_btn_content{
+        position: absolute;
+        top: 30px;
+        height: 40px;
+        width: 400px;
+        text-align: center;
+        justify-content: center;
+        background: #f0f0c060;
+        border-radius: 5px;
+        border: 1px solid #d0d0a0;
+        box-shadow: 0 5px 10px #a0a09060;
+        transition: all 0.4s ease;
+    }
+    .shift_content .shift_interface .shift_btn_content:hover{
+        border: 1px solid #e090e0;
+        background: #f0d0f0;
+        box-shadow: 0 5px 20px #a020a060;
+    }
+    .shift_content .shift_interface .shift_btn_content .shift_btn{
+        padding-top: 4px;
+    }    
+}
+/* 大 */
+@media screen and (max-width: 1149px){
+    textArea{
+        font-family: 'Noto Sans JP', sans-serif;
+        font-weight: 100;
+        width: 100%;
+        height: 400px;
+        font-size: 20px;
+    }
+
+    .str_length{
+        width: 100%;
+        background: #2d2a50;
+        padding: 10px 30px;
+        justify-content: center;
+        text-align: right;
+    }
+    .str_length #count_number{
+        color: #ffa;
+    }
+    .str_length .count_string{
+        color: #fff;
+    }
+
+    .copy_content{
+        text-align: center;
+        justify-content: center;
+        width: 250px;
+        height: 70px;
+        border: 1px solid #90e0e0;
+        border-radius: 5px;
+        background: #d0f0f060;
+        box-shadow: 0 5px 20px #20a0a060;
+        transition: all 0.4s ease;
+    }
+    .copy_content:hover{
+        border: 1px solid #e090e0;
+        border-radius: 5px;
+        background: #f0d0f0;
+        box-shadow: 0 5px 20px #a020a060;
+    }
+    .copy_content .copy_btn{
+        padding-top: 5px;
+    }
+
+    .output{
+        position: relative;
+    }
+    .output .copied_text{
+        position: absolute;
+        top: -70px;
+        opacity: 0;
+        transition: all 0.4s ease;
+        text-align: center;
+        justify-content: center;
+        width: 250px;
+        height: 70px;
+        left: 0px;
+        padding-top: 20px;
+        border: 1px solid #a000a0;
+        color: #fff;
+        border-radius: 5px;
+        background: #f010f0;
+        box-shadow: 0 5px 20px #f040f0f0;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .output .copied_text.active{
+        left: 30px;
+        top: -100px;
+        opacity: 1;
+    }
+    .output .shifted_text{
+        position: absolute;
+        top: -40px;
+        opacity: 0;
+        transition: all 0.4s ease;
+        text-align: center;
+        justify-content: center;
+        width: 280px;
+        height: 40px;
+        left: 260px;
+        padding-top: 4px;
+        border: 1px solid #a000a0;
+        color: #fff;
+        border-radius: 5px;
+        background: #f010f0;
+        box-shadow: 0 5px 20px #f040f0f0;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .output .shifted_text.active{
+        left: 290px;
+        top: -70px;
+        opacity: 1;
+    }
+
+    .shift_content{
+        position: relative;
+        top: 10px;
+    }
+    .shift_content .shift_interface{
+        position: absolute;
+        top: -80px;
+        left: 260px;
+    }
+    .shift_content .shift_interface #before{
+        position: absolute;
+        left: 0;
+        width: 130px;
+    }
+    .shift_content .shift_interface #after{
+        position: absolute;
+        width: 130px;
+        left: 150px;
+    }
+    .shift_content .shift_interface .bx-right-arrow-alt{
+        position: absolute;
+        top: -2px;
+        left: 127px;
+        font-size: 25px;
+        width: 10px;
+    }
+    .shift_content .shift_interface .shift_btn_content{
+        position: absolute;
+        top: 30px;
+        height: 40px;
+        width: 280px;
+        text-align: center;
+        justify-content: center;
+        background: #f0f0c060;
+        border-radius: 5px;
+        border: 1px solid #d0d0a0;
+        box-shadow: 0 5px 10px #a0a09060;
+        transition: all 0.4s ease;
+    }
+    .shift_content .shift_interface .shift_btn_content:hover{
+        border: 1px solid #e090e0;
+        background: #f0d0f0;
+        box-shadow: 0 5px 20px #a020a060;
+    }
+    .shift_content .shift_interface .shift_btn_content .shift_btn{
+        padding-top: 4px;
+    }
+}
+/* 中 */
+@media screen and (max-width: 919px){
+    textArea{
+        font-family: 'Noto Sans JP', sans-serif;
+        font-weight: 100;
+        width: 100%;
+        height: 400px;
+        font-size: 17px;
+    }
+
+    .str_length{
+        width: 100%;
+        background: #2d2a50;
+        padding: 10px 30px;
+        justify-content: center;
+        text-align: right;
+    }
+    .str_length #count_number{
+        color: #ffa;
+    }
+    .str_length .count_string{
+        color: #fff;
+    }
+
+    .copy_content{
+        text-align: center;
+        justify-content: center;
+        width: 400px;
+        height: 70px;
+        border: 1px solid #90e0e0;
+        border-radius: 5px;
+        background: #d0f0f060;
+        box-shadow: 0 5px 20px #20a0a060;
+        transition: all 0.4s ease;
+    }
+    .copy_content:hover{
+        border: 1px solid #e090e0;
+        border-radius: 5px;
+        background: #f0d0f0;
+        box-shadow: 0 5px 20px #a020a060;
+    }
+    .copy_content .copy_btn{
+        padding-top: 5px;
+    }
+
+    .output{
+        position: relative;
+    }
+    .output .copied_text{
+        position: absolute;
+        top: -70px;
+        opacity: 0;
+        transition: all 0.4s ease;
+        text-align: center;
+        justify-content: center;
+        width: 300px;
+        height: 70px;
+        left: 0px;
+        padding-top: 20px;
+        border: 1px solid #a000a0;
+        color: #fff;
+        border-radius: 5px;
+        background: #f010f0;
+        box-shadow: 0 5px 20px #f040f0f0;
+        pointer-events: none;
+    }
+    .output .copied_text.active{
+        left: 30px;
+        top: -100px;
+        opacity: 1;
+    }
+    .output .shifted_text{
+        position: absolute;
+        top: 60px;
+        opacity: 0;
+        transition: all 0.4s ease;
+        text-align: center;
+        justify-content: center;
+        width: 400px;
+        height: 40px;
+        left: 0px;
+        padding-top: 4px;
+        border: 1px solid #a000a0;
+        color: #fff;
+        border-radius: 5px;
+        background: #f010f0;
+        box-shadow: 0 5px 20px #f040f0f0;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .output .shifted_text.active{
+        left: 30px;
+        top: 30px;
+        opacity: 1;
+    }
+
+    .shift_content{
+        position: relative;
+        top: 10px;
+    }
+    .shift_content .shift_interface{
+        position: absolute;
+        top: 20px;
+        left: 0px;
+    }
+    .shift_content .shift_interface #before{
+        position: absolute;
+        left: 0;
+        width: 180px;
+    }
+    .shift_content .shift_interface #after{
+        position: absolute;
+        width: 180px;
+        left: 220px;
+    }
+    .shift_content .shift_interface .bx-right-arrow-alt{
+        position: absolute;
+        top: -5px;
+        left: 185px;
+        font-size: 30px;
+        width: 10px;
+    }
+    .shift_content .shift_interface .shift_btn_content{
+        position: absolute;
+        top: 30px;
+        height: 40px;
+        width: 400px;
+        text-align: center;
+        justify-content: center;
+        background: #f0f0c060;
+        border-radius: 5px;
+        border: 1px solid #d0d0a0;
+        box-shadow: 0 5px 10px #a0a09060;
+        transition: all 0.4s ease;
+    }
+    .shift_content .shift_interface .shift_btn_content:hover{
+        border: 1px solid #e090e0;
+        background: #f0d0f0;
+        box-shadow: 0 5px 20px #a020a060;
+    }
+    .shift_content .shift_interface .shift_btn_content .shift_btn{
+        padding-top: 4px;
+    }
+}
+
+/* 小 */
+@media screen and (max-width: 739px){
+    textArea{
+        font-family: 'Noto Sans JP', sans-serif;
+        font-weight: 100;
+        width: 100%;
+        height: 400px;
+        font-size: 15px;
+    }
+
+    .str_length{
+        width: 100%;
+        background: #2d2a50;
+        padding: 10px 30px;
+        justify-content: center;
+        text-align: right;
+    }
+    .str_length #count_number{
+        color: #ffa;
+    }
+    .str_length .count_string{
+        color: #fff;
+    }
+
+    .copy_content{
+        text-align: center;
+        justify-content: center;
+        width: 400px;
+        height: 60px;
+        border: 1px solid #90e0e0;
+        border-radius: 5px;
+        background: #d0f0f060;
+        box-shadow: 0 5px 20px #20a0a060;
+        transition: all 0.4s ease;
+    }
+    .copy_content:hover{
+        border: 1px solid #e090e0;
+        border-radius: 5px;
+        background: #f0d0f0;
+        box-shadow: 0 5px 20px #a020a060;
+    }
+    .copy_content .copy_btn{
+        padding-top: 10px;
+    }
+
+    .output{
+        position: relative;
+    }
+    .output .copied_text{
+        position: absolute;
+        top: -70px;
+        opacity: 0;
+        transition: all 0.4s ease;
+        text-align: center;
+        justify-content: center;
+        width: 400px;
+        height: 70px;
+        left: 0px;
+        padding-top: 23px;
+        border: 1px solid #a000a0;
+        color: #fff;
+        border-radius: 5px;
+        background: #f010f0;
+        box-shadow: 0 5px 20px #f040f0f0;
+        pointer-events: none;
+    }
+    .output .copied_text.active{
+        left: 30px;
+        top: -100px;
+        opacity: 1;
+    }
+    .output .shifted_text{
+        position: absolute;
+        top: 60px;
+        opacity: 0;
+        transition: all 0.4s ease;
+        text-align: center;
+        justify-content: center;
+        width: 400px;
+        height: 40px;
+        left: 0px;
+        padding-top: 8px;
+        border: 1px solid #a000a0;
+        color: #fff;
+        border-radius: 5px;
+        background: #f010f0;
+        box-shadow: 0 5px 20px #f040f0f0;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .output .shifted_text.active{
+        left: 30px;
+        top: 30px;
+        opacity: 1;
+    }
+
+    .shift_content{
+        position: relative;
+        top: 10px;
+    }
+    .shift_content .shift_interface{
+        position: absolute;
+        top: 15px;
+        left: 0px;
+    }
+    .shift_content .shift_interface #before{
+        position: absolute;
+        left: 0;
+        width: 180px;
+    }
+    .shift_content .shift_interface #after{
+        position: absolute;
+        width: 180px;
+        left: 220px;
+    }
+    .shift_content .shift_interface .bx-right-arrow-alt{
+        position: absolute;
+        top: -5px;
+        left: 185px;
+        font-size: 30px;
+        width: 10px;
+    }
+    .shift_content .shift_interface .shift_btn_content{
+        position: absolute;
+        top: 30px;
+        height: 40px;
+        width: 400px;
+        text-align: center;
+        justify-content: center;
+        background: #f0f0c060;
+        border-radius: 5px;
+        border: 1px solid #d0d0a0;
+        box-shadow: 0 5px 10px #a0a09060;
+        transition: all 0.4s ease;
+    }
+    .shift_content .shift_interface .shift_btn_content:hover{
+        border: 1px solid #e090e0;
+        background: #f0d0f0;
+        box-shadow: 0 5px 20px #a020a060;
+    }
+    .shift_content .shift_interface .shift_btn_content .shift_btn{
+        padding-top: 8px;
+    }
+}

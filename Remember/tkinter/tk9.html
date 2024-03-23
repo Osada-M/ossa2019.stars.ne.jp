@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterのアプリにキー入力をバインドする'>
+        <meta property='og:description' content='tkinterのアプリにキー入力をバインドする方法について'>
+        <meta property='og:site_name' content='tkinterのアプリにキー入力をバインドする'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk9.html'>
+        <title>tkinterのアプリにキー入力をバインドする：bind()について【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                9. tkinterのアプリにキー入力をバインドする
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月10日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <a href='tk2.html' class='a1'>2. 基本的な構文</a><br>
+                    <a href='tk3.html' class='a1'>3. ラベル</a><br>
+                    <a href='tk4.html' class='a1'>4. ボタン</a><br>
+                    <a href='tk5.html' class='a1'>5. エントリー</a><br>
+                    <a href='tk6.html' class='a1'>6. テキスト</a><br>
+                    <a href='tk7.html' class='a1'>7. スクロールバー</a><br>
+                    <a href='tk8.html' class='a1'>8. チェックボックス</a><br>
+                    <bl>
+                    <a href='#i9' class='a1'>9. バインドについて</a><br>
+                    <a href='#i9-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;バインドとは</a><br>
+                    <a href='#i9-2' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;代表的なキーワード</a><br>
+                    <a href='#i9-3' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;具体的な例</a><br>
+                    </bl>
+                    <br>
+                    <a href='tk10.html' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <a href='tk11.html' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i9'>
+                    バインド
+                </p>
+                <div class='list0'>
+                    <li id='i9-1'>
+                        バインドとは
+                    </li><br>
+                    <p1>
+                        バインド（<bl>bind()</bl>）とは特定の入力と特定の動作を結び付けるものだ。ボタンを例に挙げる。
+                        <br><br><div class='t0'>
+                            def func(event):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;~~何かの機能~~<br>
+                            <br>
+                            but = t.Button()<br>
+                            but.bind( '&lt;Button-1&gt;', func )
+                        </div><br>
+                        この場合、Button-1 = 左クリックと関数funcを結び付け、押したら機能を実行するボタンを実現している。
+                        <br><br><br>
+                    </p1>
+                    <li id='i9-2'>
+                        代表的なキーワード
+                    </li><br>
+                    <p1>
+                        <table border='1' width='400px'>
+                            <tr>
+                                <th>キーワード</th>
+                                <th>意味</th>
+                            </tr>
+                            <tr>
+                                <td>Button-1</td>
+                                <td>左クリック</td>
+                            </tr>
+                            <tr>
+                                <td>Button-3</td>
+                                <td>右クリック</td>
+                            </tr>
+                            <tr>
+                                <td>Return</td>
+                                <td>エンターキー<koko>*</koko></td>
+                            </tr>
+                            <tr>
+                                <td>Key</td>
+                                <td>キーボード入力</td>
+                            </tr>
+                            <tr>
+                                <td>Key-a</td>
+                                <td>Aキー</td>
+                            </tr>
+                            <tr>
+                                <td>Control-Key-s</td>
+                                <td>Ctrl + s</td>
+                            </tr>
+                            <tr>
+                                <td>Motion</td>
+                                <td>マウスポインタが動いた</td>
+                            </tr>
+                            <tr>
+                                <td>Enter</td>
+                                <td>マウスポインタが領域内に入った</td>
+                            </tr>
+                            <tr>
+                                <td>Leave</td>
+                                <td>マウスポインタが領域外に出た</td>
+                            </tr>
+                            <tr>
+                                <td>Double-○○</td>
+                                <td>○○が２回押された</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <koko>*エンターキーはEnterではなくReturnなので混同注意</koko><br>
+                        <br>
+                        その他、詳しいキーワードに関しては下記リンク先などをご参照いただきたい。<br>
+                        <a href='http://www.rouge.gr.jp/~fuku/tips/python-tkinter/bind.shtml'>
+                            Tkinter の bind とイベントシーケンス(http://www.rouge.gr.jp/~fuku/tips/python-tkinter/bind.shtml)
+                        </a><br><br><br>
+                    </p1>
+                    <li id='i9-3'>
+                        具体的な例
+                    </li><br>
+                    <p1>
+                        例えばテキストの中にマウスポインタが入ったときにfuncを実行するときは<br>
+                        <br><div class='t0'>
+                            tex = t.Text()<br>
+                            <br>
+                            tex.bind( '&lt;Enter&gt;', func )
+                        </div><br><br>
+                        Ctrl + q が押されたときにfuncを実行したければ<br>
+                        <div class='t0'>
+                            app = t.Tk()<br>
+                            <br>
+                            app.bind( '&lt;Control-Key-q&gt;', func )
+                        </div><br><br>
+                        ここで、マウスポインタが動いたときにアプリの背景色をランダムに変更するプログラムを記載する。
+                        また、そのまま実行したところあまりに点滅が激しかったのでtime.sleep(0.2)で0.2秒間のディレイを入れてある。
+                        <koko><bl>&nbsp;※ 明滅にご注意ください</bl></koko>
+                    </p1><br><br>
+                    <div class='t2' id='j1'>
+                        &nbsp;実行例
+                        <div class='t1'>
+                            import tkinter as t, random, time<br>
+                            <br>
+                            def func(event):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<nbl>#hex()は10進数を16進数に変換する関数、hex(16) = '0x10' となるので'0x'を取り除くために[2:]を入れている</nbl><koko><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;clr = [ hex( random.randint( 0, 255 ) )[2:] for i in range(3) ]<br></koko>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<nbl>#カラーコードは(２桁)×(赤緑青３色)=６桁なのでそれに合わせて、１桁の数字を２桁に変換している。</nbl><koko><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;new = [ clr[k] if( len( clr[k] ) > 1 ) else '0' + clr[k] for k in range(3) ]<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;app[ 'background' ] = '#{}{}{}'.format( new[0], new[1], new[2] )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;time.sleep( 0.2 )<br>
+                            <br></koko>
+                            app = t.Tk()<br>
+                            app.title( 'テスト' )<br>
+                            app.geometry( '200x120' )<br>
+                            <br><koko>
+                            app.bind( '&lt;Motion&gt;', func )<br>
+                            <br></koko>
+                            app.mainloop()
+                        </div>
+                        <br>&nbsp;実行結果（gif画像）
+                        <br><koko><bl>&nbsp;※ 明滅にご注意ください</bl></koko>
+                        <div class='pic'><img src='bind_color.gif' width='250px'></div>
+                    </div>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

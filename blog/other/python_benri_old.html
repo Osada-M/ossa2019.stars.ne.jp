@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='../../pic/o.ico'>
+    <link rel='apple-touch-icon-precomposed' href='../../pic/o.png'>
+    <link rel='stylesheet' href='../../css/main2.css'>
+    <link rel='stylesheet' href='../../css/main2_half.css' media='screen and (max-width:1360px)'>
+    <link rel='stylesheet' href='../../css/main2_quarter.css' media='screen and (max-width:850px)'>
+    <link rel='stylesheet' href='../../css/main2_mobile.css' media='screen and (max-width:550px)'>
+    <meta property='og:title' content='あるとちょっと使えるかもしれないPythonのプログラム'>
+    <meta property='og:description' content='コピペでちょっと使えるかもしれないPythonのプログラム'>
+    <meta property='og:site_name' content='あるとちょっと使えるかもしれないPythonのプログラム'>
+    <meta property='og:type' content='blog'>
+    <meta property='og:url' content='http://ossa2019.stars.ne.jp/blog/other/python_benri.html'>
+    <title>あるとちょっと使えるかもしれないPythonのプログラム【おさだのホームページ】</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='tab'>
+            <p>おさだのホームページ</p>
+            <a href='../../index.html' id='home'>
+                ホーム
+            </a>
+            <a href='../../apps.html' id='home'>
+                倉　庫
+            </a>
+            <a href='../../Remember/Remember.html' id='home'>
+                備忘録
+            </a>
+            <a href='../blog.html' id='home' class='tab_now'>
+                にっき
+            </a>
+        </div>
+        <div class='page'>
+            <div class='caption'>
+                思い立ったら追加していく
+            </div>
+            <div class='article'>
+                <p>あるとちょっと使えるかもしれないPythonのプログラム</p><br>
+                    <section>
+                        プログラムは全て関数にしてあるので、使うときは「 関数名(入力) 」とする。<br><br>
+                        <div class='a_list'>
+                        1,<a href=#1>全角文字 → 半角文字 に変換する</a><br>
+                        2,<a href=#2>半角文字 → 全角文字 に変換する</a><br>
+                        3,<a href=#3>リスト内での登場回数をカウントして辞書型にして出力</a><br>
+                        4,<a href=#4>リスト内の空き要素を削除する</a><br>
+                        5,<a href=#5>リスト内の特定の文字を別の文字に置き換える</a><br>
+                        6,<a href=#6>文字列の中で複数の文字を同時に置き換える</a><br>
+                        7,<a href=#7>階乗(n!)を計算する</a><br>
+                        8,<a href=#8>組み合わせ(C)を計算する</a><br>
+                        9,<a href=#9>順列(P)を計算する</a><br>
+                        10,<a href=#10>二項定理を計算する</a><br>
+                        11,<a href=#11>リストから平均を求める</a><br>
+                        12,<a href=#12>リストから分散を求める</a><br>
+                        13,<a href=#13>リスト内の総乗(全ての掛け算)を計算する</a><br>
+                        14,<a href=#14>ある関数の任意の点における傾きを求める</a><br>
+                        15,<a href=#15>10 進数を n 進数に変換する</a><br>
+                        </div><br><br><br><br>
+                        <div class="index_title", id='1'>
+                            1. 全角文字 → 半角文字 に変換する<br>hankaku(文字列)</div><hr/>
+                            <div class='code'>
+                                hankaku = <span class="dec0">lambda</span> xs : xs.<span class="dec4">translate</span>(str.<span class="dec4">maketrans</span>({<span class="dec4">chr</span>(0xFF01 + i): <span class="dec4">chr</span>(0x0021 + i) <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(94)}))
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                hankaku(&quot;ABC（＞O＜）１２３&quot;)<br>
+                                <span class="dec6">&gt;&gt;</span> &quot;ABC(&gt;O&lt;)123&quot;
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='2'>
+                            2. 半角文字 → 全角文字 に変換する<br>zenkaku(文字列)</div><hr/>
+                            <div class='code'>
+                                zenkaku = <span class="dec0">lambda</span> xs : xs.<span class="dec4">translate</span>(str.<span class="dec4">maketrans</span>({<span class="dec4">chr</span>(0x0021 + i): <span class="dec4">chr</span>(0xFF01 + i) <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(94)}))
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                zenkaku(&quot;abc(&gt;o&lt;)123&quot;)<br>
+                                <span class="dec6">&gt;&gt;</span> &quot;ABC（＞O＜）１２３&quot;
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='3'>
+                            3. リスト内での登場回数をカウントして辞書型にして出力<br>list_count(リスト)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> list_count(xs:list, *, re=<span class="dec4">dict</span>()):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re[x] = 1 <span class="dec1">if</span> <span class="dec3">not</span> x <span class="dec1">in</span> re <span class="dec1">else</span> re[x] + 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                list_count([1, 1, 1, 2, 2, 3])<br>
+                                <span class="dec6">&gt;&gt;</span> {1:3, 2:2, 3:1}
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='4'>
+                            4. リスト内の空き要素を削除する<br>bye_none(リスト)</div><hr/>
+                            <div class='code'>
+                                bye_none = <span class="dec0">lambda</span> xs : [x <span class="dec1">for</span> x <span class="dec1">in</span> [y <span class="dec1">for</span> y <span class="dec1">in</span> xs <span class="dec1">if</span> y != <span class="dec3">None</span>] <span class="dec1">if</span> <span class="dec4">len</span>(<span class="dec4">str</span>(x)) != 0]
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                bye_none(['abc', '', None, 7])<br>
+                                <span class="dec6">&gt;&gt;</span> ['abc', 7]  
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='5'>
+                            5. リスト内の特定の文字を別の文字に置き換える<br>rep(リスト, 置き換える文字, 置き換えた結果)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> rep(xs:list, before='', after='', *, re=[]):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">try</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re += [x.<span class="dec4">replace</span>(before, after)]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">except</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re += [x]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re    
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                rep(['abcd', 'aaabbb'], 'a', 'b'])<br>
+                                <span class="dec6">&gt;&gt;</span> ['bbcd', 'bbbbbb']
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='6'>
+                            6. 文字列の中で複数の文字を同時に置き換える<br>rep_list(文字列, 置き換える文字リスト, 置き換え結果リスト)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> rep_list(xs:str, before=[''], after=[''], *, re=''):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span class="dec4">len</span>(before) == <span class="dec4">len</span>(after)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(x <span class="dec1">in</span> before):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(before)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(x == before[i]):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re += after[i]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re += x<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re = xs<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                rep_list('aabbccdd', ['a', 'c', 'd'], ['c', 'a', ''])<br>
+                                <span class="dec6">&gt;&gt;</span> 'ccbbaa'
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='7'>
+                            7. 階乗(n!)を計算する<br>fac(整数)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> fac(n:int, *, fi=1):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(n &lt;= fi):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> fi<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> n*fac(n-1, fi=fi)
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                fac(5)<br>
+                                <span class="dec6">&gt;&gt;</span> 120　　（ ※ 5! = 120 ）
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='8'>
+                            8. 組み合わせ(C)を計算する<br>aCb = comb(a, b)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> comb(a:int, b:int, *, re=1):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(b):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re *= (a-i)/(b-i)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                comb(5, 2)<br>
+                                <span class="dec6">&gt;&gt;</span> 10.0　　（ ※ 5C2 = 10 ）
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='9'>
+                            9. 順列(P)を計算する<br>aPb = perm(a, b)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> perm(a:int, b:int, *, re=1):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(b):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re *= (a-i)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                perm(10, 3)<br>
+                                <span class="dec6">&gt;&gt;</span> 720　　（ ※ 10P3 = 720 ）
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='10'>
+                            10. 二項定理を計算する<br>(a+b)^n = bino(a, b, n)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> bino(a:int, b:int, n:int, *, re=0, bf=1):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> k <span class="dec1">in</span> <span class="dec4">range</span>(n+1):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_bf = bf<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(k):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_bf *= (n-i)/(k-i)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re +=  _bf*(a**k)*(b**(n-k))<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                bino(1, 2, 3)<br>
+                                <span class="dec6">&gt;&gt;</span> 27.0　　（ ※ (1+2)^3 = 27 ）
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='11'>
+                            11. リストから平均を求める<br>avg(リスト)</div><hr/>
+                            <div class='code'>
+                                avg = <span class="dec0">lambda</span> ns : <span class="dec4">sum</span>(ns)/<span class="dec4">len</span>(ns)
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                avg([1, 2, 3, 0.5])<br>
+                                <span class="dec6">&gt;&gt;</span> 1.625
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='12'>
+                            12. リストから分散を求める<br>div(リスト)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> div(ns:list, *, re=0):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;av = <span class="dec4">sum</span>(ns)/<span class="dec4">len</span>(ns)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> n <span class="dec1">in</span> ns:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re += <span class="dec4">abs</span>(av-n)**2<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re/<span class="dec4">len</span>(ns)
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                div([1, 2, 3, 0.5])<br>
+                                <span class="dec6">&gt;&gt;</span> 0.921875<br>
+                                <br>
+                                標準偏差を求めたければこれの平方根を取れば良い
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='13'>
+                            13. リスト内の総乗(全ての掛け算)を計算する<br>prod(リスト)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> prod(ns:list, *, re=1):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> n <span class="dec1">in</span> ns:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re *= n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                prod([1, 2, 3, 0.5])<br>
+                                <span class="dec6">&gt;&gt;</span> 3.0　　（ ※ 1*2*3*0.5 = 3 ）
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='14'>
+                            14. ある関数の任意の点における傾きを求める<br>diff(xの値, 式)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> diff(x, f=<span class="dec3">None</span>, *, d=1e-10, keta=5):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec3">None</span> <span class="dec1">if</span> f == <span class="dec3">None</span> <span class="dec1">else</span> (( f(x+d) - f(x) )/d) // 10**(-1*keta) / 10**keta
+                            </div>
+                            <div class='det'>
+                                実行結果：<br>
+                                diff(2, lambda x:x**2)<br>
+                                <span class="dec6">&gt;&gt;</span> 4.0　　（ ※ d/dx(x^2) = 2x; x=2 -&gt; 2x=4 ）<br>
+                                <br>
+                                または<br>
+                                <br>
+                                def f(x):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;return 2*(x**3)<br>
+                                diff(2, f)<br>
+                                <span class="dec6">&gt;&gt;</span> 24.0　　（ ※ d/dx(2x^3) = 6x^2; x=2 -&gt; 6x^2=24 ）<br>
+                            </div>
+                        <br><br><br>
+                        <div class="index_title", id='15'>
+                            15. 10 進数を n 進数に変換する<br>nary(数値, 底)</div><hr/>
+                            <div class='code'>
+                                <span class="dec0">def</span> nary(num:int, n:int, list:bool=<span class="dec3">False</span>) -&gt; str:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;buf, result = [], ''<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">while</span> num &gt;= 1:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf.<span class="dec4">append</span>(int(num % n))<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num /= n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> r <span class="dec1">in</span> buf[::-1]:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result += <span class="dec4">chr</span>((48 <span class="dec1">if</span> r &lt; 10 <span class="dec1">else</span> (55 <span class="dec1">if</span> r &lt; 36 <span class="dec1">else</span> 70)) + r)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> buf[::-1] <span class="dec1">if</span> list <span class="dec1">else</span> result<br>
+                            </div>
+                            <div class='det'>
+                                0~9, A~Z, a~zまでの文字を使用し、２進数から６１進数まで対応しています。<br>
+                                <br>
+                                実行結果：<br>
+                                nary(4, 2)<br>
+                                <span class="dec6">&gt;&gt;</span> '100'<br>
+                                <br>
+                                nary(2000, 16)<br>
+                                <span class="dec6">&gt;&gt;</span> '7D0'<br>
+                                <br>
+                                また、第３引数にTrueを渡すと文字列ではなくリストが返ってくる。<br>
+                                nary(2000, 16, True)<br>
+                                <span class="dec6">&gt;&gt;</span>[7, 13, 0]
+                            </div>
+                        <br><br><br><br>
+                        <a href='../blog.html' class='link'>
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src='../../count/count.php'></script>
+</body>
+</html>

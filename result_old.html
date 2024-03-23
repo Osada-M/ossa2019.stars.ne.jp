@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="pic/o.png">
+    <link rel="stylesheet" href="css/main2.css">
+    <link rel="stylesheet" href="css/main2_half.css" media="screen and (max-width:1360px)">
+    <link rel="stylesheet" href="css/main2_quarter.css" media="screen and (max-width:850px)">
+    <link rel="stylesheet" href="css/main2_mobile.css" media="screen and (max-width:550px)">
+    <meta property="og:title" content="おさだのホームページ">
+    <meta property="og:description" content="Pythonが好きな おさだ のホームページです。最近Javascriptを勉強しています。">
+    <meta property="og:site_name" content="おさだのホームページ">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://ossa2019.stars.ne.jp/index.html">
+    <title>【おさだのホームページ】Pythonが好きな&nbsp;おさだ&nbsp;が備忘録や作ったものを載せるページ</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class="flowimg"></div>
+        <div class="tab">
+            <p>おさだのホームページ</p>
+            <a href="index.html" id="home" class="tab_now">
+                ホーム
+            </a>
+            <a href="apps.html" id="home">
+                倉　庫
+            </a>
+            <a href="Remember/Remember.html" id="home">
+                備忘録
+            </a>
+            <a href="blog/blog.html" id="home">
+                にっき
+            </a>
+        </div>
+        <div class="page">
+            <div class="contents">
+                <div class="counter_view">
+                    <p id="sharch-result">検索結果</p>
+                </div>
+                <form action="result.html">
+                    <input id="search-input" placeholder="サイト内検索" name="search-key">
+                    <input id="search-buttom" class="fas" type="submit" value="検索">
+                </form>
+                <result id="result"></result>
+            </div>
+        </div>
+    </main>
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+    <script>
+        
+        let v = new URLSearchParams(window.location.search);
+        let site_name;
+        let site_url;
+        let site_info;
+        let match_result = 0;
+        v = v.get('search-key');
+        document.getElementById("sharch-result").textContent ="「" + v + "」の検索結果"
+        
+        const urlLists = [
+        "apps.html",
+        "appError.html",
+        "jouhou.html",
+        "text.html",
+        "blog\\chromeEx\\chromeEx1.html",
+        "blog\\other\\plot_anime.html",
+        "blog\\other\\python3_10.html",
+        "blog\\other\\python_benri.html",
+        "blog\\other\\linear_separation.html",
+        "blog\\other\\rsa.html",
+        "blog\\number\\mandelblot.html",
+        "blog\\number\\long_division.html",
+        "blog\\number\\comp_binomial.html",
+        "blog\\number\\complex.html",
+        "blog\\number\\diff.html",
+        "blog\\number\\isprime.html",
+        "blog\\meiro\\meiro1.html",
+        "blog\\meiro\\meiro2.html",
+        "blog\\meiro\\meiro3.html",
+        "Remember\\html\\target.html",
+        "Remember\\tkinter\\tkinter.html",
+        "Remember\\tkinter\\tk1.html",
+        "Remember\\tkinter\\tk2.html",
+        "Remember\\tkinter\\tk3.html",
+        "Remember\\tkinter\\tk4.html",
+        "Remember\\tkinter\\tk5.html",
+        "Remember\\tkinter\\tk6.html",
+        "Remember\\tkinter\\tk7.html",
+        "Remember\\tkinter\\tk8.html",
+        "Remember\\tkinter\\tk9.html",
+        "Remember\\tkinter\\tk10.html",
+        "Remember\\tkinter\\tk11.html"
+        ];
+        
+        $.each(urlLists, function(i){
+            $.ajax({
+                url : urlLists[i],
+                dataType: 'html',
+                success: function(data){
+                    if( $(data).text().indexOf(v) !== -1){
+                        match_result = 1;
+                        site_name = $(data).find("p").text()
+                        site_name = site_name.replace("おさだのホームページ", "");
+                        site_name = site_name.replace("目次", "tkinter ");
+                        site_name = site_name.replace("Pythonのソースコード.exeが入ったzipファイルエラーが出るときの対処法", "自作アプリのページ")
+                        site_name = site_name.replace("ホームに戻る   書いた文章をクリップボードにコピー", "リアルタイムで文字数を数えるだけのページ")
+                        site_name = site_name.replace("バージョン情報読み込み失敗", "")
+                        site_url = urlLists[i];
+                        site_info = $(data).find("div").text();
+                        site_info = site_info.replace("おさだのホームページ", "");
+                        site_info = site_info.replace("▲top", "");
+                        site_info = site_info.replace("ホーム", "");
+                        site_info = site_info.replace("アプリ", "");
+                        site_info = site_info.replace("備忘録", "");
+                        site_info = site_info.replace("にっき", "");
+                        site_info = site_info.replace("javascript読み込み失敗一部の追加機能、または全ての機能が利用できない可能性があります。ページを更新しても治らない場合はブラウザを変えてみてください。", "基本情報技術者試験の試験の解答照会のページ");
+                        site_info = site_info.slice(0, 500);
+                        $('<div class="article1"><p><a style="font-size:3vw" href="' + site_url +'">' + site_name +'</a></p><section>' + site_info + '・・・・</section></div>').appendTo('result');
+                    }
+                },
+                error: function(data){
+                    console.log("error");
+                }
+            });
+        });
+
+        // if(match_result == 0){
+        //     $('<div class="article"><p>結果なし</p><a href="index.html">戻る</a></div>').appendTo('result');
+        // }
+    </script>
+    <script src="js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/fade.js"></script>
+    <script src="js/counter.js"></script>
+    <script src="count/count.php"></script>
+</body>
+</html>

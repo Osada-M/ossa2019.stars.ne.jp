@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../../pic/o.ico">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="Pythonのtkinterで迷路制作（５）">
+    <meta property="og:description" content="Pythonのtkinterで迷路アプリを作ります">
+    <meta property="og:site_name" content="Pythonのtkinterで迷路制作（５）">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/meiro/meiro5.html">
+    <title>Pythonのtkinterで迷路制作（５）【おさだのホームページ】</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="../blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../../sorting/sorting.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../../text.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    迷路制作（５）アルゴリズム[2]の実装と幅優先探索
+                </div>
+                <div class="caption_text" id="jp_font">
+                    前回書いたアーキテクチャに肉付けをする
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <div class="index_content" id="fade_1">
+                    <div class="index_link">
+                        <span id="jp_font">
+                            <a href="meiro3.html">&lt;&lt; 前回</a>
+                            <!-- &nbsp;&nbsp;|&nbsp;&nbsp; -->
+                            <!-- <a href="meiro5.html">続き&nbsp;&nbsp;text&nbsp;&gt;&gt;</a><br> -->
+                            <br><br>
+                            <a href=#code>完成したプログラムまで読み飛ばす&darr;</a><br>
+                            <a href=#1>1. アルゴリズム[2]の実装</a><br>
+                            <a href=#2>2. 答えのルートの探索（幅優先探索）</a><br>
+                            <a href=#3>3. 迷路に答えを表示する</a><br>
+                            <a href=#4>4. 完成</a><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade", id="fade_2">
+                    <div class="title" id="1">アルゴリズム[2]の実装</div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            前回書いたクラスのmake_mairo()関数の中身を埋めていく。<br>
+                            <br>
+                            アルゴリズム[2]は、一本の道をランダムに伸ばしていき、端に到達したら一個戻って道が作れるか判定する。
+                            もし道が作れるのならばまたそこから道を伸ばし、道が作れないのならばさらに一個戻ることを繰り返すことで迷路を作成するものである。<br>
+                            <br>
+                            実装はまず、道を0、壁を1とした２次元配列を作り、行を縦座標、列を横座標と考えてアプリ画面に描画を行う。<br>
+                            0と1で構成される２次元配列を生成する関数make_meiro()を書いた。<br>
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_0', 'popup_0')">
+                                        copy</div>
+                                    <div class="copied" id="popup_0">copied!</div>
+                                </div>
+                                <div class="window_title">make_meiro()</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_0">
+                                            # make_meiro(ny=開始位置のy座標, nx=開始位置のx座標, mairo=全要素が1の２次元配列)<br>
+                                            <br>
+                                            <span class="dec0">def</span> make_meiro(<span class="dec2">self</span>, ny, nx, meiro) -&gt; list:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;array = <span class="dec4">list</span>(<span class="dec4">range</span>(4))<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;random.shuffle(array)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> array:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(ny+<span class="dec2">self</span>.dy[i][1] &lt; 1) <span class="dec3">or</span> (ny+<span class="dec2">self</span>.dy[i][1] &gt;= <span class="dec2">self</span>.height):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">continue</span><br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(nx+<span class="dec2">self</span>.dx[i][1] &lt; 1) <span class="dec3">or</span> (nx+<span class="dec2">self</span>.dx[i][1] &gt;= <span class="dec2">self</span>.width):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">continue</span><br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span> meiro[ny+<span class="dec2">self</span>.dy[i][1]][nx+<span class="dec2">self</span>.dx[i][1]]:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">continue</span><br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> j <span class="dec1">in</span> <span class="dec4">range</span>(2):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;meiro[ny+<span class="dec2">self</span>.dy[i][j]][nx+<span class="dec2">self</span>.dx[i][j]] = 0<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;meiro = <span class="dec2">self</span>.make_meiro(ny+<span class="dec2">self</span>.dy[i][1], nx+<span class="dec2">self</span>.dx[i][1], meiro)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> meiro
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            この２次元配列のうち、値が1である座標に壁を設置する関数put_block()も書いた。
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn"
+                                        onclick="onClickCopy('copy_text_1', 'popup_1')">
+                                        copy</div>
+                                    <div class="copied" id="popup_1">copied!</div>
+                                </div>
+                                <div class="window_title">put_block()</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_1">
+                                            <span class="dec0">def</span> put_block(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.walls = deque()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;meiro = [[1]*<span class="dec2">self</span>.width <span class="dec1">for</span> _ <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec2">self</span>.height)]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;meiro[1][1] = 0<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;meiro = <span class="dec2">self</span>.make_meiro(<span class="dec2">self</span>.x1, <span class="dec2">self</span>.y1, meiro)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> y, ms <span class="dec1">in</span> enumerate(meiro[1:<span class="dec2">self</span>.height-1]):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ms = ms[1:<span class="dec2">self</span>.width-1]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x, m <span class="dec1">in</span> enumerate(ms):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> m:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.canvas.create_rectangle(25*x + <span class="dec2">self</span>.pad[0],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25*y + <span class="dec2">self</span>.pad[1],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25*(x+1) + <span class="dec2">self</span>.pad[0],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25*(y+1) + <span class="dec2">self</span>.pad[1],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tag=&quot;wall&quot;, fill=&quot;#000000&quot;, outline=&quot;#000000&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.walls.<span class="dec4">append</span>([x, y])
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/copy.js"></script>
+    <script src="../../js/scroll.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/details.js"></script>
+    <script src="../../js/i_btn.js"></script>
+    <script src="../../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/fade.js"></script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

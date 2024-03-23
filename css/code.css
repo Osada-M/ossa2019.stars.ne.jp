@@ -1,0 +1,16 @@
+html{
+    font-family :   'Verdana'
+                    'sans-serif';
+}
+.back{
+    background  : #BFBFDF;
+    color       : black;
+    margin      : 20px 60px;
+}
+.main{
+    background  : white;
+    padding     : 10px 60px;
+}
+.a0{
+    text-align  : right;
+}

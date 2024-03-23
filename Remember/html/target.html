@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='新しタブで開いた際にリンク情報を送らない方法'>
+        <meta property='og:description' content='新しタブで開いた際にリンク情報がリンク先に送られ、不正に改ざんされるリスクを回避する方法'>
+        <meta property='og:site_name' content='新しタブで開いた際にリンク情報を送らない方法'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='https://ossa2019.stars.ne.jp/Remember/html/target.html'>
+        <title>新しいタブの脆弱性回避</title>
+    </head>
+    <body class='all'>
+        <div class='top'>
+            <h1>
+                <p style="background-color:#00000000">新しいタブで開いた際の脆弱性回避</p>
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                htmlで新しいタブで開かせるtarget='_blank'の脆弱性回避について簡単に紹介する。（2020年12月12日&nbsp;更新）
+            </div>
+            <div class='file'>
+                <p></p>
+                <div class='list0'>
+                    <p1>新しいタブで開かせる方法として <bl>target='_blank'</bl> をaタグの中に記載する方法がある。
+                        しかしこれには脆弱性があり、リンク先にリンク情報を読み取られた場合にJavascriptを用いて元ページの改ざんを行うことが可能だ。<br>
+                        <br>改ざんを回避するにはリンク情報を送らないように設定すればよい。具体的な設定は、aタグに <bl>rel='noopener noreferrer'</bl> を記載する。
+                        <br><br><div class='t0'>&lt;a href='(リンク先)' target='_blank' rel='noopener noreferrer'&gt;</div>
+                    </p1>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src='../../js/main.js'></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

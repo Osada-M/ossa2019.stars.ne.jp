@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterのチェックボックスの使い方'>
+        <meta property='og:description' content='tkinterのチェックボックスの使い方について'>
+        <meta property='og:site_name' content='tkinterのチェックボックスの使い方'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk8.html'>
+        <title>tkinterのチェックボックス（チェックボタン）の使い方：CheckButton()について【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                8. tkinterのチェックボックス（チェックボタン）の使い方
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月10日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <a href='tk2.html' class='a1'>2. 基本的な構文</a><br>
+                    <a href='tk3.html' class='a1'>3. ラベル</a><br>
+                    <a href='tk4.html' class='a1'>4. ボタン</a><br>
+                    <a href='tk5.html' class='a1'>5. エントリー</a><br>
+                    <a href='tk6.html' class='a1'>6. テキスト</a><br>
+                    <a href='tk7.html' class='a1'>7. スクロールバー</a><br>
+                    <bl>
+                    <a href='#i8' class='a1'>8. チェックボックス</a><br>
+                    <a href='#i8-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;チェックボックス（チェックボタン）の定義</a><br>
+                    <a href='#i8-2' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;チェックボックスの値を取得する</a><br>
+                    <a href='#i8-3' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;チェックボックスの初期値を設定する</a><br>
+                    <a href='#i8-4' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;チェックボックスのカスタマイズ</a><br>
+                    </bl>
+                    <br>
+                    <a href='tk9.html' class='a1'>9. アプリへのバインドについて</a><br>
+                    <a href='tk10.html' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <a href='tk11.html' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i8'>
+                    チェックボックス
+                </p>
+                <div class='list0'>
+                    <li id='i8-1'>
+                        チェックボックス(チェックボタン)の定義
+                    </li><br>
+                    <p1>
+                        チェックボックスの作成には <bl>Checkbutton()</bl> を用いる。<koko>Checkbox()ではないことに注意</koko>
+                        <br>また、チェックされたのかどうかはTrue,Falseで返され、その値を格納する変数を指定する必要がある。その指定には <bl>BooleanVar()</bl> を用いる。
+                        <br><br><div class='t0'>
+                            var = t.BooleanVar() <nbl>#TrueまたはFalseが入る</nbl><br>
+                            <br>
+                            che = t.Checkbutton( variable = var ) <nbl>#上で定義したvarをチェックボックスに紐づけ</nbl>
+                            </div><br>
+                        <br>チェックボックスに文章をくっつけるには <bl>text</bl> オプションを用いる。
+                        <br><br>
+                        <div class='t2'>
+                            &nbsp;実行例１
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '200x150' )<br>
+                                <br><koko>
+                                var = t.BooleanVar()<br>
+                                che = t.Checkbutton( text = 'チェックボックス', variable = var )<br>
+                                che.place( x = 20, y = 10 )<br>
+                                <br></koko>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果
+                            <div class='pic'><img src='check1.PNG' width='250px'></div>
+                        </div>
+                    </p1>
+                    <br></br>
+                    <li id='i8-2'>
+                        チェックボックスの値を取得する
+                    </li><br>
+                    <p1>
+                        チェックボックスの値は前述の通り変数varに格納されているので、varに対して <bl>get()</bl> を用いればよい。
+                        <br><br><div class='t0'>var.get()</div>
+                        <br>チェックボックスにチャックが入っていないとFalseが返され、入っているとTrueが返される。
+                    </p1><br>
+                    <br></br>
+                    <li id='i8-3'>
+                        チェックボックスの初期値を設定する
+                    </li><br>
+                    <p1>
+                        チェックボックスに最初からTrueまたはFalseを入れておきたいときは、varに対して <bl>set()</bl> を用いればよい。
+                        <br><br><div class='t0'>var.set( True ) <nbl>#最初からチェックを入れた状態にする</nbl></div>
+                    </p1>
+                    <br></br>
+                    <li id='i8-4'>
+                        チェックボックスのカスタマイズ
+                    </li><br>
+                    <p1>
+                        チェックボックスに対しても <bl>width</bl> 、 <bl>height</bl> 、 <bl>font</bl> 、 <bl>foreground</bl> 、 <bl>background</bl> オプションが利用できる。詳しくは<a href='tk3.html#i3-2'>第３章</a><br>
+                    <p1>
+                    <p1><br><br>
+                        ここで、ボタンを押すとチェックボックスの値をエントリーに表示するプログラムを記載する。
+                        <br><br>
+                        <div class='t2' id='j1'>
+                            &nbsp;実行例
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                def func(event):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ent.delete( 0, t.END )<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;ent.insert( 0, 'Trueです。' if var.get() else 'Falseです。' )<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '200x120' )<br>
+                                <br>
+                                ent = t.Entry( justify = t.CENTER )<br>
+                                ent.place( x = 50, y = 10, width = 100 )<br>
+                                <br><koko>
+                                var = t.BooleanVar()<br>
+                                var.set( True ) </koko><nbl>#初期値をTrueに設定</nbl><koko><br>
+                                che = t.Checkbutton( text = 'チェックボックス', variable = var )<br>
+                                che.place( x = 50, y = 40 )<br>
+                                <br></koko>
+                                but = t.Button( text = u'実行' )<br>
+                                but.place( x=50, y=80, width = 100 )<br>
+                                but.bind( '&lt;Button-1&gt;', func )<br>
+                                <br>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果（gif画像）
+                            <div class='pic'><img src='check.gif' width='250px'></div>
+                        </div>
+                    </p1>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

@@ -1,0 +1,926 @@
+<!-- Brushed up by brushUp.py version:1.1 -->
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="あるとちょっと使えるかもしれないPythonのプログラム">
+    <meta property="og:description" content="コピペでちょっと使えるかもしれないPythonのプログラム">
+    <meta property="og:site_name" content="あるとちょっと使えるかもしれないPythonのプログラム">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/other/python_benri.html">
+    <title>あるとちょっと使えるかもしれないPythonのプログラム【おさだのホームページ】</title>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="../blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../../sorting/sorting.html">
+                    <i class='bx bx-bar-chart'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- tkinterの解説ページ -->
+            <li>
+                <a href="../../Remember/tkinter/tkinter.html">
+                    <i class='bx bxl-python'></i>
+                    <span class="link_name" id="jp_font">tkinterの解説ページ</span>
+                </a>
+                <span class="popup_text" id="jp_font">tkinterの解説ページ</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../../text.html">
+                    <i class='bx bx-pencil'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    あるとちょっと使えるかもしれないPythonのプログラム
+                </div>
+                <div class="caption_text" id="jp_font">
+                    思い立ったら追加していく
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <span id="jp_font">
+                    プログラムは全て関数にしてあるので、使うときは「 関数名(入力) 」とする。<br><br>
+                </span>
+                <div class="index_content" id="fade_1">
+                    <div class="index_link">
+                        <span id="jp_font">
+                            1,<a href=#1>全角文字 → 半角文字 に変換する</a><br>
+                            2,<a href=#2>半角文字 → 全角文字 に変換する</a><br>
+                            3,<a href=#3>リスト内での登場回数をカウントして辞書型にして出力</a><br>
+                            4,<a href=#4>リスト内の空き要素を削除する</a><br>
+                            5,<a href=#5>リスト内の特定の文字を別の文字に置き換える</a><br>
+                            6,<a href=#6>文字列の中で複数の文字を同時に置き換える</a><br>
+                            7,<a href=#7>階乗(n!)を計算する</a><br>
+                            8,<a href=#8>組み合わせ(C)を計算する</a><br>
+                            9,<a href=#9>順列(P)を計算する</a><br>
+                            10,<a href=#10>二項定理を計算する</a><br>
+                            11,<a href=#11>リストから平均を求める</a><br>
+                            12,<a href=#12>リストから分散を求める</a><br>
+                            13,<a href=#13>リスト内の総乗(全ての掛け算)を計算する</a><br>
+                            14,<a href=#14>ある関数の任意の点における傾きを求める</a><br>
+                            15,<a href=#15>10 進数を n 進数に変換する</a><br>
+                        </span>
+                    </div>
+                </div>
+                <br>
+                <div class="fade" id="fade_2">
+                    <div class="title" id="1">
+                        1. 全角文字 → 半角文字 に変換する<br>hankaku(文字列)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_0', 'popup_0')">copy
+                                </div>
+                                <div class="copied" id="popup_0">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_0">
+                                        hankaku = <span class="dec0">lambda</span> xs : xs.<span
+                                            class="dec4">translate</span>(str.<span class="dec4">maketrans</span>({<span
+                                            class="dec4">chr</span>(0xFF01 + i): <span class="dec4">chr</span>(0x0021 +
+                                        i) <span class="dec1">for</span> i <span class="dec1">in</span> <span
+                                            class="dec4">range</span>(94)}))
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            hankaku(&quot;ABC（＞O＜）１２３&quot;)<br>
+                            <span class="dec6">&gt;&gt;</span> &quot;ABC(&gt;O&lt;)123&quot;
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_3">
+                    <div class="title" id="2">
+                        2. 半角文字 → 全角文字 に変換する<br>zenkaku(文字列)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_1', 'popup_1')">copy
+                                </div>
+                                <div class="copied" id="popup_1">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_1">
+                                        zenkaku = <span class="dec0">lambda</span> xs : xs.<span
+                                            class="dec4">translate</span>(str.<span class="dec4">maketrans</span>({<span
+                                            class="dec4">chr</span>(0x0021 + i): <span class="dec4">chr</span>(0xFF01 +
+                                        i)
+                                        <span class="dec1">for</span> i <span class="dec1">in</span>
+                                        <span class="dec4">range</span>(94)}))
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            zenkaku(&quot;abc(&gt;o&lt;)123&quot;)<br>
+                            <span class="dec6">&gt;&gt;</span> &quot;ABC（＞O＜）１２３&quot;
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_4">
+                    <div class="title" id="3">
+                        3. リスト内での登場回数をカウントして辞書型にして出力<br>list_count(リスト)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_2', 'popup_2')">copy
+                                </div>
+                                <div class="copied" id="popup_2">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_2">
+                                        <span class="dec0">def</span> list_count(xs:list, *, re=<span
+                                            class="dec4">dict</span>()):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span
+                                            class="dec1">in</span>
+                                        xs:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re[x] = 1 <span
+                                            class="dec1">if</span>
+                                        <span class="dec3">not</span> x <span class="dec1">in</span> re <span
+                                            class="dec1">else</span> re[x] +
+                                        1<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            list_count([1, 1, 1, 2, 2, 3])<br>
+                            <span class="dec6">&gt;&gt;</span> {1:3, 2:2, 3:1}
+
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_5">
+                    <div class="title" id="4">
+                        4. リスト内の空き要素を削除する<br>bye_none(リスト)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_3', 'popup_3')">
+                                    copy</div>
+                                <div class="copied" id="popup_3">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_3">
+                                        bye_none = <span class="dec0">lambda</span> xs : [x <span
+                                            class="dec1">for</span> x
+                                        <span class="dec1">in</span> [y <span class="dec1">for</span> y <span
+                                            class="dec1">in</span> xs <span class="dec1">if</span> y != <span
+                                            class="dec3">None</span>] <span class="dec1">if</span> <span
+                                            class="dec4">len</span>(<span class="dec4">str</span>(x)) != 0]
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            bye_none(["abc", "", None, 7])<br>
+                            <span class="dec6">&gt;&gt;</span> ["abc", 7]
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_6">
+                    <div class="title" id="5">
+                        5. リスト内の特定の文字を別の文字に置き換える<br>rep(リスト, 置き換える文字, 置き換えた結果)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_4', 'popup_4')">copy
+                                </div>
+                                <div class="copied" id="popup_4">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_4">
+                                        <span class="dec0">def</span> rep(xs:list, before="", after="", *,
+                                        re=[]):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span
+                                            class="dec1">in</span>
+                                        xs:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                            class="dec1">try</span>:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re
+                                        += [x.<span class="dec4">replace</span>(before, after)]<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                            class="dec1">except</span>:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re
+                                        += [x]<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            rep(["abcd", "aaabbb"], "a", "b"])<br>
+                            <span class="dec6">&gt;&gt;</span> ["bbcd", "bbbbbb"]
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_7">
+                    <div class="title" id="6">
+                        6. 文字列の中で複数の文字を同時に置き換える<br>rep_list(文字列, 置き換える文字リスト, 置き換え結果リスト)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_5', 'popup_5')">copy
+                                </div>
+                                <div class="copied" id="popup_5">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_5">
+                                        <span class="dec0">def</span> rep_list(xs:str, before=[""],
+                                        after=[""], *, re=""):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span
+                                            class="dec4">len</span>(before) == <span
+                                            class="dec4">len</span>(after)):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x
+                                        <span class="dec1">in</span> xs:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                            class="dec1">if</span>(x
+                                        <span class="dec1">in</span> before):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                            class="dec1">for</span> i <span class="dec1">in</span> <span
+                                            class="dec4">range</span>(<span class="dec4">len</span>(before)):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                            class="dec1">if</span>(x == before[i]):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re
+                                        += after[i]<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                            class="dec1">else</span>:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re
+                                        +=
+                                        x<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re = xs<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            rep_list("aabbccdd", ["a", "c", "d"], ["c", "a", ""])<br>
+                            <span class="dec6">&gt;&gt;</span> "ccbbaa"
+                        </span>
+                        <br><br><br>
+                    </div>
+                </div>
+                <div class="fade" id="fade_8">
+                    <div class="title" id="7">
+                        7. 階乗(n!)を計算する<br>fac(整数)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_6', 'popup_6')">copy
+                                </div>
+                                <div class="copied" id="popup_6">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_6">
+                                        <span class="dec0">def</span> fac(n:int, *, fi=1):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(n &lt;=
+                                        fi):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span>
+                                        fi<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span>
+                                        n*fac(n-1, fi=fi)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            fac(5)<br>
+                            <span class="dec6">&gt;&gt;</span> 120　　（ ※ 5! = 120 ）
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_9">
+                    <div class="title" id="8">
+                        8. 組み合わせ(C)を計算する<br>aCb = comb(a, b)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_7', 'popup_7')">copy
+                                </div>
+                                <div class="copied" id="popup_7">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_7">
+                                        <span class="dec0">def</span> comb(a:int, b:int, *,
+                                        re=1):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i
+                                        <span class="dec1">in</span>
+                                        <span class="dec4">range</span>(b):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re *=
+                                        (a-i)/(b-i)<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            comb(5, 2)<br>
+                            <span class="dec6">&gt;&gt;</span> 10.0　　（ ※ 5C2 = 10 ）
+
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_10">
+                    <div class="title" id="9">
+                        9. 順列(P)を計算する<br>aPb = perm(a, b)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_8', 'popup_8')">copy
+                                </div>
+                                <div class="copied" id="popup_8">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_8">
+                                        <span class="dec0">def</span> perm(a:int, b:int, *,
+                                        re=1):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i
+                                        <span class="dec1">in</span>
+                                        <span class="dec4">range</span>(b):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re *=
+                                        (a-i)<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span>
+                                        re
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            perm(10, 3)<br>
+                            <span class="dec6">&gt;&gt;</span> 720　　（ ※ 10P3 = 720 ）
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_11">
+                    <div class="title" id="10">
+                        10. 二項定理を計算する<br>(a+b)^n = bino(a, b, n)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_9', 'popup_9')">copy
+                                </div>
+                                <div class="copied" id="popup_9">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_9">
+                                        <span class="dec0">def</span> bino(a:int, b:int,
+                                        n:int, *, re=0, bf=1):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> k <span
+                                            class="dec1">in</span>
+                                        <span class="dec4">range</span>(n+1):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_bf
+                                        = bf<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i
+                                        <span class="dec1">in</span> <span class="dec4">range</span>(k):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_bf
+                                        *=
+                                        (n-i)/(k-i)<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re
+                                        += _bf*(a**k)*(b**(n-k))<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            bino(1, 2, 3)<br>
+                            <span class="dec6">&gt;&gt;</span> 27.0　　（ ※ (1+2)^3 = 27 ）
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_12">
+                    <div class="title" id="11">
+                        11. リストから平均を求める<br>avg(リスト)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_10', 'popup_10')">
+                                    copy
+                                </div>
+                                <div class="copied" id="popup_10">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_10">
+                                        avg = <span class="dec0">lambda</span> ns :
+                                        <span class="dec4">sum</span>(ns)/<span class="dec4">len</span>(ns)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            avg([1, 2, 3, 0.5])<br>
+                            <span class="dec6">&gt;&gt;</span> 1.625
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_13">
+                    <div class="title" id="12">
+                        12. リストから分散を求める<br>div(リスト)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_11', 'popup_11')">
+                                    copy</div>
+                                <div class="copied" id="popup_11">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_11">
+                                        <span class="dec0">def</span> div(ns:list,
+                                        *, re=0):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;av = <span class="dec4">sum</span>(ns)/<span
+                                            class="dec4">len</span>(ns)<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> n <span
+                                            class="dec1">in</span>
+                                        ns:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re
+                                        += <span class="dec4">abs</span>(av-n)**2<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re/<span
+                                            class="dec4">len</span>(ns)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            div([1, 2, 3, 0.5])<br>
+                            <span class="dec6">&gt;&gt;</span> 0.921875<br>
+                            <br>
+                            標準偏差を求めたければこれの平方根を取れば良い
+
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_14">
+                    <div class="title" id="13">
+                        13. リスト内の総乗(全ての掛け算)を計算する<br>prod(リスト)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_12', 'popup_12')">
+                                    copy</div>
+                                <div class="copied" id="popup_12">copied!</div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_12">
+                                        <span class="dec0">def</span>
+                                        prod(ns:list, *, re=1):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> n <span
+                                            class="dec1">in</span>
+                                        ns:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re
+                                        *= n<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> re
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            prod([1, 2, 3, 0.5])<br>
+                            <span class="dec6">&gt;&gt;</span> 3.0　　（ ※
+                            1*2*3*0.5 =
+                            3 ）
+
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_15">
+                    <div class="title" id="14">
+                        14. ある関数の任意の点における傾きを求める<br>diff(xの値, 式)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_13', 'popup_13')">
+                                    copy</div>
+                                <div class="copied" id="popup_13">copied!
+                                </div>
+                            </div>
+                            <div class="window_title">&nbsp;</div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_13">
+                                        <span class="dec0">def</span>
+                                        diff(x, f=<span class="dec3">None</span>, *,
+                                        d=1e-10,
+                                        keta=5):<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span
+                                            class="dec3">None</span>
+                                        <span class="dec1">if</span> f ==
+                                        <span class="dec3">None</span> <span class="dec1">else</span> ((
+                                        f(x+d)
+                                        - f(x) )/d) // 10**(-1*keta) /
+                                        10**keta
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            diff(2, lambda x:x**2)<br>
+                            <span class="dec6">&gt;&gt;</span> 4.0　　（ ※
+                            d/dx(x^2) = 2x; x=2 -&gt; 2x=4 ）<br>
+                            <br>
+                            または<br>
+                            <br>
+                            def f(x):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;return 2*(x**3)<br>
+                            diff(2, f)<br>
+                            <span class="dec6">&gt;&gt;</span> 24.0　　（ ※
+                            d/dx(2x^3) = 6x^2; x=2 -&gt; 6x^2=24 ）<br>
+
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_16">
+                    <div class="title" id="15">
+                        15. 10 進数を n 進数に変換する<br>nary(数値, 底)
+                    </div>
+                    <br>
+                    <div class="text">
+                        <div class="code_window">
+                            <div class="window_btn">
+                                <div class="red"></div>
+                                <div class="yellow"></div>
+                                <div class="green"></div>
+                                <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_14', 'popup_14')">
+                                    copy</div>
+                                <div class="copied" id="popup_14">copied!
+                                </div>
+                            </div>
+                            <div class="window_title">&nbsp;
+                            </div>
+                            <div class="window_content">
+                                <div class="window_content_buf"></div>
+                                <div class="window_text">
+                                    <span id="copy_text_14">
+                                        <span class="dec0">def</span>
+                                        nary(num:int, n:int,
+                                        list:bool=<span class="dec3">False</span>)
+                                        -&gt;
+                                        str:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;buf,
+                                        result = [], ""<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">while</span>
+                                        num &gt;= 1:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf.<span
+                                            class="dec4">append</span>(int(num
+                                        % n))<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num
+                                        /= n<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> r
+                                        <span class="dec1">in</span>
+                                        buf[::-1]:<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result
+                                        += <span class="dec4">chr</span>((48
+                                        <span class="dec1">if</span> r
+                                        &lt; 10 <span class="dec1">else</span> (55
+                                        <span class="dec1">if</span> r
+                                        &lt; 36 <span class="dec1">else</span>
+                                        70)) + r)<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span>
+                                        buf[::-1] <span class="dec1">if</span> list
+                                        <span class="dec1">else</span>
+                                        result<br>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span id="jp_font">
+                            <br>
+                            0~9, A~Z, a~zまでの文字を使用し、２進数から６１進数まで対応しています。<br>
+                            <br>
+                            <br>
+                            実行結果：<br>
+                            <br>
+                            nary(4, 2)<br>
+                            <span class="dec6">&gt;&gt;</span> "100"<br>
+                            <br>
+                            nary(2000, 16)<br>
+                            <span class="dec6">&gt;&gt;</span> "7D0"<br>
+                            <br>
+                            また、第３引数にTrueを渡すと文字列ではなくリストが返ってくる。<br>
+                            nary(2000, 16, True)<br>
+                            <span class="dec6">&gt;&gt;</span>[7, 13, 0]
+
+                            <br><br><br>
+                            <div class="link_content">
+                                <div class="link">
+                                    <a href="../blog.html">
+                                        noteのページに戻る
+                                    </a>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+                <br><br><br>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/copy.js"></script>
+    <script src="../../js/scroll.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/details.js"></script>
+    <script src="../../js/i_btn.js"></script>
+    <script src="../../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/fade.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on('load scroll', function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="../../count/count.php"></script>
+</body>
+
+</html>

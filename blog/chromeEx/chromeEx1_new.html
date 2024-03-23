@@ -1,0 +1,794 @@
+<!-- Brushed up by brushUp.py version:1.3 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="Google Chromeの拡張機能を作ってみる">
+    <meta property="og:description" content="JavaScript,HTML,CSS,JSONを用いたGoogle Chromeの拡張機能を作ってみる">
+    <meta property="og:site_name" content="Google Chromeの拡張機能を作ってみる">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="/Users/osadamasashi/Desktop/ossa2019.stars.ne.jp/chromeEx/chromeEx1.html">
+    <title>Chromeの拡張機能を作ってみる。JSON、JavaScript、HTML、CSSを用いた簡単な拡張機能作成。</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="../blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../../text.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    Google Chromeの拡張機能を作ってみる
+                </div>
+                <div class="caption_text" id="jp_font">
+                    自分専用のChrome拡張機能を作りたい
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                        拡張機能に必要なものは JSON と JavaScript のファイルで、必要に応じて HTML や CSS のファイルを用意すればよい。<br><br><br>
+                        <a href="#1" class="notdec">1.「こんにちは！」を表示させる</a><br>
+                        <a href="#2" class="notdec">2. HTMLを用いてポップアップを表示させる</a><br>
+                        <a href="#3" class="notdec">3. ポップアップで文字数カウンターを作る</a><br>
+                        <a href="#4" class="notdec">4. JavaScriptの記法に癖がある</a><br>
+                        <br><br><br><br>
+                        <div class="fade" id="fade_">
+                            <div class="title" id="1">
+                            1. 「こんにちは！」を表示させる<hr/>
+                        </div>
+                        <div class="text">
+                            <span id="jp_font">
+                                <br>
+                        まずは JSON と JavaScript のみの簡単なものを作成する。<br><br>
+                        <div style="font-weight:bold;">
+                            ファイル構成
+                        </div>
+                        test<br>
+                        &nbsp;|- manifest.json  (JSONファイル)<br>
+                        &nbsp;|- test.js  (JavaScriptファイル)<br>
+                        <br>
+                        manifest.json
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            {<br>
+                            &nbsp;&nbsp;&quot;name&quot;: &quot;test&quot;,<br>
+                            &nbsp;&nbsp;&quot;description&quot;: &quot;テストの拡張機能&quot;,<br>
+                            &nbsp;&nbsp;&quot;version&quot;: &quot;1.0&quot;,<br>
+                            &nbsp;&nbsp;&quot;content_scripts&quot;: [{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;js&quot;: [&quot;test.js&quot;],<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;matches&quot;: [&quot;http://*/*&quot;, &quot;https://*/*&quot;]<br>
+                            &nbsp;&nbsp;}],<br>
+                            &nbsp;&nbsp;&quot;browser_action&quot;: {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;default_title&quot;: &quot;テスト&quot;<br>
+                            &nbsp;&nbsp;},<br>
+                            &nbsp;&nbsp;&quot;manifest_version&quot;: 2<br>
+                            }
+                            </span>
+                        </div>
+                    </div>
+                        </div><br>
+                        test.js<br>
+                        （ブラウザに「こんにちは！」を表示させる。）
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            <span class="dec2">&quot;use strict&quot;;</span><br>
+                            <br>
+                            <span class="dec4">window</span>.<span class="dec4">alert</span>(&quot;こんにちは！&quot;);
+                            </span>
+                        </div>
+                    </div>
+                        </div>
+                        <br><br>
+                        JSON と JavaScript を用意できたらいよいよGoogle Chromeに読み込ませていく。<br><br>
+                        まずはChromeの拡張機能の設定から、「パッケージ化されていない拡張機能を読み込む」を選択し、作成した拡張機能のフォルダ（今回はtestフォルダ）を選択する。<br><br>
+                        <div class="pic"><img src="images/test_add0.png" width="70%" alt="test_add0"></div><br>
+                        すると拡張機能の一覧に今追加したものが現れる。<br><br>
+                        <div class="pic"><img src="images/test_add1.png" width="50%" alt="test_add1"></div><br>
+                        この画像と manifest.json を見比べると、どの引数がどの表示になっているのかがわかるだろう。<br><br>
+                        この状態で私のホームページを開いてみると、<br><br>
+                        <div class="pic"><img src="images/alert.png" width="60%" alt="alert"></div><br>
+                        プログラム通りに「こんにちは！」と表示された。<br>
+                        <br><br><br><br>
+                        </span>
+                                </div>
+                            </div>
+                        <div class="fade" id="fade_">
+                            <div class="title" id="2">
+                            2. HTMLを用いてポップアップを表示させる<hr/>
+                        </div>
+                        <div class="text">
+                            <span id="jp_font">
+                                <br>
+                        <div style="font-weight:bold;">
+                            ファイル構成
+                        </div>
+                        test<br>
+                        &nbsp;|- manifest.json  (JSONファイル)<br>
+                        &nbsp;|<br>
+                        &nbsp;|- elements<br>
+                        &nbsp;|&nbsp;&nbsp;|- test.html  (HTMLファイル)<br>
+                        &nbsp;|<br>
+                        &nbsp;|- css<br>
+                        &nbsp;|&nbsp;&nbsp;|- style.css  (CSSファイル)<br>
+                        &nbsp;|<br>
+                        &nbsp;|- js<br>
+                        &nbsp; &nbsp;&nbsp;|- script.js  (JavaScriptファイル)<br>
+                        <br>
+                        manifest.json
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            {<br>
+                            &nbsp;&nbsp;&quot;name&quot;: &quot;test&quot;,<br>
+                            &nbsp;&nbsp;&quot;description&quot;: &quot;テストの拡張機能&quot;,<br>
+                            &nbsp;&nbsp;&quot;version&quot;: &quot;1.0&quot;,<br>
+                            &nbsp;&nbsp;&quot;content_scripts&quot;: [{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;js&quot;: [&quot;js/script.js&quot;],<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;css&quot;: [&quot;css/style.css&quot;],<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;matches&quot;: [&quot;http://*/*&quot;, &quot;https://*/*&quot;]<br>
+                            &nbsp;&nbsp;}],<br>
+                            &nbsp;&nbsp;&quot;browser_action&quot;: {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;default_title&quot;: &quot;テスト&quot;,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;default_popup&quot;: &quot;elements/test.html&quot;<br>
+                            &nbsp;&nbsp;},<br>
+                            &nbsp;&nbsp;&quot;manifest_version&quot;: 2<br>
+                            }
+                            </span>
+                        </div>
+                    </div>
+                        </div><br>
+                        test.html
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            &lt;<span class="dec0">!DOCTYPE html</span>&gt;<br>
+                            &lt;<span class="dec0">html</span>&gt;<br>
+                            &nbsp;&nbsp;&lt;<span class="dec0">head</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">meta</span> <span class="dec1">charset</span>=&quot;<span class="dec5">UTF-8</span>&quot;&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">title</span>&gt;テスト&lt;/<span class="dec0">title</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">link</span> <span class="dec1">rel</span>=&quot;<span class="dec5">stylesheet</span>&quot; <span class="dec1">type</span>=&quot;text/css&quot; <span class="dec1">href</span>=&quot;../css/style.css&quot;&gt;<br>
+                            &nbsp;&nbsp;&lt;/<span class="dec0">head</span>&gt;<br>
+                            &nbsp;&nbsp;&lt;<span class="dec0">body</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">p</span>&gt;こんにちは！&lt;/<span class="dec0">p</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">script</span> <span class="dec1">src</span>=&quot;../js/script.js&quot;&gt;&lt;/<span class="dec0">script</span>&gt;<br>
+                            &nbsp;&nbsp;&lt;/<span class="dec0">body</span>&gt;<br>
+                            &lt;/<span class="dec0">html</span>&gt;
+                            </span>
+                        </div>
+                    </div>
+                        </div><br>
+                        style.css
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            body{<br>
+                            &nbsp;&nbsp;min-width : 200px;<br>
+                            &nbsp;&nbsp;min-height : 200px;<br>
+                            &nbsp;&nbsp;font-famiry : "Verdana" "sans-serif"<br>
+                            }<br>
+                            <br>
+                            body &gt; p{<br>
+                            &nbsp;&nbsp;text-align : center;<br>
+                            &nbsp;&nbsp;color : red<br>
+                            }
+                            </span>
+                        </div>
+                    </div>
+                        </div><br>
+                        script.js
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            // 今回は使わない
+                            </span>
+                        </div>
+                    </div>
+                        </div><br>
+                        コードが用意できれば、先程と同じように拡張機能をChromeに読み込ませる。
+                        また、先程と同じフォルダで作業しているならば拡張機能の設定画面の左上にある「更新」を押すだけで良い。<br><br>
+                        読み込ませたら、Chromeの画面右上にある拡張機能のマーク（パズルのピースの様な形）をクリックし、作成した「test」をクリックする。すると、<br><br>
+                        <div class="pic"><img src="images/testhtml.png" width="50%" alt="testhtml"></div><br>
+                        ポップアップをHTMLで表示できることがわかれば、後は通常のWebサイトと同じように編集できる。<br>
+                        <br><br><br><br>
+                        </span>
+                                </div>
+                            </div>
+                        <div class="fade" id="fade_">
+                            <div class="title" id="3">
+                            3. ポップアップで文字数カウンターを作る<hr/>
+                        </div>
+                        <div class="text">
+                            <span id="jp_font">
+                                <br>
+                        <div style="font-weight:bold;">
+                            ファイル構成
+                        </div>
+                        test<br>
+                        &nbsp;|- manifest.json<br>
+                        &nbsp;|<br>
+                        &nbsp;|- elements<br>
+                        &nbsp;|&nbsp;&nbsp;|- textCount.html<br>
+                        &nbsp;|<br>
+                        &nbsp;|- css<br>
+                        &nbsp;|&nbsp;&nbsp;|- style.css<br>
+                        &nbsp;|<br>
+                        &nbsp;|- js<br>
+                        &nbsp;|&nbsp;&nbsp;|- script.js<br>
+                        &nbsp;|<br>
+                        &nbsp;|- img<br>
+                        &nbsp; &nbsp;&nbsp;|- o.png  (アイコン)<br>
+                        <br>
+                        manifest.json
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            {<br>
+                            &nbsp;&nbsp;&quot;name&quot;: &quot;文字数カウンター&quot;,<br>
+                            &nbsp;&nbsp;&quot;description&quot;: &quot;文字数をリアルタイムに数えます&quot;,<br>
+                            &nbsp;&nbsp;&quot;version&quot;: &quot;1.0&quot;,<br>
+                            &nbsp;&nbsp;&quot;content_scripts&quot;: [{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;js&quot;: [&quot;js/script.js&quot;],<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;css&quot;: [&quot;css/style.css&quot;],<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;matches&quot;: [&quot;http://*/*&quot;, &quot;https://*/*&quot;]<br>
+                            &nbsp;&nbsp;}],<br>
+                            &nbsp;&nbsp;&quot;browser_action&quot;: {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;default_icon&quot;: &quot;img/o.png&quot;,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;default_title&quot;: &quot;文字数&quot;,<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&quot;default_popup&quot;: &quot;elements/textCount.html&quot;<br>
+                            &nbsp;&nbsp;},<br>
+                            &nbsp;&nbsp;&quot;manifest_version&quot;: 2<br>
+                            }
+                            </span>
+                        </div>
+                    </div>
+                        </div><br>
+                        textCount.html
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            &lt;<span class="dec0">!DOCTYPE html</span>&gt;<br>
+                            &lt;<span class="dec0">html</span>&gt;<br>
+                            &nbsp;&nbsp;&lt;<span class="dec0">head</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">meta</span> <span class="dec1">charset</span>=&quot;<span class="dec5">UTF-8</span>&quot;&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">title</span>&gt;文字数カウンター&lt;/<span class="dec0">title</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">link</span> <span class="dec1">rel</span>=&quot;<span class="dec5">stylesheet</span>&quot; <span class="dec1">type</span>=&quot;text/css&quot; <span class="dec1">href</span>=&quot;../css/style.css&quot;&gt;<br>
+                            &nbsp;&nbsp;&lt;/<span class="dec0">head</span>&gt;<br>
+                            &nbsp;&nbsp;&lt;<span class="dec0">body</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">div</span> <span class="dec1">class</span>=text&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">div</span> <span class="dec1">class</span>=others&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">div</span> <span class="dec1">class</span>=&quot;box&quot;&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">div</span> <span class="dec1">id</span>=&quot;strLen&quot;&gt;0 文字&lt;/<span class="dec0">div</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="dec0">div</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">div</span> <span class="dec1">class</span>=&quot;box&quot; <span class="dec1">id</span>=&quot;output&quot;&gt;&lt;/<span class="dec0">div</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">div</span> <span class="dec1">class</span>=&quot;box&quot;&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">p</span>&gt;&lt;<span class="dec0">button</span> <span class="dec1">id</span>=&quot;copyToClipboard&quot;&gt;<span class="dec3">&amp;ensp;</span><span class="dec3">&amp;ensp;</span><span class="dec3">&amp;ensp;</span>書いた文章をクリップボードにコピー<span class="dec3">&amp;ensp;</span><span class="dec3">&amp;ensp;</span><span class="dec3">&amp;ensp;</span>&lt;/<span class="dec0">button</span>&gt;&lt;/<span class="dec0">p</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="dec0">div</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="dec0">div</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">textarea</span> <span class="dec1">id</span>=&quot;textArea&quot;&gt;&lt;/<span class="dec0">textarea</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">details</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">summary</span>&gt;置換&lt;/<span class="dec0">summary</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">input</span> <span class="dec1">id</span>=&quot;before&quot; <span class="dec1">size</span>=20&gt;<span class="dec3">&amp;ensp;</span>-<span class="dec3">&amp;gt;</span><span class="dec3">&amp;ensp;</span>&lt;<span class="dec0">input</span> <span class="dec1">id</span>=&quot;after&quot; <span class="dec1">size</span>=20&gt;<span class="dec3">&amp;ensp;</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">button</span> <span class="dec1">id</span>=&quot;shift&quot;&gt;<span class="dec3">&amp;ensp;</span><span class="dec3">&amp;ensp;</span>全て置き換える<span class="dec3">&amp;ensp;</span><span class="dec3">&amp;ensp;</span>&lt;/<span class="dec0">button</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="dec0">details</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">p</span> <span class="dec1">style</span>=&quot;text-align:right;&quot;&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="dec0">a</span> <span class="dec1">href</span>=&quot;http://ossa2019.stars.ne.jp/text.html&quot; <span class="dec1">target</span>="_blank" <span class="dec1">rel</span>="noopener noreferrer"&gt;Webページ版&lt;/<span class="dec0">a</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="dec0">p</span>&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="dec0">div</span>&gt;<br>
+                            &nbsp;&nbsp;&lt;<span class="dec0">script</span> <span class="dec1">src</span>=&quot;../js/script.js&quot;&gt;&lt;/<span class="dec0">script</span>&gt;<br>
+                            &nbsp;&nbsp;&lt;/<span class="dec0">body</span>&gt;<br>
+                            &lt;/<span class="dec0">html</span>&gt;
+                            </span>
+                        </div>
+                    </div>
+                            </div><br>
+                        style.css
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            body{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;min-width : 600px;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;min-height : 600px;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;font-family : "Verdana" "sans-serif";<br>
+                            }<br>
+                            .box{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;display : table-cell;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;vertical-align  : middle;<br>
+                            }<br>
+                            .text{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;margin : 5%;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;margin-top : 0px;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;width : 90%;<br>
+                            }<br>
+                            .others{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;width : 100%;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;padding-bottom: 5px;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;display : table;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;table-layout :fixed;<br>
+                            }<br>
+                            .others &gt; .box &gt; p{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;text-align : right;<br>
+                            }<br>
+                            textarea{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;width : 100%;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;height : 420px;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;font-size : 2.5vw;<br>
+                            }<br>
+                            #output{<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;color : #ee2222;<br>
+                            }<br>
+                            </span>
+                        </div>
+                    </div>
+                            </div><br>
+                        script.js
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            <span class="dec2">&quot;use strict&quot;;</span> <br>
+                            <br>
+                            // 文字数カウント<br>
+                            <span class="dec4">document</span>.<span class="dec4">addEventListener</span>(&quot;DOMContentLoaded&quot;, <span class="dec0">function</span>(){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> ct = <span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;textArea&quot;);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ct.<span class="dec4">addEventListener</span>(&quot;<span class="dec4">keyup</span>&quot;, <span class="dec0">function</span>(){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> xs = <span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;textArea&quot;).<span class="dec4">value</span>;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> len = xs.<span class="dec4">length</span>;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span>(<span class="dec0">let</span> i = len; i--;){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(xs[i] === &quot;\n&quot;){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;len--;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">console</span>.<span class="dec4">log</span>(len);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;strLen&quot;).<span class="dec4">innerText</span> = len + &quot; 文字&quot;;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;output&quot;).<span class="dec4">innerHTML</span> = &quot;&quot;;<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;});<br>
+                            });<br>
+                            <br>
+                            // クリップボードにコピー<br>
+                            <span class="dec4">document</span>.<span class="dec4">addEventListener</span>(&quot;DOMContentLoaded&quot;, <span class="dec0">function</span>(){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> cp = <span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;copyToClipboard&quot;);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;cp.<span class="dec4">addEventListener</span>(&quot;<span class="dec4">click</span>&quot;, <span class="dec0">function</span>(){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> copyTarget = <span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;textArea&quot;);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;copyTarget.<span class="dec4">select</span>();<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">document</span>.<span class="dec4">execCommand</span>(&quot;Copy&quot;);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;output&quot;).<span class="dec4">innerHTML</span> = &quot;クリップボードにコピーしました！&quot;;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;});<br>
+                            });<br>
+                            <br>
+                            // 置換<br>
+                            <span class="dec4">document</span>.<span class="dec4">addEventListener</span>(&quot;DOMContentLoaded&quot;, <span class="dec0">function</span>(){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> sf = <span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;shift&quot;);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;sf.<span class="dec4">addEventListener</span>(&quot;<span class="dec4">click</span>&quot;, <span class="dec0">function</span>(){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> before = <span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;before&quot;).<span class="dec4">value</span>;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> after = <span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;after&quot;).<span class="dec4">value</span>;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> xs = <span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;textArea&quot;).<span class="dec4">value</span>;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;textArea&quot;).<span class="dec4">value</span> = xs.<span class="dec4">split</span>(before).<span class="dec4">join</span>(after);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;output&quot;).<span class="dec4">innerHTML</span> = before+&quot;を&quot;+after+&quot; に置換しました！&quot;;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;});<br>
+                            });                            
+                            </span>
+                        </div>
+                    </div>
+                        </div><br>
+                        o.png
+                        <div class="pic" style="text-align:left;"><img src="images/osada.png" width="10%" alt="o.png"></div><br><br>
+                        これも同様にChromeに読み込ませ、右上の拡張機能マークより「文字数カウンター」をクリックする。<br><br>
+                        <div class="pic"><img src="images/text.png" width="50%" alt="o.png"></div><br>
+                        このテキストエリアに文字を打ち込めばリアルタイムに文字数を数えてくれる。<br><br>
+                        <div class="pic"><img src="images/count.png" width="40%" alt="o.png"></div><br>
+                        また、下の折り畳み欄から文字の置換ができ、右上のボタンから書いた文章をクリップボードにコピーできる。<br><br>
+                        <div class="pic"><img src="images/replace.png" width="50%" alt="o.png"></div><br>
+                        <br><br><br><br>
+                        </span>
+                                </div>
+                            </div>
+                        <div class="fade" id="fade_">
+                            <div class="title" id="4">
+                            4. JavaScriptの記法に癖がある<hr/>
+                        </div>
+                        <div class="text">
+                            <span id="jp_font">
+                                <br>
+                        ここまで紹介したようにHTMLとJavaScriptを用いて通常のWebサイトと同様に様々なWebシステムを作成することができるが、JavaScriptの書き方に少し癖があることを留意する必要がある。<br><br>
+                        普段の書き方でボタンを作ろうとすると、<br><br>
+                        HTML :
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            &lt;<span class="dec0">button</span> <span class="dec1">onclick</span>=&quot;func()&quot;&gt;ボタン&lt;/<span class="dec0">button</span>&gt;<br>
+                            </span>
+                        </div>
+                    </div>
+                        </div>
+                        JavaScript :
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            <span class="dec0">function</span> func(){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;// 何らかの処理<br>
+                            }
+                            </span>
+                        </div>
+                    </div>
+                        </div><br>
+                        このように書けるが、拡張機能の場合は onclick や onkeyup などの属性が使えないので代わりに id と addEventListener 属性を用いる必要がある。<br>
+                        上記のプログラムを拡張機能で使えるように書き直すと下の様になる。<br><br>
+                        HTML :
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            &lt;<span class="dec0">button</span> <span class="dec1">id</span>=&quot;func&quot;&gt;ボタン&lt;/<span class="dec0">button</span>&gt;
+                            </span>
+                        </div>
+                    </div>
+                        </div>
+                        JavaScript :
+                        <div class="code_window_details" id="window_">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_', 'popup_')">copy</div>
+                                    <div class="copied" id="popup_">copied!</div>
+                                </div>
+                                <div class="window_title">make_rsa.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_">
+                            <span class="dec4">document</span>.addEventListener(&quot;DOMContentLoaded&quot;, <span class="dec0">function</span>(){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">const</span> val = <span class="dec4">document</span>.<span class="dec4">getElementById</span>(&quot;func&quot;);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;val.addEventListener(&quot;<span class="dec4">click</span>&quot;, <span class="dec0">function</span>(){<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 何らかの処理<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;});<br>
+                            })
+                            </span>
+                        </div>
+                    </div>
+                        </div><br>
+                        addEventListener を詳しく見ると、通常の onclick 属性の代わりに click を引数に渡していることがわかる。このように、onclick は click 、onkeyup は keyup というように各属性から「on」を取った文字列に対応していることが多い。詳しくは「javascript chrome 拡張機能 (やりたいこと)」のような文言で適宜検索していただきたい。<br>
+                        <br><br>
+                        <a href="../blog.html" class="link">
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/copy.js"></script>
+    <script src="../../js/scroll.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/details.js"></script>
+    <script src="../../js/i_btn.js"></script>
+    <script src="../../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/fade.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on("load scroll", function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

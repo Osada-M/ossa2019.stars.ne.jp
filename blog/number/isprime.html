@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='../../pic/o.ico'>
+    <link rel='apple-touch-icon-precomposed' href='../../pic/o.png'>
+    <link rel='stylesheet' href='../../css/main2.css'>
+    <link rel='stylesheet' href='../../css/main2_half.css' media='screen and (max-width:1360px)'>
+    <link rel='stylesheet' href='../../css/main2_quarter.css' media='screen and (max-width:850px)'>
+    <link rel='stylesheet' href='../../css/main2_mobile.css' media='screen and (max-width:550px)'>
+    <meta property='og:title' content='Pythonで効率的な素数判定を目指して'>
+    <meta property='og:description' content='pythonにおける効率的な素数探索に関して書いています。pythonのisprime()関数には劣ります。'>
+    <meta property='og:site_name' content='Pythonで効率的な素数判定を目指して'>
+    <meta property='og:type' content='blog'>
+    <meta property='og:url' content='https://ossa2019.stars.ne.jp/blog/number/isprime.html'>
+    <title>Pythonで効率的な素数判定を目指して【おさだのホームページ】</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='tab'>
+            <p>おさだのホームページ</p>
+            <a href='../../index.html' id='home'>
+                ホーム
+            </a>
+            <a href='../../apps.html' id='home'>
+                倉　庫
+            </a>
+            <a href='../../Remember/Remember.html' id='home'>
+                備忘録
+            </a>
+            <a href='../blog.html' id='home' class='tab_now'>
+                にっき
+            </a>
+        </div>
+        <div class='page'>
+            <div class='caption'>
+                Pythonで素数判定を高速にしたい
+            </div>
+            <div class='article'>
+                <p>効率的な素数探索を目指して</p><br>
+                    <section>
+                        正の整数 n が素数かどうかを判定する際に探索するべき整数は 2 以上 √n 以下である。<br><br>
+                        その簡単な証明を記すので、興味がなければ読み飛ばしても良い。
+                        <div class='det'>
+                            まず、正の整数 n は必ず正の整数 x、y を用いて n = xy と表すことができる。
+                            たとえば n = 10 である時、x と y の組み合わせは<br><br><br>
+                            ( x, y ) = ( 1, 10 )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 2, &nbsp;5 )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 5, &nbsp;2 )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 10, 1 )  の４つである。<br><br><br>
+                            ここで注目して欲しいのは x と y が上下に対称的に登場していることである。
+                            加えて、n = xy において n と x がわかっている時 y は一意に定まることを考えれば掛け算の片方だけ( x と y の片方だけ )を考えれば良い。<br><br><br>
+                            なのでこの時に考えるべき因数は x = 1, 2 の２つのみである。
+                            そして、全ての整数は１で割り切れるので探索する必要がないことを考慮すると、 n = 10 の素数探索において考えるべき整数は2以上であるので x = 2 のみであると言える。<br><br><br>
+                            次に x と y が上下に対称的になる境界線を考える。<br>
+                            n = xy において x = y が成り立つのは x = √n の時であり、x が √n を超えた後に登場する数字は x と y の対称性を考えると既に登場していると言える。<br>
+                            ( n = 100 の時の x と y を全て書き出してみれば直感的に理解できるであろう。)<br><br><br>
+                            以上のことより、正の整数 n が素数かどうかを判定するのに探索するべき整数は 2 以上 √n 以下に収まる。<br>
+                        </div>
+                        <br><br>
+                        また、入力が１以下であれば素数ではないし、２か３であれば確定で素数であるので探索から除外できる。<br><br>
+                        上記の理論に従って素数探索の関数を書いた。
+                        <div class='code'>
+                            from math <span class="dec0">import</span> *<br>
+                            <br>
+                            <span class="dec0">def</span> f( n ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">try</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>( n &gt; 3 ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>( 2, int( pow( n, 1/2 ) ) + 1 ): # 2 以上 int(√n) 以下<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>( n % i == 0 ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec3">False</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>( n &lt; 2 ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec3">False</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec3">True</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">except</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec3">False</span><br>
+                        </div><br>
+                        この関数は、入力が素数なら True を、素数でなければ False を返すものである。<br><br><br>
+                        次に、Pythonに提供されている関数と比較してみる。<br>
+                        使うのはsympyパッケージのisprime関数である。
+                        今回作った関数とisprime関数がそれぞれ引数を入れてから戻り値を出すまでの時間を10万回計測し、その平均を出すと結果は下のようになった。<br><br>
+                        <div class='pic'><img src='images/isprime.png' width='70%' alt='関数比較画像'></div><br>
+                        結果は0.3マイクロ秒程の差であった。<br>
+                        今回の関数では探索する範囲を収縮させて効率化を図ったが、４以上の正の偶数を因数として考慮する必要がないことや、既に登場した整数の倍数を探索から除外することなどまだまだ改善できそうである。<br>
+                        今後、この関数よりも速い探索を見つけられたら続きとして記そうと思う。
+                        <br><br><br>
+                        <a href='../blog.html' class='link'>
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src='../../count/count.php'></script>
+</body>
+</html>

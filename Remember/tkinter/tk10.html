@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterのアプリ画面を複数つくる'>
+        <meta property='og:description' content='tkinterのアプリ画面を複数つくる方法について'>
+        <meta property='og:site_name' content='tkinterのアプリ画面を複数つくる'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk10.html'>
+        <title>tkinterで複数のアプリ画面をつくる：特定のアプリ指定とウィジェットについて【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                10. 複数のアプリ画面をつくる
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月21日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <a href='tk2.html' class='a1'>2. 基本的な構文</a><br>
+                    <a href='tk3.html' class='a1'>3. ラベル</a><br>
+                    <a href='tk4.html' class='a1'>4. ボタン</a><br>
+                    <a href='tk5.html' class='a1'>5. エントリー</a><br>
+                    <a href='tk6.html' class='a1'>6. テキスト</a><br>
+                    <a href='tk7.html' class='a1'>7. スクロールバー</a><br>
+                    <a href='tk8.html' class='a1'>8. チェックボックス</a><br>
+                    <a href='tk9.html' class='a1'>9. バインドについて</a><br>
+                    <bl>
+                    <a href='#i10' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <a href='#i10-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;アプリを複数定義する</a><br>
+                    <a href='#i10-2' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;特定のアプリにウィジェットを作成する</a><br>
+                    </bl>
+                    <br>
+                    <a href='tk11.html' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i10'>
+                    複数のアプリ画面をつくる
+                </p>
+                <div class='list0'>
+                    <li id='i10-1'>
+                        アプリを複数定義する
+                    </li><br>
+                    <p1>
+                        アプリの定義方法は<a href='tk2.html'>第２章</a>の通り、<bl>(変数) = t.Tk()</bl>&nbsp;だ。複数のアプリを定義するには複数の変数を用いる。
+                        <br>よって、２つのアプリを用いたプログラムの全体像は下のようになる
+                        <br><br><div class='t0'>
+                            import tkinter as t<br>
+                            <br>
+                            <nbl>#アプリ１を定義</nbl><br>
+                            app1 = t.Tk()<br>
+                            <br>
+                            <nbl>#アプリ２を定義</nbl><br>
+                            app2 = t.Tk()<br>
+                            <br><nbl>
+                            #~~(行いたい処理)~~<br>
+                            <br></nbl>
+                            <nbl>#アプリ１を表示</nbl><br>
+                            app1.mainloop()<br>
+                            <br>
+                            <nbl>#アプリ２を表示</nbl><br>
+                            app2.mainloop()<br>
+                        </div>
+                        <br><br><br>
+                    </p1>
+                    <li id='i10-2'>
+                        特定のアプリにウィジェットを作成する
+                    </li><br>
+                    <p1>
+                        ウィジェットとはtkinterにおけるボタンやエントリーなどの画面に表示させるUIのことだ。複数のアプリを作成した状態で特定のアプリに特定のウィジェットを作成するには、ウィジェットの定義時にそのアプリ名を明記すればよい。<br>
+                        <br><br><div class='t0'>
+                            app1 = t.Tk()<br>
+                            app2 = t.Tk()<br>
+                            <br>
+                            <nbl>#アプリ１にボタンを作成（アプリ２には作成されない）</nbl><br>
+                            but = t.Botton( app1, text=u'ボタン' )<br>
+                            but.pack()<br>
+                            <br>
+                            app1.mainloop()<br>
+                            app2.mainloop()<br>
+                        </div>
+                        <br><br><br>
+                    </p1>
+                    <div class='t2' id='j1'>
+                        &nbsp;実行例
+                        <div class='t1'>
+                            import tkinter as t<br>
+                            <br><nbl>
+                            #アプリ１の定義<br></nbl><koko>
+                            app1 = t.Tk()<br>
+                            app1.title( 'アプリ１' )<br>
+                            app1.geometry( '250x160' )<br>
+                            app1[ 'background' ] = '#5050f8'</koko>&nbsp;<nbl>#背景色を青に設定</nbl><br>
+                            <br><nbl>
+                            #アプリ２の定義<br></nbl><koko>
+                            app2 = t.Tk()<br>
+                            app2.title( 'アプリ２' )<br>
+                            app2.geometry( '250x160' )<br>
+                            app2[ 'background' ] = '#f85050'</koko>&nbsp;<nbl>#背景色を赤に設定</nbl><br>
+                            <br><nbl>
+                            #アプリ１にボタンを作成<br></nbl>
+                            but = t.Button( <koko>app1</koko>, text = u'ボタン' )<br>
+                            but.place( x = 10, y = 10, width = 230 )<br>
+                            <br><nbl>
+                            #アプリ２にテキストを作成<br></nbl>
+                            tex = t.Text( <koko>app2</koko> )<br>
+                            tex.place( x = 20, y = 20, width = 210, height = 120 )<br>
+                            tex.insert( 0., 'テキスト' )<br>
+                            <br><koko>
+                            app1.mainloop()<br>
+                            app2.mainloop()<br></koko>
+                        </div>
+                        <br>&nbsp;実行結果<br>
+                        <div class='pic'><img src='app1.PNG' width='250px'>&nbsp;<img src='app2.PNG' width='250px'></div>
+                    </div>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

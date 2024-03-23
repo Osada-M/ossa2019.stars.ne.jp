@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../pic/o.ico">
+    <link rel="shortcut icon" href="../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="【おさだのホームページ】note|プログラムの制作過程と成果など">
+    <meta property="og:description" content="Pythonが好きな おさだ のホームページです。最近Javascriptを勉強しています。">
+    <meta property="og:site_name" content="【おさだのホームページ】note|プログラムの制作過程と成果など">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/blog.html">
+    <title>【おさだのホームページ】Pythonが好きな&nbsp;おさだ&nbsp;が備忘録や作ったものを載せるページ</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../sorting/sorting.html">
+                    <i class='bx bx-bar-chart'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- tkinterの解説ページ -->
+            <li>
+                <a href="../Remember/tkinter/tkinter.html">
+                    <i class='bx bxl-python'></i>
+                    <span class="link_name" id="jp_font">tkinterの解説ページ</span>
+                </a>
+                <span class="popup_text" id="jp_font">tkinterの解説ページ</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../text.html">
+                    <i class='bx bx-pencil'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    note
+                </div>
+                <div class="caption_text" id="jp_font">
+                    プログラムの制作過程と成果など
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <div class="title" id="fade_1">プログラミング</div>
+                <div class="link_content" id="fade_2">
+                    <div class="link">
+                        <a href="osada_module.html" class="link">
+                            Reference - osada v0.1 | 自分用のモジュールを作成し、公開しました
+                        </a><br><div class="article_caption" id="jp_font">自分がたまに使う関数をモジュール化しました。Pythonを書いていて何か面倒に思うことがあったらそれを解決する関数を追加していきます。</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="other/rainbow_print.html" class="link">
+                            ゲ&nbsp;&nbsp;ー&nbsp;&nbsp;ミ&nbsp;&nbsp;ン&nbsp;&nbsp;グ&nbsp;&nbsp;p&nbsp;&nbsp;r&nbsp;&nbsp;i&nbsp;&nbsp;n&nbsp;&nbsp;t&nbsp;&nbsp;文
+                        </a><br><div class="article_caption" id="jp_font">Python標準出力の色指定と行操作を利用して虹色のゲーミングprint文を作る</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="other/font_class.html" class="link">
+                            Pythonでのフォント作成を楽にするモジュールを自作する
+                        </a><br><div class="article_caption" id="jp_font">使うかどうかわからないけど、なんとなく</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="other/rsa.html" class="link">
+                            RSA暗号を作ってみる
+                        </a><br><div class="article_caption" id="jp_font">スレッドの活用と既解読暗号の再利用</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="other/linear_separation.html" class="link">
+                            ２次元の簡単な線形分離モデルを自作する
+                        </a><br><div class="article_caption" id="jp_font">人工知能（深層学習）の構成単位であるパーセプトロンについて少し理解する</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="other/plot_anime.html" class="link">
+                            matplotlibのアニメーションで複数のグラフを重ねて描画する方法について
+                        </a><br><br><br>
+                    </div>
+                    <div class="link">
+                        <a href="other/python3_10.html" class="link">
+                            新しいPython3.10が便利な話
+                        </a><br><br><br>
+                    </div>
+                    <div class="link">
+                        <a href="chromeEx/chromeEx1.html" class="link">
+                            Google Chromeの拡張機能を作ってみる
+                        </a><br><br><br>
+                    </div>
+                    <div class="link">
+                        <a href="other/python_benri.html" class="link">
+                            あるとちょっと使えるかもしれないPythonのプログラム
+                        </a><br><br></br>
+                    </div>
+                </div>
+                <div class="title" id="fade_3">数学</div>
+                <div class="link_content" id="fade_4">
+                    <div class="link">
+                        <a href="number/comp_binomial.html" class="link">
+                            複素数における二項定理について考える
+                        </a><br><div class="article_caption" id="jp_font">複素数のベクトルの積から考える二項定理</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="number/mandelblot.html" class="link">
+                            マンデルブロ集合のプロット
+                        </a><br><div class="article_caption" id="jp_font">
+                            ※サイズの大きい画像が複数枚あります。<br>
+                            複素数の二項定理を使ったn次マンデルブロ集合の計算と、双曲線関数による発散速度のより良い可視化について</div>
+                        <br>
+                    </div>
+                    <div class="link">
+                        <a href="number/complex.html" class="link">
+                            極座標平面上の図形のプロット
+                        </a>
+                        <br><br><br>
+                    </div>
+                    <div class="link">
+                        <a href="number/diff.html" class="link">
+                            微分した値と、導関数のプロット
+                        </a>
+                        <br><br><br>
+                    </div>
+                    <div class="link">
+                        <a href="number/isprime.html" class="link">
+                            効率的な素数探索を目指して
+                        </a>
+                        <br><br><br>
+                    </div>
+                    <div class="link">
+                        <a href="number/long_division.html" class="link">
+                            筆算を使って方程式の展開を解く
+                        </a><br><br><br>
+                    </div>
+                </div>
+                <div class="title" id="fade_5">迷路制作</div>
+                <div class="link_content" id="fade_6">
+                    <div class="link">
+                        <a href="meiro/meiro1.html" class="link">
+                            迷路制作（１）　大筋のアルゴリズムの決定
+                        </a><br><br><br>
+                    </div>
+                    <div class="link">
+                        <a href="meiro/meiro2.html" class="link">
+                            迷路制作（２）　迷路アプリの下地の制作
+                        </a><br><br><br>
+                    </div>
+                    <div class="link">
+                        <a href="meiro/meiro3.html" class="link">
+                            迷路制作（３）　アルゴリズム[1]の実装
+                        </a><br><br></br>
+                    </div>
+                </div>
+                <br><br><br>
+            </div>
+        </div>
+    </div>
+    <script src="../js/copy.js"></script>
+    <script src="../js/scroll.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/i_btn.js"></script>
+    <script src="../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../js/fade.js"></script>
+    <script src="../js/counter.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on('load scroll', function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="../count/count.php"></script>
+</body>
+</html>

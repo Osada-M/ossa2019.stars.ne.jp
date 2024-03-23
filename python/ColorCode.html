@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang='ja'>
+<head>
+<meta charset='utf-8'>
+<link rel="shortcut icon" href="..\pic\o.ico">
+<link rel='apple-touch-icon-precomposed' href='..\pic\o.png'>
+<link rel='stylesheet' href='..\css\code.css'>
+<title>ソースコード</title>
+</head>
+<body class='back'>
+<h1>
+カラーコード
+</h1>
+<div class='a0'>
+<a href='..\apps.html' class='a2'>
+戻る
+</a>
+</div>
+<div class='main'>
+<p>
+<br>import&ensp;tkinter&ensp;as&ensp;t
+<br>
+<br>app&ensp;=&ensp;t.Tk()
+<br>app.geometry('170x205')
+<br>app.title('ColorCode')
+<br>
+<br>lab&ensp;=&ensp;t.Label(text=u'RGB:',font=('MS&ensp;Gothic',20))
+<br>lab.place(x=5,y=5)
+<br>ent&ensp;=&ensp;t.Entry(font=('MS&ensp;Gothic',20))
+<br>ent.place(x=70,y=5,width=90)
+<br>
+<br>alp&ensp;=&ensp;{'a':'A','b':'B','c':'C','d':'D','e':'E','f':'F'}
+<br>def&ensp;func(event):
+<br>&ensp;&ensp;&ensp;&ensp;try:
+<br>&ensp;&ensp;&ensp;&ensp;
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;s&ensp;=&ensp;ent.get()
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;if&ensp;len(s)&ensp;==&ensp;3:
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;ss&ensp;=&ensp;[s[0],s[0],s[1],s[1],s[2],s[2]]
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;elif&ensp;len(s)&ensp;==&ensp;6:
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;ss&ensp;=&ensp;list(s)
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;elif&ensp;len(s)&ensp;&gt;&ensp;6:
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;ss&ensp;=&ensp;list(s[:6])
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;else:
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;print('error0')
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;re&ensp;=&ensp;''
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;for&ensp;i&ensp;in&ensp;range(len(ss)):
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;if&ensp;ss[i]&ensp;in&ensp;alp.keys():
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;ss[i]&ensp;=&ensp;alp[ss[i]]
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;re&ensp;+=&ensp;ss[i]
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;cvs['background']='#'+re
+<br>&ensp;&ensp;&ensp;&ensp;
+<br>&ensp;&ensp;&ensp;&ensp;except:
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+<br>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;print('error1')
+<br>
+<br>cvs&ensp;=&ensp;t.Button(text=u'[Enter]&ensp;or&ensp;クリック\nで色が変わるよ')
+<br>cvs.place(x=5,y=40,width=160,height=160)
+<br>cvs.bind('&lt;Button-1&gt;',func)
+<br>app.bind('&lt;Return&gt;',func)
+<br>
+<br>app.mainloop()
+
+</p>
+</div>
+<script src='../count/count.php'></script>
+</body>
+</html>

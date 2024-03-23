@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel='shortcut icon' href='pic\o.ico'>
+        <link rel='apple-touch-icon-precomposed' href='pic\o.png'>
+        <link rel='stylesheet' href='css\main.css'>
+        <title>基本情報技術者試験解答照会</title>
+    </head>
+    <body class='all'>
+        <!--<div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>-->
+        <div class='top'>
+            <h1>
+                <p style="background-color:#00000000">基本情報技術者試験の解答照会
+                <h id='version' style='font-size:6px; color:#888888;'>バージョン情報読み込み失敗</h></p>
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='index.html' class='a2'>
+                トップに戻る
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='jouhou'>
+                <p2 id='test' style='color:red;font-weight:900;'>javascript読み込み失敗<br>一部の追加機能、または全ての機能が利用できない可能性があります。ページを更新しても治らない場合はブラウザを変えてみてください。<br><br></p2>
+                <section style='font-size:12px;'>
+                    半角、全角が混じっていても動作します。<br>
+                    年度のところは平成、令和関係なく入力してください。自動で振り分けます。<br>
+                    例：平成24年→「24」年、令和1年→「1」年
+                </section>
+                <br><br>
+                <div align='center'>
+                    <form id='startF' action='#'>
+                    <table border='0'>
+                        <tr class='table_form'>
+                            <td>
+                                平成/令和 <input name='year' size=5> 年
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p2 id='nendo_result' style='font-size:15px;'>&ensp;</p2></td>
+                        </tr>
+                        <tr class='table_form'>
+                            <td>
+                                <input type='radio' name='kisetsu' value='haru' checked>春&ensp;
+                                <input type='radio' name='kisetsu' value='aki'>秋&ensp;
+                                <input type='radio' name='kisetsu' value='toku'>特別
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p2 id='kisetu_result' style='font-size:15px;'>&ensp;</p2></td>
+                        </tr>
+                        <tr class='table_form'>
+                            <td>
+                                <input type='radio' name='noon' value='am' checked>午前&ensp;&ensp;
+                                <input type='radio' name='noon' value='pm'>午後
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p2 id='noon_result' style='font-size:10px;'>&ensp;</p2></td>
+                        </tr>
+                        <tr class='table_form'>
+                            <td>
+                                問 <input name='toi' size=5></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><p2 id='toi_result' style='font-size:15px;'>&ensp;</p2></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type='submit' value='　　　　　検索　　　　　'>
+                            </td>
+                        </tr>
+                    </table>
+                    </form>
+                    <br><br>
+                </div>
+            </div>
+            <div class='j_frame'>
+                <p2 id='ans'></p2>
+            </div>
+            <br>
+        </div>
+        <p3 style='color:#666;'>
+            <br>
+            解答として表示しているページ：<a href='https://www.fe-siken.com/' target='_blank' rel='noopener noreferrer' style='color:#666;'>基本情報技術者試験ドットコム</a><br>
+            <br>
+            <!--
+                このページのソースコードを閲覧：<a href='js/jouhou.js' target='_blank' style='color:#444;'>ソースコード(javascript)</a>
+            -->
+        </p3>
+        <script src='js/jouhou.js'></script>
+        <script src='js/main.js'></script>
+        <script src='count/count.php'></script>
+    </body>
+</html>

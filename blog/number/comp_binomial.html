@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='../../pic/o.ico'>
+    <link rel='apple-touch-icon-precomposed' href='../../pic/o.png'>
+    <link rel='stylesheet' href='../../css/main2.css'>
+    <link rel='stylesheet' href='../../css/main2_half.css' media='screen and (max-width:1360px)'>
+    <link rel='stylesheet' href='../../css/main2_quarter.css' media='screen and (max-width:850px)'>
+    <link rel='stylesheet' href='../../css/main2_mobile.css' media='screen and (max-width:550px)'>
+    <meta property='og:title' content='Pythonで複素数の二項定理を考える'>
+    <meta property='og:description' content='複素数の二項定理について実部と虚部を分けて計算するコードを紹介します。'>
+    <meta property='og:site_name' content='Pythonで複素数の二項定理を考える'>
+    <meta property='og:type' content='blog'>
+    <meta property='og:url' content='https://ossa2019.stars.ne.jp/blog/number/comp_binomial.html'>
+    <title>Pythonで複素数の二項定理を考える【おさだのホームページ】</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='tab'>
+            <p>おさだのホームページ</p>
+            <a href='../../index.html' id='home'>
+                ホーム
+            </a>
+            <a href='../../apps.html' id='home'>
+                倉　庫
+            </a>
+            <a href='../../Remember/Remember.html' id='home'>
+                備忘録
+            </a>
+            <a href='../blog.html' id='home' class='tab_now'>
+                にっき
+            </a>
+        </div>
+        <div class='page'>
+            <div class='caption'>
+                Pythonで複素数の実部と虚部について考え、二項定理を計算したい
+            </div>
+            <div class='article'>
+                <p>複素数の二項定理について</p><br>
+                    <section>
+                        <div class='hajimeni'>
+                            はじめに<br>
+                            以前、マンデルブロ集合をプロットした<a href='mandelblot.html' style='font-size:2%;margin:0px;padding:0px;' target='_blank' rel='noopener noreferrer'>(該当ページ)</a>際に複素数に二項定理を使わなければならない場面があった。
+                            今回はその際に書いたコードを共有しようと思う。
+                        </div><br><br>
+                        このページでは、二項定理を使って複素数 (a+bi)^n を計算し、実部と虚部に分けて出力するところまでを行う。<br><br>
+                        <a href=#code>完成したコードまで読み飛ばす</a><br><br><br>
+                        二項定理とは高校数学で登場する↓これのことである。<br>
+                        <div class='pic'><img src='images/nikouteiri.jpg' alt='二項定理', width=60%></div><br>
+                        これをそのまま実装することは容易い。<br>
+                        <div class='code'>
+                            <span class="dec0">def</span> combination(a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result *= (a-i)/(b-i)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result<br>
+                            <br>
+                            <span class="dec0">def</span> binomial(a, b, n):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = 0<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> k <span class="dec1">in</span> <span class="dec4">range</span>(n+1):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result += combination(n, k)*(b**k)*(a**(n-k))                            </div><br>
+                        <div class='det'>    
+                            <section style='font-weight:bold;margin:0px;padding:0px;'>combination(a, b)</section>
+                            組み合わせ(Combination)を計算する関数。<br>
+                            combination(3, 2) と入力すれば 3C2 を計算してくれる。
+                        </div><br>
+                        <div class='det'>    
+                            <section style='font-weight:bold;margin:0px;padding:0px;'>binomial(a, b, n)</section>
+                            二項定理を計算する関数。<br>
+                            binomial(3, 5, 2) と入力すれば (3+5)^2 を計算してくれる。
+                        </div><br><br>
+                        これで (a+b)^n は計算できるようになったが、(a+bi)^n を同じように計算するには実部と虚部を分けて計算する必要がある。<br>
+                        一応Pythonには虚数が実装されており、虚数単位 i は complex(-1**1/2) で表される。しかしこの complex() はint型やfloat型との加減乗除の計算が不可能であり、かつ実部と虚部を切り離すことができない。
+                        そのため二項定理の計算に落とし込むことができないので、別の方法を考える。<br><br><br>
+                        まず、二項定理の計算途中での実部になる条件と虚部になる条件を考える。<br><br>
+                        i^2 = -1 であるため、(bi)^n について n が偶数ならば実部になり、奇数ならば虚部になるので下のようなアルゴリズムが成り立つ。<br>
+                        <div class='det'>
+                            (a+bi)^n に対して<br>
+                            for k in range(n+1):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if( k が偶数):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;実部 += nCk * b^k * a^(n-k) * i^k<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;if( k が奇数):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;虚部 += nCk * b^k * a^(n-k) * i^k<br>
+                        </div><br><br>
+                        次に i^k の計算である。虚数の指数計算は単純ではなく i^2 = -1 に対して i^4 = 1 である通り、正負に注意する必要がある。
+                        これは複素数平面が縦横の尺度ではなく角度と原点からの距離(半径)の二つの尺度を持つことに関係している。ここで、複素数平面におけるベクトルの積を考える。<br>
+                        <div class='det'>
+                            複素数平面上の点 (a, bi) は三角関数を用いて ( r*cos(t), i*r*sin(t) ) と表される（r は半径でr=√(a^2+b^2), t は角度）。
+                            これを用いて (a+bi)^k を求める。<br><br>
+                            a+bi = r*( cos(t) + i*sin(t) )<br><br>
+                            (a+bi)^2 = a^2 + 2abi - b^2<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= r^2*cos^2(t) + 2*b*cos(t)*b*sin(t)*i - b^2*sin^2(t)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= r^2*( cos^2(t) - sin^2(t) + i*2sin(t)cos(t) )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= r^2*( cos(2t) + i*sin(2t) )<br><br>
+                            (a+bi)^3 = a^3 + 3a^2*bi - 3ab^2 - b^3*i<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ・・・<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= r^3*( cos(3t) + i*sin(3t) )<br><br>
+                            (a+bi)^4 = a^4 + 4a^3*bi - 6a^2*b^2 - 4ab^3*i + b^4<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ・・・<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= r^4*( cos(4t) + i*sin(4t) )<br><br>
+                            ここまでくると法則性が見えてくる。<br><br>
+                            (a+bi)^k = r^k*( cos(k*t) + i*sin(k*t) )  ・・・  式(1)<br><br>
+                            この式(1)の虚数部分を切り取ると i*sin(k*t) となる。
+                            <div style='font-weight:bold;'>
+                                今回求めたいのは虚数部分の正負であるので、sin(k*t) の正負を確認すれば良い。
+                            </div><br><br>
+                            <div class='hajimeni'>
+                                （ここから下は余談）<br>
+                                <br>
+                                (a, b) = ( r*cos(t), i*r*sin(t) )の関係より<br>
+                                (a+bi)^k = ( r*cos(t) + i*r*sin(t) )^k<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= r^k * ( cos(t) + i*sin(t) )^k<br>
+                                が求められる。これと式(1)を見比べると<br>
+                                式(1)・・・(a+bi)^k = r^k * ( cos(k*t) + i*sin(k*t) )<br>
+                                ∴( cos(t) + i*sin(t) )^k = cos(k*t) + i*sin(k*t)<br>
+                                が成り立つので「ド・モアブルの定理」を導出できる。<br>
+                                <br>
+                                また、式(1)が意味しているのは複素数平面上のベクトルの積は「半径は積、角度は和になる」ということである。
+                            </div>
+                        </div><br><br>
+                        以上のことより、i^k における sin(k*t) の正負を求めればよいことがわかる。
+                        i は極座標平面において i*sin(90˚) に当たるので式(1)より i^k = i*sin(k*90˚) で計算を行う。<br>
+                        しかしこのままでは k が偶数の時にx軸と重なってしまい正負が判定不可能になってしまうので、正負に影響しない範囲(0˚ &lt; s &lt; 90˚)での s を k*90˚ に足し合わせる。
+                        ここでは適当に s = 45˚ とした。<br><br>
+                        なので実際に計算するのは sin( k*90˚ + 45˚ ) である。<br>
+                        <div class='code'>
+                            <span class="dec0">def</span> i_separate(k):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">import</span> math<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = math.sin(math.radians(k*90 + 45))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(result &lt; 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> -1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(result &gt; 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> 1
+                        </div><br>
+                        <div class='det'>    
+                            <section style='font-weight:bold;margin:0px;padding:0px;'>i_separate(k)</section>
+                            i^k の正負を判定し、1 か -1 を返す関数。<br>
+                            math.radians() は、角度をラジアンに変換する関数である。
+                        </div><br><br>
+                        この i_separate() 関数と前述した実部と虚部を分けて計算するアルゴリズムを用いれば複素数の二項定理を計算することができる。<br>
+                        それを踏まえてコードを書いた。<br><br><br>
+                        <div style='font-weight:bold;', id='code'>
+                            プログラム全文
+                        </div>
+                        <div class='code'>
+                            <span class="dec0">import</span> math<br>
+                            <br>
+                            <span class="dec0">def</span> combination(a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result *= (a-i)/(b-i)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result<br>
+                            <br>
+                            <span class="dec0">def</span> i_separate(k):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = math.sin(math.radians(k*90 + 45))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(result &lt; 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> -1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(result &gt; 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> 1<br>
+                            <br>
+                            <span class="dec0">def</span> comp_binomial(r, i, n):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;real, imagine = 0., 0.<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> k <span class="dec1">in</span> <span class="dec4">range</span>(n+1):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(k % 2 == 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;real += combination(n, k)*(i**k)*(r**(n-k))*i_separate(k)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imagine +=  combination(n, k)*(i**k)*(r**(n-k))*i_separate(k)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> real, imagine
+                        </div><br>
+                        <div class='det'>    
+                            (2+3i)^4 を計算したければ comp_binomial(2, 3, 4) を実行する。その時の出力は (実部の値, 虚部の値) である。
+                        </div><br><br>
+                        実行してみる。<br><br>
+                        <div class='pic'><img src='images/comp_binomial.png' alt='comp_binomialの実行結果', width=60%></div><br><br><br>
+                        <br><br><br>
+                        <a href='../blog.html' class='link'>
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src='../../count/count.php'></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='【おさだのホームページ】数学に関する備忘録'>
+        <meta property='og:description' content='おさだが数学で得た知識を書き残していくページです'>
+        <meta property='og:site_name' content='【おさだのホームページ】数学に関する備忘録'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://http://ossa2019.stars.ne.jp/Remember/math/math.html'>
+        <title>【ベルヌーイの定理】非線形微分方程式を線形に変換する</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                【ベルヌーイの定理】非線形微分方程式を線形に変換する
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='math.html' class='a2'>
+                目次へ戻る
+            </a>
+            &ensp;&ensp;
+            <a href='..\..\index.html' class='a2'>
+                トップ
+            </a>
+            &ensp;&ensp;
+            <a href='..\..\question.html' class='a2'>
+                連絡先
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                非線形微分方程式を線形微分方程式に変換する方法であるベルヌーイの定理について解説する
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='#i1' class='a1'>1. 簡単な説明</a><br>
+                    <a href='#i2' class='a1'>2. 一般的な説明（より広範囲にベルヌーイの定理を使う）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i1'>簡単な説明</p>
+                <div class='list0'>
+                    <p1>
+                        ベルヌーイの定理の概形は下記の通りである．<br>
+                        <br><div class='t0'>
+                            \[非線形微分方程式 \ \frac{dy}{dx}=y+y^a \ に対して
+                            関数 \ u=y^{(1-a)} \ と設定し \ u \ と \ x \ の線形微分方程式に変換する．
+                            \]
+                            </div><br>
+                        <br>
+                        たとえば次のような微分方程式<br>
+                        <br><div class='t0'>
+                        \[
+                        \frac{dy}{dx}=y+y^2
+                        \]
+                        </div><br>
+                        があった時，y^2が非線形であるため解くことが困難である．<br>
+                        ここでベルヌーイの定理を用いて関数uを次のように定義する．<br>
+                        <br><div class='t0'>
+                            \[
+                            u=y^{(1-2)} \\ \ =y^{-1} \\ \ =\frac{1}{y}
+                            \]
+                            </div><br>
+                        次にuをxで微分し，yを削除する（uとxだけの式にする）．<br>
+                        <br><div class='t0'>
+                            \[
+                            \frac{du}{dx}=\frac{-y'}{y^2}
+                            \\[10px] ここで元の式： \ y'=y+y^2 \ より，\\[10px]
+                            \\ \frac{du}{dx}=\frac{-(y+y^2)}{y^2}
+                            \\ \ \ \ \ \ \ =\frac{-y-y^2}{y^2}
+                            \\ \ \ \ \ \ \ =-\frac{1}{y}-1
+                            \\[10px] ここで \ u=\frac{1}{y} \ より，\\[10px]
+                            \\ \frac{du}{dx}=-u-1 \ \ \ \ ・・・①
+                            \]
+                        </div><br>
+                        導出した①の式はuとxの線形微分方程式であるので，基本的な微分方程式の解法を用いることができる．<br>
+                        <br><div class='t0'>
+                            \[
+                            \frac{du}{dx}=-u-1
+                            \\ \ \ \ \ \ \ =-1*(u+1)
+                            \\[10px] u+1 \ を左辺に移行させる\\[10px]
+                            \\ \frac{1}{u+1}\frac{du}{dx}=-1
+                            \\[20px] 両辺を \ x \ で積分する\\[10px]
+                            \\ \int\frac{1}{u+1}\frac{du}{dx}dx=\int-1dx
+                            \\ \ \ \ \ \ \int\frac{1}{u+1}du=\int-1dx
+                            \\ \ \ \ \ \ \ \ \ \ \ ln|u+1|=-x+C \ \ \ \ ( C : 任意定数 )
+                            \\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u+1=\pm e^{-x+C}
+                            \\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u+1=Ce^{-x}
+                            \\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u = Ce^{-x}-1
+                            \\[10px] 最後に \ u=\frac{1}{y} \ より，\\[10px]
+                            \\ y=\frac{1}{u}
+                            \\ \ \ =\frac{1}{Ce^{-x}-1} \ \ \ \ ・・・②
+                            \]
+                        </div><br>
+                        最後に導出した②の式が今回の一般解である．
+                        <br>
+                    </p1>
+                </div>
+                <br></br>
+            </div>
+            <div class='file'>
+                <p id='i2'>一般的な説明</p>
+                <div class='list0'>
+                    <p1>
+                    </p1>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                TeX: { equationNumbers: { autoNumber: "AMS" }},
+                tex2jax: {
+                    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    processEscapes: true
+                },
+                "HTML-CSS": { matchFontHeight: false },
+                displayAlign: "left",
+                displayIndent: "2em"
+            });
+        </script>
+        <script src='../../js/main.js'></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

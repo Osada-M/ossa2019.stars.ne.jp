@@ -1,0 +1,801 @@
+<!-- Brushed up by brushUp.py version:1.0 -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="../../css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/pointerEffect.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="../../css/imgContent.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="../../css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="../../css/imgContent_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="Pythonでのフォント作成を楽にするモジュール（クラス）を自作する">
+    <meta property="og:description" content="Pythonのufo2ftを用いたフォント作成の際に、四角形や楕円、スプライン補間などでの作図を支援するクラスを作る">
+    <meta property="og:site_name" content="Pythonでのフォント作成を楽にするモジュール（クラス）を自作する">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/other/font_class.html">
+    <title>Pythonでのフォント作成を楽にするモジュール（クラス）を自作する</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="../../index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li id="now">
+                <a href="../blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="../../apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="../../Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="../../sorting/sorting.html">
+                    <i class='bx bx-bar-chart'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- tkinterの解説ページ -->
+            <li>
+                <a href="../../Remember/tkinter/tkinter.html">
+                    <i class='bx bxl-python'></i>
+                    <span class="link_name" id="jp_font">tkinterの解説ページ</span>
+                </a>
+                <span class="popup_text" id="jp_font">tkinterの解説ページ</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="../../jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="../../text.html">
+                    <i class='bx bx-pencil'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="../../myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    Pythonでのフォント作成を楽にするモジュールを自作する
+                </div>
+                <div class="caption_text" id="jp_font">
+                    そうだ、フォントを作ろう。
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <div class="index_content" id="fade_1">
+                    <div class="index_link">
+                        <span id="jp_font">
+                            <a href=#1>1. 目的</menu></a><br>
+                            <a href=#2>2. ソースコード</a><br>
+                            <a href=#3>3. 仕様</a><br>
+                            <a href=#4>4. 実際にフォントを作ってみる</a><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_2">
+                    <div class="title" id="1">
+                        1. 目的
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            Pythonでのフォント作成には ufo2ft と defcon の二つのモジュールを用いる。
+                            これらは頂点を与えるとそれで囲まれた範囲をフォントの文字部分として出力するものである。<br>
+                            <br>
+                            <br>
+                            例えば正方形を描きたければ、<br>
+                            <br>
+                            <div class="window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content" id="explain">
+                                    <div class="window_content_buf" id="explain"></div>
+                                    <div class="window_text">
+                                        <span id="jp_font">
+                                            <div class="pic">
+                                                <img src="img/4_sizes_porygon.PNG" width="40%" alt="正方形の画像">
+                                            </div>
+                                            defcon.Font().contour.appendPoint(defcon.Point((0, 0), "line"))<br>
+                                            defcon.Font().contour.appendPoint(defcon.Point((100, 0), "line"))<br>
+                                            defcon.Font().contour.appendPoint(defcon.Point((100, 100), "line"))<br>
+                                            defcon.Font().contour.appendPoint(defcon.Point((0, 100), "line"))<br>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div><br>
+                            このように４つの頂点を指定する必要がある。<br>
+                            <br>
+                            正直面倒である。<br>
+                            <br>
+                            今回はこの面倒な頂点の指定をある程度自動で行ってくれるクラス myFont() を作成する。<br>
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_3">
+                    <div class="title" id="2">
+                        2. ソースコード
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            長いので折り畳み欄に記載<br>
+                            <br>
+                            <div class="code_window_details" id="window_0">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_0', 'popup_0')">copy</div>
+                                    <div class="copied" id="popup_0">copied!</div>
+                                </div>
+                                <div class="window_title">myFont.py</div>
+                                <div class="window_content">
+                                    <div class="details_btn" id="details_btn" onclick="details_activate('window_0')">
+                                        <i class='bx bxs-chevron-down' id="openClose_btn"></i>
+                                        <div class="details_btn_text" id="jp_font">展開</div>
+                                        <div class="details_btn_text_opened" id="jp_font">折り畳む</div>
+                                    </div>
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_0">
+                                            #! /usr/local/bin/env python3<br>
+                                            #! encode : -*- utf-8 -*-<br>
+                                            <br>
+                                            <span class="dec0">import</span> defcon<br>
+                                            <span class="dec0">import</span> ufo2ft<br>
+                                            <span class="dec0">import</span> os<br>
+                                            <span class="dec0">from</span> math <span class="dec0">import</span> *<br>
+                                            <span class="dec0">import</span> time<br>
+                                            <span class="dec0">from</span> scipy <span class="dec0">import</span> interpolate<br>
+                                            <span class="dec0">import</span> numpy <span class="dec1">as</span> np<br>
+                                            <br>
+                                            <br>
+                                            <span class="dec0">class</span> myFont:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> <span class="dec4">__init__</span>(<span class="dec2">self</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;familyName:str=f&quot;myFont_{time.time()}&quot;,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unitsPerEm:int=1000,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descender:int=-120,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ascender:int=880,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xHeight=500,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;capHeight=800,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directory:str=<span class="dec3">None</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.familyName = familyName<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.unitsPerEm = unitsPerEm<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.descender = descender<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.ascender = ascender<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.xHeight = xHeight<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.capHeight = capHeight<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.font = defcon.Font()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.font.info.familyName = <span class="dec2">self</span>.familyName<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.font.info.unitsPerEm = <span class="dec2">self</span>.unitsPerEm<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.font.info.descender = <span class="dec2">self</span>.descender<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.font.info.ascender = <span class="dec2">self</span>.ascender<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.font.info.xHeight = <span class="dec2">self</span>.xHeight<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.font.info.capHeight = <span class="dec2">self</span>.capHeight<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.directory = directory<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(directory != <span class="dec3">None</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.chdir(<span class="dec2">self</span>.directory)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.chars = <span class="dec4">dict</span>()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.GOLD = 1.618033988749895   # 黄金比<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.PALT = 2.414213562373095   # 白銀比<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.PI = 3.141592653589793     # 円周率<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;## ディレクトリの変更<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> chdir(<span class="dec2">self</span>, directory):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.chdir(directory)<br>
+                                            <br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;## フォントの保存<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> save(<span class="dec2">self</span>, familyName:str=<span class="dec3">None</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otf = ufo2ft.compileOTF(<span class="dec2">self</span>.font)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file = f&quot;{<span class="dec2">self</span>.familyName <span class="dec1">if</span> familyName == <span class="dec3">None</span> <span class="dec1">else</span> familyName}.otf&quot;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;otf.save(file)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;{file} に保存&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;## 文字を作成する<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> makeChar(<span class="dec2">self</span>, char:str, width:float=1., caption:str=<span class="dec3">None</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;make_char = <span class="dec2">self</span>.Char(char, width, caption, <span class="dec2">self</span>.font)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> make_char<br>
+                                            <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;## 作成したフォントをHTMLで確認<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> makeHtml(<span class="dec2">self</span>, familyName:str=<span class="dec3">None</span>, fontSize:int=4):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;familyName = <span class="dec2">self</span>.familyName <span class="dec1">if</span> familyName == <span class="dec3">None</span> <span class="dec1">else</span> familyName<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">with</span> <span class="dec4">open</span>(f&quot;{familyName}.html&quot;, &quot;w&quot;, encoding=&quot;utf8&quot;) <span class="dec1">as</span> f:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f.<span class="dec4">write</span>(&quot;&quot;&quot;\<br>
+                                            &lt;style&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">@</span>font-face {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-family: &quot;%s&quot;;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src: url(&quot;%s.otf&quot;);<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;p {<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-family: &quot;%s&quot;;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-size: %svw;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                                            &lt;/style&gt;<br>
+                                            &lt;body&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;p style=&quot;color:#000&quot;&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;abc<span class="dec0">def</span>ghijklmnopqrstuvwxyz&lt;br&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ABCDEFGHIJKLMNOPQRSTUVWXYZ&lt;br&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1234567890１２３４５６７８９０&lt;br&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;あいうえお かきくけこ さしすせそ たちつてと なにぬねの はひふへほ まみむめも やゆよ らりるれろ わをん&lt;br&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;アイウエオ カキクケコ サシスセソ タチツテト ナニヌネノ ハヒフヘホ マミムメモ ヤユヨ ラリルレロ ワヲン&lt;br&gt;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;/p&gt;<br>
+                                            &lt;/body&gt;<br>
+                                            &quot;&quot;&quot;%(familyName, familyName, familyName, fontSize))<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;{familyName}.html を作成&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;## 作成する文字のクラス<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">class</span> Char:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> <span class="dec4">__init__</span>(<span class="dec2">self</span>, char:str, width:float, caption:str, myfont):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting = [f&quot;hoge = myFont.makeChar(char=\&quot;{char}\&quot;, width={width}, caption={caption})&quot;]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.glyph = myfont.newGlyph(char)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.glyph.unicode = <span class="dec4">ord</span>(char)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(width == 1) <span class="dec3">and</span> (caption != &quot;up&quot;) <span class="dec3">and</span> (caption != &quot;big&quot;):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(caption == &quot;down&quot;) <span class="dec3">or</span> (caption == &quot;small&quot;) <span class="dec3">or</span> (char <span class="dec1">in</span> <span class="dec4">list</span>(&quot;abc<span class="dec0">def</span>ghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890+-*/!?\&quot;#$%&amp;"()=&circ;&tilde;&yen;|[]{}<span class="dec2">@</span>:;`_,.&lt;&gt;&quot;)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width = 0.6<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.glyph.width = <span class="dec4">int</span>(myfont.info.unitsPerEm * width)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.flush(is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## ポリゴンの頂点の設定<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> addPoint(<span class="dec2">self</span>, x:int, y:int, is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.addPoint(x={x}, y={y})&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.contour.appendPo<span class="dec4">int</span>(<span class="dec0">def</span>con.Po<span class="dec4">int</span>((x, y), "line"))<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 点で囲まれたポリゴンの作成<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> polygon(<span class="dec2">self</span>, coords_x, coords_y, is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.polygon(coords_x={coords_x}, coords_y={coords_y})&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(coords_x)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i], coords_y[i], is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.push(isFlush=<span class="dec3">True</span>, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 長方形の作成<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> rectangle(<span class="dec2">self</span>, origin_x:int, origin_y:int, x:int, y:int, deg:float=0., is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.rectangle(origin_x={origin_x}, origin_y={origin_y}, x={x}, y={y}, deg={deg})&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coords = [[0, 0],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[x, 0],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[x, y],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[0, y]]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(4):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coord_x, coord_y = <span class="dec2">self</span>.rotate(coords[i][0], coords[i][1], deg)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(origin_x+coord_x, origin_y+coord_y, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.push(isFlush=<span class="dec3">True</span>, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 太字（平行四辺形）の作成<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> bold(<span class="dec2">self</span>, coord_a=[0, 0], coord_b=[0, 0], size:int=100, deg:float=0., padding:str=&quot;center&quot;, is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.bold(coord_a={coord_a}, coord_b={coord_b}, size={size}, deg={deg}, padding=\&quot;{padding}\&quot;)&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(padding == &quot;left&quot;):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad = [size, 0]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(padding == &quot;right&quot;):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad = [0, size]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad = [size/2, size/2]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coords = [[coord_a[0]-pad[0], coord_a[1]],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[coord_a[0]+pad[1], coord_a[1]],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[coord_b[0]+pad[1], coord_b[1]],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[coord_b[0]-pad[0], coord_b[1]]]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(4):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coord_x, coord_y = <span class="dec2">self</span>.rotate(coords[i][0], coords[i][1], deg)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coord_x, coord_y, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.push(isFlush=<span class="dec3">True</span>, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 楕円の作成（正円も含む）<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> ellipce(<span class="dec2">self</span>, origin_x:int, origin_y:int, rad:int, square:int=30, pow_x:float=1., pow_y:float=1., deg_range=[0., 360.], deg:float=0., is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.ellipce(origin_x={origin_x}, origin_y={origin_y}, rad={rad}, square={square}, pow_x={pow_x}, pow_y={pow_y}, deg_range={deg_range}, deg={deg})&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deg_diff = (deg_range[1] - deg_range[0]) / square<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(origin_x, origin_y, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(square+1):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deg_now = deg_range[0] + deg_diff*i<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coord_x = rad*cos(radians(deg_now)) * pow_x<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coord_y = rad*sin(radians(deg_now)) * pow_y<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coord_x, coord_y = <span class="dec2">self</span>.rotate(coord_x, coord_y, -deg)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(origin_x+coord_x, origin_y+coord_y, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(origin_x, origin_y, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.push(isFlush=<span class="dec3">True</span>, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 複数の座標を通る直線の作成        <br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> line(<span class="dec2">self</span>, coords_x, coords_y, size:int=100, circle:bool=<span class="dec3">True</span>, padding=&quot;center&quot;, is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.line(coords_x={coords_x}, coords_y={coords_y}, size={size}, circle={circle}, padding=\&quot;{padding}\&quot;)&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad = size/2<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(padding == &quot;left&quot;):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(coords_x)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coords_x[i] -= pad<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coords_y[i] -= pad<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(padding == &quot;right&quot;):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(coords_x)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coords_x[i] += pad<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;coords_y[i] += pad<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(1, <span class="dec4">len</span>(coords_x)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i-1]-pad, coords_y[i-1]+pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i]-pad, coords_y[i]+pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i]-pad, coords_y[i]-pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i-1]-pad, coords_y[i-1]-pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.push(isFlush=<span class="dec3">True</span>, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i-1]-pad, coords_y[i-1]+pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i]-pad, coords_y[i]+pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i]+pad, coords_y[i]+pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i-1]+pad, coords_y[i-1]+pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.push(isFlush=<span class="dec3">True</span>, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i-1]+pad, coords_y[i-1]+pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i]+pad, coords_y[i]+pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i]+pad, coords_y[i]-pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i-1]+pad, coords_y[i-1]-pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.push(isFlush=<span class="dec3">True</span>, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i-1]-pad, coords_y[i-1]-pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i]-pad, coords_y[i]-pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i]+pad, coords_y[i]-pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.addPoint(coords_x[i-1]+pad, coords_y[i-1]-pad, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.push(isFlush=<span class="dec3">True</span>, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(circle):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(coords_x)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;origin_pad = pad - size/2<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.ellipce(coords_x[i]+origin_pad, coords_y[i]+origin_pad, (size/2)*(2**(1/2)), is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 0〜3次のスプライン補間による太線の作成<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> spline(<span class="dec2">self</span>, coords_x, coords_y, size:int=100, dim:int=<span class="dec3">None</span>, square:int=30, fudeji:bool=<span class="dec3">False</span>, circle:bool=<span class="dec3">True</span>, padding=&quot;center&quot;, is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.spline(coords_x={coords_x}, coords_y={coords_y}, size={size}, dim={dim}, square={square}, fudeji={fudeji}, circle={circle}, padding=\&quot;{padding}\&quot;)&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(dim == <span class="dec3">None</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dim = <span class="dec4">len</span>(coords_x)-1<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(dim &gt; 3):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dim = 3<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(dim &lt; 0):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dim = 0<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(dim &gt;= <span class="dec4">len</span>(coords_x)):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dim = <span class="dec4">len</span>(coords_x)-1<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad = size/2<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kind = {0:&quot;zero&quot;, 1:&quot;slinear&quot;, 2:&quot;quadratic&quot;, 3:&quot;cubic&quot;}[dim]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;func = interpolate.interp1d(coords_x, coords_y, kind=kind)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = np.linspace(coords_x[0], coords_x[<span class="dec4">len</span>(coords_x)-1], square)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys = [func(x) <span class="dec1">for</span> x <span class="dec1">in</span> xs]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(fudeji):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dist = []<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(1, square):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dist.<span class="dec4">append</span>(<span class="dec4">abs</span>(ys[i-1] - ys[i]))<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dist_diff = <span class="dec4">max</span>(dist) - <span class="dec4">min</span>(dist)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;old_y = ys[0]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(square):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y_diff = <span class="dec4">abs</span>(old_y - ys[i]) / dist_diff<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;old_y = ys[i]<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad_x = pad * y_diff<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad_y = pad * y_diff<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(padding == &quot;left&quot;):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad_buf = -(pad_x+pad_y)/2<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(padding == &quot;right&quot;):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad_buf = (pad_x+pad_y)/2<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad_buf = 0<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(circle):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.ellipce(xs[i]+pad_buf, ys[i]+pad_buf, (pad_x+pad_y)/2, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.rectangle(xs[i]-pad_x+pad_buf, ys[i]-pad_y+pad_buf, x=pad_x, y=pad_y, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>(square):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad_x = pad<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pad_y = pad<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(circle):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.ellipce(xs[i], ys[i], (pad_x+pad_y)/2, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.rectangle(xs[i]-pad_x, ys[i]-pad_y, x=pad_x, y=pad_y, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## スプライン補間関数の筆字機能を呼び出す<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> fudeji(<span class="dec2">self</span>, coords_x, coords_y, size:int=100, dim:int=<span class="dec3">None</span>, square:int=30, padding=&quot;center&quot;, is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.fudeji(coords_x={coords_x}, coords_y={coords_y}, size={size}, dim={dim}, square={square}, padding=\&quot;{padding}\&quot;)&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.spline(coords_x, coords_y, size=size, dim=dim, square=square, fudeji=<span class="dec3">True</span>, circle=<span class="dec3">True</span>, padding=padding, is_repr=<span class="dec3">False</span>)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 座標軸の回転<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> rotate(<span class="dec2">self</span>, x:int, y:int, deg:float):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> cos(radians(-deg))*x-sin(radians(-deg))*y, sin(radians(-deg))*x+cos(radians(-deg))*y<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 保存した座標の初期化<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> flush(<span class="dec2">self</span>, is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.contour = <span class="dec0">def</span>con.Contour()<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.flush()&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 座標をフォントへ出力<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> push(<span class="dec2">self</span>, isFlush:bool=<span class="dec3">True</span>, is_repr:bool=<span class="dec3">True</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.glyph.appendContour(<span class="dec2">self</span>.contour)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(isFlush):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.flush(is_repr=is_repr)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_repr):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.setting.<span class="dec4">append</span>(f&quot;hoge.push(isFlush=<span class="dec3">False</span>)&quot;)<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;## 現在の状態を文字列として出力<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> __repr__(<span class="dec2">self</span>):<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> &quot;\n&quot;.join(<span class="dec2">self</span>.setting)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_4">
+                    <div class="title" id="3">
+                        3. 仕様
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            大まかな仕様は下記である。
+                            <br><br>
+                            <div class="window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                </div>
+                                <div class="window_title">&nbsp;</div>
+                                <div class="window_content" id="explain">
+                                    <div class="window_content_buf" id="explain"></div>
+                                    <div class="window_text">
+                                        <span id="jp_font">
+                                            myfont = myFont("フォント名")<br>
+                                            myfont.chdir("作業ディレクトリ") # なくても良い<br>
+                                            font_a = myfont.makeChar("a") # a に当てるフォントを作成<br>
+                                            <br>
+                                            <span id="red_text">※赤太字は必須の引数</span>
+                                            <br>
+                                            <br>
+                                            <span id="bold">○ 複数の点で囲まれた図形</span><br>
+                                            font_a.polygon(<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[x座標]</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[y座標]</span>)<br>
+                                            <br>
+                                            <br>
+                                            <span id="bold">○ 長方形</span><br>
+                                            font_a.rectangle(<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">開始点のx座標</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">開始点のy座標</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">横の長さ</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">縦の長さ</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;deg=回転する角度)<br>
+                                            <br>
+                                            <br>
+                                            <span id="bold">○ 縦方向は太く、横方向は細い平行四辺形（筆記体の太字）</span><br>
+                                            font_a.bold(<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[開始点x, y]</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[終点x, y]</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;size=太さ,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;padding=厚みをつける方向,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;deg=回転する角度)<br>
+                                            <br>
+                                            <br>
+                                            <span id="bold">○ 楕円（正円も含む）</span><br>
+                                            font_a.ellipce(<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">中心のx座標</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">中心のy座標</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">半径</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;square=角の数(大きければ正確な円に、小さければ角ばってくる),<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;pow_x=横の半径の倍率,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;pow_y=縦の半径の倍率,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;deg_range=[描画を開始する角度, 描画を終了する角度],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;deg=回転する角度)<br>
+                                            <br>
+                                            <br>
+                                            <span id="bold">○ 複数の点を通る直線</span><br>
+                                            font_a.line(<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[x座標]</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[y座標]</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;size=太さ,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;circle=角を丸くするかどうか,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;padding=厚みをつける方向)<br>
+                                            <br>
+                                            <br>
+                                            <span id="bold">○ 複数の点を0〜3次スプライン補間して得られる曲線</span><br>
+                                            font_a.spline(<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[x座標]</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[y座標]</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;size=太さ,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;dim=スプライン補間の次元数,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;square=曲線の座標の数,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;circle=角を丸くするかどうか,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;fudeji=筆字のような形にするかどうか,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;padding=厚みをつける方向)<br>
+                                            <br>
+                                            <br>
+                                            <span id="bold">○ 筆字のような曲線（spline(fudeji=True)と同義）</span><br>
+                                            font_a.fudeji(<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[x座標]</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<span id="red_text">[y座標]</span>,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;size=太さ,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;dim=スプライン補間の次元数,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;square=曲線の座標の数,<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;padding=厚みをつける方向)<br>
+                                            <br>
+                                            <br>
+                                            myfont.save() # フォントの保存<br>
+                                            myfont.makeHtml() # 作成したフォントを適用したHTMLを作成
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+                <div class="fade" id="fade_5">
+                    <div class="title" id="4">
+                        4. 実際にフォントを作ってみる
+                    </div>
+                    <div class="text">
+                        <span id="jp_font">
+                            <br>
+                            <div class="code_window">
+                                <div class="window_btn">
+                                    <div class="red"></div>
+                                    <div class="yellow"></div>
+                                    <div class="green"></div>
+                                    <div class="copy_btn" id="copy_btn" onclick="onClickCopy('copy_text_1', 'popup_1')">copy</div>
+                                    <div class="copied" id="popup_1">copied!</div>
+                                </div>
+                                <div class="window_title">make_font.py</div>
+                                <div class="window_content">
+                                    <div class="window_content_buf"></div>
+                                    <div class="window_text">
+                                        <span id="copy_text_1">
+                                            <span class="dec0">from</span> myFont <span class="dec0">import</span> myFont<br>
+                                            <br>
+                                            <br>
+                                            myDir = &quot;~/python/font/myFont&quot;<br>
+                                            <br>
+                                            myfont = myFont(&quot;myfont&quot;)<br>
+                                            myfont.chdir(myDir)<br>
+                                            <br>
+                                            <br>
+                                            # A<br>
+                                            font_A =  myfont.makeChar(&quot;A&quot;)<br>
+                                            font_A.line([0, 0, 600],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[0, 700, 0], size=50, circle=False)<br>
+                                            font_A.line([0, 350],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[250, 250], size=50, circle=False)<br>
+                                            <br>
+                                            <br>
+                                            # B<br>
+                                            font_B = myfont.makeChar(&quot;B&quot;)<br>
+                                            font_B.bold([100, 0],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[200, 750])<br>
+                                            font_B.bold([200, 750],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[500, 750/2])<br>
+                                            font_B.bold([500, 750/2 + 20],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[150, 750/2])<br>
+                                            font_B.bold([150, 750/2],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[500, 0])<br>
+                                            font_B.bold([500, 20],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[100, 0])<br>
+                                            <br>
+                                            <br>
+                                            # C<br>
+                                            font_C = myfont.makeChar(&quot;C&quot;)<br>
+                                            font_C.fudeji([50, 100, 300, 550],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[350, 650, 800, 600],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size=200, dim=3, square=50)<br>
+                                            font_C.fudeji([55, 200, 550],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[450, 100, 200],<br>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size=200, dim=3, square=30)<br>
+                                            <br>
+                                            <br>
+                                            myfont.save()<br>
+                                            myfont.makeHtml()
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            出力されたフォント：<br>
+                            <style>
+                                @font-face {
+                                    font-family: "myfont";
+                                    src: url("myfont.otf");
+                                }
+                                myFont {
+                                    font-family: "myfont";
+                                    font-size: 4vw;
+                                }
+                            </style>
+                            A :&nbsp;&nbsp;&nbsp;&nbsp;<myFont>A</myFont>&nbsp;&nbsp;&nbsp;&nbsp;line()を使用<br>
+                            B :&nbsp;&nbsp;&nbsp;&nbsp;<myFont>B</myFont>&nbsp;&nbsp;&nbsp;&nbsp;bold()を使用<br>
+                            C :&nbsp;&nbsp;&nbsp;&nbsp;<myFont>C</myFont>&nbsp;&nbsp;&nbsp;&nbsp;fudeji()を使用<br>
+                            <br>
+                            <br>
+                            <br>
+                            ※上のフォントが正しく反映されてない場合は下のスクショ
+                            <div class="img_content" id="img_0">
+                                <div class="popup_btn" onclick="details_activate('img_0')">
+                                    <div class="text">
+                                        <i class='bx bx-expand' id="expand"></i>
+                                    </div>
+                                    <img src="img/output_font_small.png" width="100px">
+                                </div>
+                                <div class="main_img">
+                                    <div class="close_btn" onclick="details_activate('img_0')">
+                                        <i class='bx bx-x' id="close_btn"></i>
+                                    </div>
+                                    <img src="img/output_font.png">
+                                </div>
+                            </div>
+                            をご覧ください。
+                            <br><br><br><br>
+                            <div class="link_content">
+                                <div class="link">
+                                    <a href="../blog.html">
+                                        noteのページに戻る
+                                    </a>
+                                </div>
+                            </div>
+                            <br><br><br>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../js/copy.js"></script>
+    <script src="../../js/scroll.js"></script>
+    <script src="../../js/sidebar.js"></script>
+    <script src="../../js/details.js"></script>
+    <script src="../../js/i_btn.js"></script>
+    <script src="../../js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/fade.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on('load scroll', function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

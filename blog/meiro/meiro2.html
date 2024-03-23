@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='../../pic/o.ico'>
+    <link rel='apple-touch-icon-precomposed' href='../../pic/o.png'>
+    <link rel='stylesheet' href='../../css/main2.css'>
+    <link rel='stylesheet' href='../../css/main2_half.css' media='screen and (max-width:1360px)'>
+    <link rel='stylesheet' href='../../css/main2_quarter.css' media='screen and (max-width:850px)'>
+    <link rel='stylesheet' href='../../css/main2_mobile.css' media='screen and (max-width:550px)'>
+    <meta property='og:title' content='Pythonのtkinterで迷路制作（２）'>
+    <meta property='og:description' content='pythonで迷路を作っています。'>
+    <meta property='og:site_name' content='Pythonのtkinterで迷路制作（２）'>
+    <meta property='og:type' content='blog'>
+    <meta property='og:url' content='https://ossa2019.stars.ne.jp/blog/meiro/meiro2.html'>
+    <title>【おさだのホームページ】Pythonのtkinterで迷路制作（２）</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='tab'>
+            <p>おさだのホームページ</p>
+            <a href='../../index.html' id='home'>
+                ホーム
+            </a>
+            <a href='../../apps.html' id='home'>
+                倉　庫
+            </a>
+            <a href='../../Remember/Remember.html' id='home'>
+                備忘録
+            </a>
+            <a href='../blog.html' id='home' class='tab_now'>
+                にっき
+            </a>
+        </div>
+        <div class='page'>
+            <div class='caption'>
+                Pythonのtkinterで迷路の制作を目指す
+            </div>
+            <div class='article'>
+                <p>迷路制作（２）<br>迷路アプリの下地の制作</p><br>
+                    <section>
+                        まずアプリの定義からしていく。<br><br>
+                        アプリの名前やウィンドウサイズ、迷路を描画するキャンバスなどの定義：<br>
+                        <div class='code'>
+                            <span class="dec0">import</span> tkinter as t<br>
+                            <br>
+                            app = t.Tk()<br>
+                            app.title( '迷路' )<br>
+                            app.geometry( '530x530' )<br>
+                            app.resizable( <span class="dec3">False</span>, <span class="dec3">False</span> )<br>
+                            <br>
+                            canvas = t.Canvas( app, width = 525, height = 525 )<br>
+                            canvas.place( x = 0, y = 0 )
+                        </div><br>
+                        ユーザーが操作する駒とゴールの定義：<br>
+                        <div class='code'>
+                            x0, y0, x1, y1 = 0, 0, 1, 1<br>
+                            pad = [ 3, 3 ]<br>
+                            res_p = 21<br>
+                            xs, ys = [ pad[0] + x * 25 <span class="dec1">for</span> x <span class="dec1">in</span> <span class="dec4">range</span>( res_p + 1 ) ], [ pad[1] + y * 25 <span class="dec1">for</span> y <span class="dec1">in</span> <span class="dec4">range</span>( res_p + 1 ) ]<br>
+                            <br>
+                            canvas.create_rectangle( xs[x0], ys[y0], xs[x1], ys[y1], tag = 'rec', fill = '#ff5050', outline = '#000000' )<br>
+                            canvas.create_rectangle( xs[20], ys[20], xs[21], ys[21], tag = 'goal', fill = '#50ff50', outline = '#000000' )
+                        </div><br>
+                        等間隔に壁を設置する：
+                        <div class='code'>
+                            xs_z = [ xs[i] <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>( len(xs) ) <span class="dec1">if</span> i % 2 != 0 ]<br>
+                            ys_z = [ ys[i] <span class="dec1">for</span> i <span class="dec1">in</span> <span class="dec4">range</span>( len(xs) ) <span class="dec1">if</span> i % 2 != 0 ]<br>
+                            zs = xs_z, ys_z<br>
+                            <br>
+                            <span class="dec1">for</span> x <span class="dec1">in</span> xs_z:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> y <span class="dec1">in</span> ys_z:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.create_rectangle( x, y, x+25, y+25, tag = '<span class="dec0">def</span>ault', fill = '#000000', outline = '#000000' )
+                        </div><br>
+                        壁に衝突した際にエラー音を鳴らす関数：
+                        <div class='code'>
+                            <span class="dec0">def</span> alert():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>( '\a', end='' )
+                        </div><br>
+                        左右上下への移動を行うための関数：
+                        <div class='code'>
+                            <span class="dec0">def</span> left( event ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;global x0, y0, x1, y1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>( x0 &gt; 0 ) <span class="dec3">and</span> <span class="dec3">not</span> ( ( xs[x0-1] <span class="dec1">in</span> zs[0] ) <span class="dec3">and</span> ( ys[y0] <span class="dec1">in</span> zs[1] ) ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.delete( 'rec' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x0 -= 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x1 -= 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.create_rectangle( xs[x0], ys[y0], xs[x1], ys[y1], tag = 'rec', fill = '#ff5050', outline = '#000000' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert()<br>
+                            <br>
+                            <span class="dec0">def</span> right( event ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;global x0, y0, x1, y1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>( x1 &lt; 21 ) <span class="dec3">and</span> <span class="dec3">not</span> ( ( xs[x0+1] <span class="dec1">in</span> zs[0] ) <span class="dec3">and</span> ( ys[y0] <span class="dec1">in</span> zs[1] ) ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.delete( 'rec' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x0 += 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x1 += 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.create_rectangle( xs[x0], ys[y0], xs[x1], ys[y1], tag = 'rec', fill = '#ff5050', outline = '#000000' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert()<br>
+                            <br>
+                            <span class="dec0">def</span> up( event ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;global x0, y0, x1, y1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>( y0 &gt; 0 ) <span class="dec3">and</span> <span class="dec3">not</span> ( ( xs[x0] <span class="dec1">in</span> zs[0] ) <span class="dec3">and</span> ( ys[y0-1] <span class="dec1">in</span> zs[1] ) ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.delete( 'rec' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y0 -= 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y1 -= 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.create_rectangle( xs[x0], ys[y0], xs[x1], ys[y1], tag = 'rec', fill = '#ff5050', outline = '#000000' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert()<br>
+                            <br>
+                            <span class="dec0">def</span> down( event ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;global x0, y0, x1, y1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>( y1 &lt; 21 ) <span class="dec3">and</span> <span class="dec3">not</span> ( ( xs[x0] <span class="dec1">in</span> zs[0] ) <span class="dec3">and</span> ( ys[y0+1] <span class="dec1">in</span> zs[1] ) ):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.delete( 'rec' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y0 += 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y1 += 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;canvas.create_rectangle( xs[x0], ys[y0], xs[x1], ys[y1], tag = 'rec', fill = '#ff5050', outline = '#000000' )<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert()
+                        </div><br>
+                        上記の関数をキーボードの十字キーに紐付けし、アプリを起動する：
+                        <div class='code'>
+                            app.bind( '&lt;Key-Left&gt;', left )<br>
+                            app.bind( '&lt;Key-Right&gt;', right )<br>
+                            app.bind( '&lt;Key-Up&gt;', up )<br>
+                            app.bind( '&lt;Key-Down&gt;', down )<br>
+                            <br>
+                            app.mainloop()<br>
+                        </div><br><br>
+                        上記のプログラムを実行すると<br><br>
+                        <div class='pic'><img src='m2.gif' width='50%'></div><br>
+                        下地はこれで完成だ。<br><br><br>
+                        次：
+                        <a href='meiro3.html' class='link'>
+                            迷路制作（３）　アルゴリズム[1]の実装
+                        </a><br>
+                        <br>
+                        迷路制作のページ：
+                        <a href='meiro1.html' class='link'>１</a>
+                        <a>２</a>
+                        <a href='meiro3.html' class='link'>３</a>
+                        <br><br><br>
+                        <a href='../blog.html' class='link'>
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src='../../count/count.php'></script>
+</body>
+</html>

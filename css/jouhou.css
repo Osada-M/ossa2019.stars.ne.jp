@@ -1,0 +1,70 @@
+.explain_text{
+    text-align: left;
+}
+
+.form_content{
+    width: calc(100% - 5px);
+    text-align: center;
+}
+.input_form{
+    width: 100%;
+    padding-left: calc(50% - 128px);
+}
+table{
+    border: 1px solid #aaa;
+    border-radius: 12px;
+    padding: 20px 40px;
+}
+table tr td{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 100;
+    text-align: left;
+    width: 100%;
+}
+table tr td #nendo_result{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 100;
+    color: #a20;
+}
+table tr td input#jouhou_year_input{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 100;
+    text-align: center;
+    width: 65px;
+}
+table tr td input#jouhou_toi_input{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 100;
+    text-align: center;
+    width: 65px;
+}
+table tr td input#jouhou_search_btn{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 100;
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+    background: #a0f0f060;
+    border: 1px solid #20d0d0;
+    transition: all 0.4s ease;
+}
+table tr td input#jouhou_search_btn:hover{
+    background: #a0f0f060;
+    border: 1px solid #20f0f0;
+    box-shadow: 0 5px 10px #20d0d060;
+}
+
+.j_frame{
+    text-align: center;
+}
+.j_frame #ans{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 100;
+}
+
+.source_content{
+    position: fixed;
+    bottom: 10px;
+    font-size: 13px;
+}

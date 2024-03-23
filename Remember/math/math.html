@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='【おさだのホームページ】数学に関する備忘録'>
+        <meta property='og:description' content='おさだが数学で得た知識を書き残していくページです'>
+        <meta property='og:site_name' content='【おさだのホームページ】数学に関する備忘録'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://http://ossa2019.stars.ne.jp/Remember/math/math.html'>
+        <title>数学に関する備忘録　トップページ</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                数学に関する備忘録　トップページ
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップ
+            </a>
+            &ensp;&ensp;
+            <a href='..\..\question.html' class='a2'>
+                連絡先
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                数学で得た知識を書き残していくページ
+            </div>
+            <div class='inde'>
+                <p class='pi'>分類</p>
+                <div class='list0'>
+                    <a href='biseki.html' class='a1'>1. 微分積分</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i1'>微分積分</p>
+                <div class='list0'>
+                    <p1>
+                        <bl><a href="bernoulli.html">ベルヌーイの定理</a></bl><br>
+                        概要：非線形の微分方程式を線形に変換する定理<br>
+                        \[
+                        \frac{dy}{dx}=p(x)y+q(x)y^a　に対して　u=y^{1-a}　と設定し，uをxで微分することでuとxついての線形微分方程式に変換する．
+                        \]
+                        <br>
+                    </p1>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                TeX: { equationNumbers: { autoNumber: "AMS" }},
+                tex2jax: {
+                    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    processEscapes: true
+                },
+                "HTML-CSS": { matchFontHeight: false },
+                displayAlign: "left",
+                displayIndent: "2em"
+            });
+        </script>
+        <script src='../../js/main.js'></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

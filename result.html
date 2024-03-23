@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="pic/o.ico">
+    <link rel="shortcut icon" href="pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="pic/o.png">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- pc版css -->
+    <link rel="stylesheet" href="css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <meta property="og:title" content="おさだのホームページ">
+    <meta property="og:description" content="Pythonが好きな おさだ のホームページです。最近Javascriptを勉強しています。">
+    <meta property="og:site_name" content="おさだのホームページ">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/index.html">
+    <title>【おさだのホームページ】Pythonが好きな&nbsp;おさだ&nbsp;が備忘録や作ったものを載せるページ</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="../pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li id="now">
+                <a href="index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li>
+                <a href="blog/blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="sorting/sorting.html">
+                    <i class='bx bx-bar-chart'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- tkinterの解説ページ -->
+            <li>
+                <a href="Remember/tkinter/tkinter.html">
+                    <i class='bx bxl-python'></i>
+                    <span class="link_name" id="jp_font">tkinterの解説ページ</span>
+                </a>
+                <span class="popup_text" id="jp_font">tkinterの解説ページ</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li>
+                <a href="jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="text.html">
+                    <i class='bx bx-pencil'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <div class="caption_text" id="jp_font">Pythonが好きな&nbsp;おさだ&nbsp;が備忘録や作ったものを載せるページ</div>
+            <br>
+            <br>
+            <div class="counter_content">
+                <div class="counter_view" id="fade_1">
+                    <span class="counter" id="jp_font">
+                        サイト全体の表示回数&nbsp;&nbsp;:&nbsp;&nbsp;<counter id="counter">--</counter>&nbsp;&nbsp;回
+                    </span>
+                </div>
+            </div>
+            <div class="article">
+                <span id="fade_2">
+                    <div class="title" id="search_result">検索中....</div>
+                </span>
+                <span id="fade_3">
+                    <div id="result"></div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+    <script>
+        
+        let v = new URLSearchParams(window.location.search);
+        let site_name;
+        let site_url;
+        let site_info;
+        let match_result = 0;
+        v = v.get('search-key');
+        document.getElementById("search_result").textContent ="「" + v + "」の検索結果"
+
+        if(v == ""){
+            document.getElementById("result").innerHTML = '<br>\
+            <div class="window" id="fade_4">\
+                    <div class="window_btn">\
+                        <div class="red"></div>\
+                        <div class="yellow"></div>\
+                        <div class="green"></div>\
+                    </div>\
+                    <div class="window_title">エラー</div>\
+                    <div class="window_content">\
+                        <div class="window_content_buf"></div>\
+                        <div class="window_text" id="jp_font">\
+                            検索欄に文字を入力してください。\
+                        </div>\
+                    </div>\
+                </div>';
+        }
+        else{
+            const urlLists = [
+            "apps.html",
+            "appError.html",
+            "jouhou.html",
+            "text.html",
+            "sorting\\sorting.html",
+            "blog\\blog.html",
+            "blog\\osada_module.html",
+            "blog\\chromeEx\\chromeEx1.html",
+            "blog\\other\\plot_anime.html",
+            "blog\\other\\python3_10.html",
+            "blog\\other\\python_benri.html",
+            "blog\\other\\linear_separation.html",
+            "blog\\other\\rsa.html",
+            "blog\\other\\font_class.html",
+            "blog\\number\\mandelblot.html",
+            "blog\\number\\long_division.html",
+            "blog\\number\\comp_binomial.html",
+            "blog\\number\\complex.html",
+            "blog\\number\\diff.html",
+            "blog\\number\\isprime.html",
+            "blog\\meiro\\meiro1.html",
+            "blog\\meiro\\meiro2.html",
+            "blog\\meiro\\meiro3.html",
+            "Remember\\html\\target.html",
+            "Remember\\tkinter\\tkinter.html",
+            "Remember\\tkinter\\tk1.html",
+            "Remember\\tkinter\\tk2.html",
+            "Remember\\tkinter\\tk3.html",
+            "Remember\\tkinter\\tk4.html",
+            "Remember\\tkinter\\tk5.html",
+            "Remember\\tkinter\\tk6.html",
+            "Remember\\tkinter\\tk7.html",
+            "Remember\\tkinter\\tk8.html",
+            "Remember\\tkinter\\tk9.html",
+            "Remember\\tkinter\\tk10.html",
+            "Remember\\tkinter\\tk11.html"
+            ];
+
+            $.each(urlLists, function(i){
+                $.ajax({
+                    url : urlLists[i],
+                    dataType: 'html',
+                    success: function(data){
+                        if( $(data).text().indexOf(v) !== -1){
+                            match_result = 1;
+                            site_name = $(data).find("p").text()
+                            if(site_name.length == 0){
+                                site_name = $(data).find(".title_text").text()
+                            }
+                            site_name = site_name.replace("おさだのホームページ", "");
+                            site_name = site_name.replace("目次", "tkinter ");
+                            site_name = site_name.replace("Pythonのソースコード.exeが入ったzipファイルエラーが出るときの対処法", "自作アプリのページ")
+                            site_name = site_name.replace("ホームに戻る   書いた文章をクリップボードにコピー", "リアルタイムで文字数を数えるだけのページ")
+                            site_name = site_name.replace("バージョン情報読み込み失敗", "")
+                            site_name = site_name.replace("サイト制作に使っているプログラムこのサイトのソースコードtkinterを利用したアプリエラーが出るときの対処法", "倉庫のページ");
+                            site_url = urlLists[i];
+                            site_info = $(data).find(".text").text();
+                            if(site_info.length == 0){
+                                site_info = $(data).find("div").text()
+                            }
+                            site_info = site_info.replace("おさだのホームページ", "");
+                            site_info = site_info.replace("▲top", "");
+                            site_info = site_info.replace("ホーム", "");
+                            site_info = site_info.replace("アプリ", "");
+                            site_info = site_info.replace("備忘録", "");
+                            site_info = site_info.replace("にっき", "");
+                            site_info = site_info.replace("倉　庫", "");
+                            site_info = site_info.replace("home", "");
+                            site_info = site_info.replace("note", "");
+                            site_info = site_info.replace("programs", "");
+                            site_info = site_info.replace("remember", "");
+                            site_info = site_info.replace("おさだのページ", "");
+                            site_info = site_info.replace("おさだのホームページ", "");
+                            site_info = site_info.replace("Writer", "");
+                            site_info = site_info.replace("Osada", "");
+                            site_info = site_info.replace("Masashi", "");
+                            // site_info = site_info.replace("", "");
+                            site_info = site_info.replace("javascript読み込み失敗一部の追加機能、または全ての機能が利用できない可能性があります。ページを更新しても治らない場合はブラウザを変えてみてください。", "基本情報技術者試験の試験の解答照会のページ");
+                            site_info = site_info.slice(0, 500);
+                            $('\
+                            <div class="link_content">\
+                                <div class="link">\
+                                    <a href="' + site_url + '">\
+                                    ' + site_name + '\
+                                    </a><br><div class="article_caption" id="jp_font">\
+                                    ' + site_info + '\
+                                </div>\
+                                <br>\
+                            </div>').appendTo("#result");
+                        }
+                    },
+                    error: function(data){
+                        console.log("error");
+                    }
+                });
+            });
+        }
+    </script>
+    <script src="js/copy.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/details.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/i_btn.js"></script>
+    <script src="js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/fade.js"></script>
+    <script src="js/counter.js"></script>
+    <script>
+        let topBtn = document.querySelector(".tmTopBtn");
+        $(window).on('load scroll', function(){
+            if ($(window).scrollTop() > 200) {
+                topBtn.classList.add("active");
+            } else {
+                topBtn.classList.remove("active");
+            }
+        });
+    </script>
+    <script src="count/count.php"></script>
+</body>
+</html>

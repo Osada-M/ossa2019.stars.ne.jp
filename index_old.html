@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="pic/o.ico">
+    <link rel="shortcut icon" href="pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="pic/o.png">
+    <link rel="stylesheet" href="css/main2.css">
+    <link rel="stylesheet" href="css/main2_half.css" media="screen and (max-width:1360px)">
+    <link rel="stylesheet" href="css/main2_quarter.css" media="screen and (max-width:850px)">
+    <link rel="stylesheet" href="css/main2_mobile.css" media="screen and (max-width:550px)">
+    <meta property="og:title" content="おさだのホームページ">
+    <meta property="og:description" content="Pythonが好きな おさだ のホームページです。最近Javascriptを勉強しています。">
+    <meta property="og:site_name" content="おさだのホームページ">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://ossa2019.stars.ne.jp/index.html">
+    <title>【おさだのホームページ】Pythonが好きな&nbsp;おさだ&nbsp;が備忘録や作ったものを載せるページ</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class="flowimg"></div>
+        <div class="tab">
+            <p>おさだのホームページ</p>
+            <a href="index.html" id="home" class="tab_now">
+                ホーム
+            </a>
+            <a href="apps.html" id="home">
+                倉　庫
+            </a>
+            <a href="Remember/Remember.html" id="home">
+                備忘録
+            </a>
+            <a href="blog/blog.html" id="home">
+                にっき
+            </a>
+        </div>
+        <div class="page">
+            <div class="caption" id="fade_0">
+                Pythonが好きな&nbsp;おさだ&nbsp;が備忘録や作ったものを載せるページ
+                <a href="myPage/home.html" class="secret" target="_blank" rel="noopener noreferrer">my page</a>
+            </div>
+            <div class="counter_view" id="fade_1">
+                <p>
+                    ページ全体の表示回数：<counter id="counter">--</counter>回
+                </p>
+            </div>
+            <form action="result.html" id="fade_2">
+                <input id="search-input" placeholder="サイト内検索" name="search-key">
+                <input id="search-buttom" class="fas" type="submit" value="検索">
+            </form>
+            <div class="article" id="fade_3">
+                <p>最近更新した項目</p>
+                <section>
+                    <div class="det">
+                        2021-8-17:<br>
+                        ○ 「アプリ」のページを削除し、新たに「倉庫」のページを作成しました。
+                        アプリの他に、このページの作成にあたって私が使用しているプログラムやこのサイトのソースコードなどを掲載しています。
+                        <br>
+                        2021-8-16:<br>
+                        ○ サイト内検索を実装しました。ページ内にその単語があるかどうかを探索し、リストアップします。<br>
+                        2021-8-11:<br>
+                        ○ ページの表示に遅延を入れました。ちょっとふわっと読み込まれます。<br>
+                    </div>
+                </section><br>
+                <a href="blog/other/font_class.html" class="link">
+                    Pythonでのフォント作成を楽にするモジュールを自作する
+                </a><br><div class="hajimeni">最終的に画像認識を用いて、画像からフォントへの変換を可能にしたい</div>
+                <br>
+                <a href="blog/other/rsa.html" class="link">
+                    RSA暗号を作ってみる
+                </a><br><div class="hajimeni">スレッドの活用と既解読暗号の再利用</div>
+                <br>
+                <a href="blog/other/linear_separation.html" class="link">
+                    ２次元の簡単な線形分離モデルを自作する
+                </a><br><div class="hajimeni">人工知能（深層学習）の構成単位であるパーセプトロンについて少し理解する</div>
+                <br>
+                <a href="blog/other/plot_anime.html" class="link">
+                    matplotlibのアニメーションで複数のグラフを重ねて描画する方法について
+                </a>
+                <br><br><br>
+                <a href="blog/chromeEx/chromeEx1.html" class="link">
+                    Google Chromeの拡張機能を作ってみる
+                </a>
+                <br><br><br>
+            </div>
+            <div class="article" id="fade_4">
+                <p>おさだ制作の他サイト</p>
+                <a href="jouhou.html" target="_blank" rel="noopener noreferrer">
+                    基本情報技術者試験の解答照会ページ
+                </a>
+                <br><br><br>
+                <a href="text.html" target="_blank" rel="noopener noreferrer">
+                    リアルタイムで文字数を数えるだけのページ
+                </a>
+                <br><br>
+            </div>
+        </div>
+        <div class="page">
+            <div class="caption" id="fade_5">
+                サイト内のリンク
+            </div>
+            <div class="article" id="fade_6">
+                <p>制作してきたもの</p>
+                <a href="apps.html">
+                    倉庫のページ
+                </a>
+                <br><div class="hajimeni">これまでに制作したアプリやプログラムを掲載するページ</div><br>
+                <a href="blog/blog.html">
+                    にっきのページ
+                </a>
+                <br><div class="hajimeni">Pythonにおける数学的な考察やプログラムの制作過程と成果を上げるページ</div><br>
+                <a href="https://github.com/Osada-M/shere/blob/edc980d8be8ab2cc9fa4c1c55fe3834184d0df6f/apps/sudoku.py" target="_blank" rel="noopener noreferrer">
+                    ナンプレアプリのソースコード(Python)
+                </a>
+                <br><br><br>
+                <a href="blog/other/rsa.html">
+                    RSA暗号を作ってみる
+                </a>
+                <br><div class="hajimeni">スレッドの活用と既解読暗号の再利用</div><br>
+                <a href="blog/number/mandelblot.html">
+                    マンデルブロ集合のプロット
+                </a>
+                <br><div class="hajimeni">
+                    ※サイズの大きい画像が複数枚あります。<br>
+                    複素数の二項定理を使ったn次マンデルブロ集合の計算と、双曲線関数による発散速度のより良い可視化について</div><br>
+            </div>
+            <div class="article" id="fade_7">
+                <p>備忘録</p>
+                <a href="Remember/Remember.html">
+                    備忘録のトップページ
+                </a>
+                <br><br>
+            </div>
+        </div>
+        <div class="page">
+            <div class="caption" id="fade_8">
+                連絡先
+            </div>
+            <div class="article1" id="fade_9">
+                <p>e-mail</p>
+                <p1>osada2019.stars@gmail.com</p1>
+                <br><br>
+            </div>
+            <div class="article1" id="fade_10">
+                <p>SNS</p>
+                <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                    Twitter
+                </a>
+                <br><br>
+            </div>
+            <br><br>
+        </div>
+    </main>
+    <script src="js/main.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/fade.js"></script>
+    <script src="js/counter.js"></script>
+    <script src="count/count.php"></script>
+</body>
+</html>

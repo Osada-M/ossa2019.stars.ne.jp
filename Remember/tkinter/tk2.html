@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterでアプリのタイトルやウィンドウサイズを設定する'>
+        <meta property='og:description' content='tkinterでアプリのタイトルやウィンドウサイズを設定する方法について'>
+        <meta property='og:site_name' content='tkinterでアプリのタイトルやウィンドウサイズを設定する'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk2.html'>
+        <title>tkinterでアプリのタイトルやウィンドウサイズを設定する：Tk()やgeomrtry()、resizable()について【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                2. tkinterでアプリのタイトルやウィンドウサイズを設定する
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月21日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <bl>
+                    <a href='#i2' class='a1'>2. 基本的な構文</a><br>
+                    <a href='#i2-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;アプリの定義</a><br>
+                    <a href='#i2-2' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;タイトルやウィンドウサイズなど</a><br>
+                    <a href='#i2-3' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;ウィンドウサイズを固定する</a><br>
+                    </bl>
+                    <br>
+                    <a href='tk3.html' class='a1'>3. ラベル</a><br>
+                    <a href='tk4.html' class='a1'>4. ボタン</a><br>
+                    <a href='tk5.html' class='a1'>5. エントリー</a><br>
+                    <a href='tk6.html' class='a1'>6. テキスト</a><br>
+                    <a href='tk7.html' class='a1'>7. スクロールバー</a><br>
+                    <a href='tk8.html' class='a1'>8. チェックボックス</a><br>
+                    <a href='tk9.html' class='a1'>9. アプリへのバインドについて</a><br>
+                    <a href='tk10.html' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <a href='tk11.html' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i2'>
+                    基本的な構文
+                </p>
+                <div class='list0'>
+                    <li id='i2-1'>
+                        アプリの定義
+                    </li><br>
+                    <p1>
+                        <bl>tkinter</bl> をインポートし変数 <bl>t</bl> に格納<br>
+                        <br><div class='t0'>import tkinter as t</div><br>
+                        <br>
+                        また新たな変数にアプリを定義し、実行する<br>
+                        <br><div class='t0'>
+                            app = t.Tk()<br>
+                            <br><nbl>
+                            #(実行したいこと)<br>
+                            <br></nbl>
+                            app.mainloop()
+                            </div><br>
+                        (実行したいこと) に自分が実装したい機能や、その他必要な情報を書き込む
+                    </p1>
+                    <br></br>
+                    <li id='i2-2'>
+                        タイトルやウィンドウサイズなど
+                    </li><br>
+                    <p1>
+                        タイトルの設定<br>
+                        <br><div class='t0'>app.title( ' タイトル ' )</div>
+                        <br><br>ウィンドウサイズの設定<br>
+                        <br><div class='t0'>app.geometry( ' 横 x 縦 ' )</div>
+                        <br>「x」は半角英字のエックス。横、縦はそれぞれ半角数字。
+                        <br></br><br>
+                        <div class='t2'>
+                            &nbsp;実行例
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '250x150' )<br>
+                                <br>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果
+                            <div class='pic'><img src='1.PNG' width='250px'></div>
+                        </div><br>
+                    </p1>
+                    <br></br>
+                    <li id='i2-3'>
+                        ウィンドウサイズを固定する
+                    </li><br>
+                    <p1>
+                        <br>下記でウィンドウサイズを固定できる。
+                        <br><br><div class='t0'>
+                            <nbl>#縦横それぞれ固定</nbl><br>
+                            app.resizable( width = False, height = False ) <nbl>#または</nbl><br>
+                            app.resizable( 0, 0 )<br>
+                            <br><br><nbl>#どちらか一方をTrueにすることで、</nbl>
+                            <br>app.resizable( width = False, height = True ) <nbl>#縦だけ固定</nbl>
+                            <br>app.resizable( width = True, height = False ) <nbl>#横だけ固定</nbl>
+                            <br><nbl>#が可能</nbl>
+                        </div>
+                    </p1>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

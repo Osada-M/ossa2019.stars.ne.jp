@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <link rel="stylesheet" href="../../css/main2.css">
+    <link rel="stylesheet" href="../../css/main2_half.css" media="screen and (max-width:1360px)">
+    <link rel="stylesheet" href="../../css/main2_quarter.css" media="screen and (max-width:850px)">
+    <link rel="stylesheet" href="../../css/main2_mobile.css" media="screen and (max-width:550px)">
+    <meta property="og:title" content="最近出てきたPython3.10.0が便利な話">
+    <meta property="og:description" content="最近出てきたPython3.10.0が便利な話">
+    <meta property="og:site_name" content="最近出てきたPython3.10.0が便利な話">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="http://ossa2019.stars.ne.jp/blog/other/python3_10.html">
+    <title>Python3.10(新しいやつ)が便利な話</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class="tab">
+            <p>おさだのホームページ</p>
+            <a href="../../index.html" id="home">
+                ホーム
+            </a>
+            <a href="../../apps.html" id="home">
+                倉　庫
+            </a>
+            <a href="../../Remember/Remember.html" id="home">
+                備忘録
+            </a>
+            <a href="../blog.html" id="home" class="tab_now">
+                にっき
+            </a>
+        </div>
+        <div class="page">
+            <div class="caption">
+                10月にあるとされるmatch文の実装が楽しみ
+            </div>
+            <div class="article">
+                <p>Python3.10が便利な話</p><br>
+                    <section>
+                        2021年5月3日に Python 3.10.0 beta 1 がリリースされ、今後３つのベータ版がリリースされることが公表されている。
+                        今回は pyenv でインストールできる一番新しいバージョンである Python 3.10.0 alpha 5 でできる機能を紹介する。<br><br>
+                        <br>
+                        <a href="#0" class="notdec">0. まずインストール</a><br>
+                        <a href="#1" class="notdec">1. 複数の型を指定する方法が簡単になった</a><br>
+                        <a href="#1-1" class="notdec">&nbsp;&nbsp;&nbsp;1-1. アノテーションとしての利用</a><br>
+                        <a href="#1-2" class="notdec">&nbsp;&nbsp;&nbsp;1-2.  複数の型との比較</a><br>
+                        <a href="#2" class="notdec">2. 辞書にmapping属性が追加された</a><br>
+                        <a href="#3" class="notdec">3. int.bit_count() で２進数の１の数が簡単にわかる</a><br>
+                        <a href="#4" class="notdec">4. 2021年10月には match 文が実装される</a><br>
+                        <br><br><br>
+                        <div class="index_title", id="0">
+                            0. まずインストール
+                        </div><hr/><br>
+                        インストール方法は Python のバージョンを切り替える方法と変わらない。<br>
+                        <div class="code">
+                            <span class="dec6">$</span> pyenv install --list
+                        </div>
+                        を実行しインストール可能なバージョンを確認する。<br><br>
+                        3.10.0a5 が一番最新であったのでそれをインストールする。
+                        <div class="code">
+                            <span class="dec6">$</span> pyenv install 3.10.0a5<br>
+                            <span class="dec6">$</span> pyenv local 3.10.0a5<br>
+                        </div>
+                        一応インストールされたバージョンを確認する。
+                        <div class="code">
+                            <span class="dec6">$</span> python --version<br>
+                            <br>
+                            <span class="dec6">&gt;&gt;</span> Python 3.10.0a5<br>
+                        </div><br>
+                        そして Python のソースコードの出力でも確認してみる。
+                        <div class="code">
+                            <span class="dec0">import</span> sys<br>
+                            <span class="dec4">print</span>(sys.version)
+                        </div>
+                        <div class="code">
+                            <span class="dec6">&gt;&gt;</span> 3.10.0a5 (default, May 17 2021, 21:46:58) \n[Clang 12.0.5 (clang-1205.0.22.9)]<br>
+                        </div><br>
+                        しっかり Python 3.10 がインストールされている。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="1">
+                            1. 複数の型を指定する方法が簡単になった
+                        </div><hr/><br>
+                        これまで、複数の型を指定するときは typing モジュールを使用する必要があった。<br>
+                        例えば変数 x に int 型と float 型の両方を指定したい時、
+                        <div class="code">
+                            <span class="dec0">from</span> typing <span class="dec0">import</span> TypeVar<br>
+                            MyType = TypeVar('MyType', int, float)<br>
+                            x : MyType<br>
+                            <br>
+                            #または<br>
+                            <br>
+                            <span class="dec0">from</span> typing <span class="dec0">import</span> Union<br>
+                            MyType = Union[int, float]<br>
+                            x : MyType
+                        </div>
+                        とする必要があったが、3.10 からは<br>
+                        <div class="code">
+                            x : int | float
+                        </div>
+                        これで済むようになった。<br><br>
+                        ちなみに
+                        <div class="code">
+                            <span class="dec4">print</span>( <span class="dec4">type</span>(int | float) )<br>
+                            <br>
+                            <span class="dec6">&gt;&gt;</span> &lt;class 'types.Union'&gt;<br>
+                        </div>
+                        になる。<br><br>
+                        そしてこれを利用することでアノテーションと、複数の型との比較が簡単になる。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="1-1">
+                            1-1. アノテーションとしての利用
+                        </div><hr/><br>
+                        例えば関数の引数に int か float 型を受け取りたい時、
+                        <div class="code">
+                            <span class="dec0">def</span> func(x:int | float):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> x**2
+                        </div>
+                        このように書ける。この場合「x は int または float にしてくれ」とアノテーションを入れることができる。<br><br>
+                        更に関数の戻り値にも書けるので、
+                        <div class="code">
+                            <span class="dec0">def</span> func(x:int | float) -&gt; int | float:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> x**2
+                        </div>
+                        とすることで「引数は int または float、戻り値も int または float」とまで表現できる。<br><br>
+                        一応 func() の引数を確認してみると
+                        <div class="code">
+                            <span class="dec0">import</span> inspect<br>
+                            <br>
+                            <span class="dec0">def</span> check(func):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> f(<span class="dec2">*</span><span class="dec2">args</span>, <span class="dec2">*</span><span class="dec2">*</span><span class="dec2">kw</span><span class="dec2">args</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sig = inspect.signature(func)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> (name, param) <span class="dec1">in</span> sig.parameters.items():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f'引数: {name}\n型: {repr(param.annotation)}')<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f'結果: {func(<span class="dec2">*</span><span class="dec2">args</span>, <span class="dec2">*</span><span class="dec2">*</span><span class="dec2">kw</span><span class="dec2">args</span>)}')<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> func<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> f<br>
+                            <br>
+                            <span class="dec2">@</span>check<br>
+                            <span class="dec0">def</span> func(x:int | float) -&gt; int | float:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> x**2<br>
+                            <br>
+                            func(2.0)
+                        </div>
+                        実行結果&darr;
+                        <div class="code">
+                            引数    : x<br>
+                            型  : int | float<br>
+                            結果    : 4.0
+                        </div>
+                        引数 x のアノテーションが int または float 型になっていることが確認できる。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="1-2">
+                            1-2. 複数の型との比較
+                        </div><hr/><br>
+                        これまでの書き方で変数 x が int または float 型であることを確認するためには、
+                        <div class="code">
+                            <span class="dec1">if</span>((<span class="dec4">type</span>(x) <span class="dec1">is</span> int) <span class="dec3">or</span> (<span class="dec4">type</span>(x) <span class="dec1">is</span> float)):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>('ok!')<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# または<br>
+                            <br>
+                            <span class="dec1">if</span>(<span class="dec4">isinstance</span>(x, int) <span class="dec3">or</span> <span class="dec4">isinstance</span>(x, float)):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>('ok!')
+                        </div>
+                        などと書く必要があったが、型を複数指定できるようになったので、
+                        <div class="code">
+                            <span class="dec1">if</span>(<span class="dec4">isinstance</span>(x, int | float)):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>('ok!')
+                        </div>
+                        このように簡単に書けるようになった。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="2">
+                            2. 辞書にmapping属性が追加された
+                        </div><hr/><br>
+                        mapping は辞書の keys() 、values() 、items() メソッドの後ろに keys().mapping と付けることでもとの辞書全体を参照することができる。<br><br>具体的には、
+                        <div class="code">
+                            # もとの辞書<br>
+                            x = {1:&quot;a&quot;, 2:&quot;b&quot;}<br>
+                            <span class="dec4">print</span>(f'dectionaly : {x}')<br>
+                            <br>
+                            # そのキー<br>
+                            key = x.keys()<br>
+                            <span class="dec4">print</span>(f'key : {list(key)}')<br>
+                            <br>
+                            # キー.mappnig<br>
+                            key_mapping = key.mapping<br>
+                            <span class="dec4">print</span>(f'key.mapping : {key_mapping}')
+                        </div>
+                        実行結果&darr;
+                        <div class="code">
+                            dictionaly : {0: 'a', 1: 'b'}<br>
+                            key : [0, 1]<br>
+                            key.mapping : {0: 'a', 1: 'b'}
+                        </div><br>
+                        このようにもとの辞書が復元されている。クラスの内と外のようなスコープの違う場所にある辞書全体を持ってきたいときに使えそうだ。
+                        <br><br><br><br>
+                        <div class="index_title", id="3">
+                            4. int.bit_count() で２進数の１の数が簡単にわかる
+                        </div><hr/><br>
+                        まず動作を見てもらうと、
+                        <div class="code">
+                            int.bit_count(1)&nbsp;&nbsp;# 1<br>
+                            <span class="dec6">&gt;&gt;</span> 1<br>
+                            <br>
+                            int.bit_count(2)&nbsp;&nbsp;# 10<br>
+                            <span class="dec6">&gt;&gt;</span> 2<br>
+                            <br>
+                            int.bit_count(15)&nbsp;&nbsp;# 1111<br>
+                            <span class="dec6">&gt;&gt;</span> 4<br>
+                            <br>
+                            int.bit_count(1000)&nbsp;&nbsp;# 1111101000<br>
+                            <span class="dec6">&gt;&gt;</span> 6
+                        </div>
+                        このように２進数にした際の１の数が返される。<br><br>
+                        １の数を返すアルゴリズムはそんなに難しくないが、この bit_count() はパッケージ化され動作が速い。
+                        では実際に bit_count() と自作の１を数える処理をそれぞれ100万回実行し、時間を比べてみる。<br><br>
+                        <div class="pic"><img src="img/bitcount.png" width="70%" alt="mandelblot^2の画像"></div>
+                        <br>
+                        <details>
+                            <summary>自作の処理の中身</summary>
+                            <br>
+                            処理１
+                            <div class="code">
+                                func1 = <span class="dec0">lambda</span> x : <span class="dec4">len</span>([i <span class="dec1">for</span> i <span class="dec1">in</span> str(bin(x))[2:] <span class="dec1">if</span> i is 1])<br>
+                            </div>
+                            処理２
+                            <div class="code">
+                                func2 = <span class="dec0">lambda</span> x : <span class="dec4">len</span>([i <span class="dec1">for</span> i <span class="dec1">in</span> str(bin(x))[2:] <span class="dec1">if</span> <span class="dec3">not</span> i])<br>
+                            </div>
+                            処理３
+                            <div class="code">
+                                <span class="dec0">def</span> func3(x):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;x -= (x &gt;&gt; 1) &amp; 0x5555555555555555<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;x = (x &amp; 0x3333333333333333) + ((x &gt;&gt; 2) &amp; 0x3333333333333333)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;x = (x + (x &gt;&gt; 4)) &amp; 0x0f0f0f0f0f0f0f0f<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;x += x &gt;&gt; 8<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;x += x &gt;&gt; 16<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;x += x &gt;&gt; 32<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> x &amp; 0x0000007f
+                            </div>
+                            処理４
+                            <div class="code">
+                                func4 = <span class="dec0">lambda</span> x : str(bin(x))[2:].count(1)
+                            </div>
+                            <br>
+                        </details>
+                        <br>
+                        このように結構速い。<br><br><br>
+                        このアルゴリズムはインターネット通信のパリティによく使われるので、もしかしたらその方向へのアプローチかもしれない。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="4">
+                            5. 2021年10月には match 文が実装される
+                        </div><hr/><br>
+                        10月にリリース予定の Python 3.10.0 final には match 文が含まれることがわかっている。match 文は他の言語でいう switch 文のことである。<br><br>
+                        もし実装されたら、
+                        <div class="code">
+                            <span class="dec0">match</span> x:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">case</span> 0:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>('zero')<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">case</span> 1:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>('one')<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">case</span> 2:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>('two')<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">case</span> _:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>('default')
+                        </div>
+                        このような処理が可能になる。<br><br>
+                        楽しみ！！！！！
+                        <br><br><br><br><br>
+                        <a href="../blog.html" class="link">
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

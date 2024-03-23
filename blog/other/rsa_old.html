@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <link rel="stylesheet" href="../../css/main2.css">
+    <link rel="stylesheet" href="../../css/main2_half.css" media="screen and (max-width:1360px)">
+    <link rel="stylesheet" href="../../css/main2_quarter.css" media="screen and (max-width:850px)">
+    <link rel="stylesheet" href="../../css/main2_mobile.css" media="screen and (max-width:550px)">
+    <meta property="og:title" content="PythonでRSA暗号を作ってみる。">
+    <meta property="og:description" content="PythonでRSA暗号を作ってみる。スレッドを用いたり既解読文字の呼び出しを可能にしたりして計算の高速化を図っています。">
+    <meta property="og:site_name" content="PythonでRSA暗号を作ってみる。">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="http://ossa2019.stars.ne.jp/blog/other/rsa.html">
+    <title>PythonでRSA暗号を作ってみる。（ついでにスレッドによる計算の高速化も込み）</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class="tab">
+            <p>おさだのホームページ</p>
+            <a href="../../index.html" id="home">
+                ホーム
+            </a>
+            <a href="../../apps.html" id="home">
+                倉　庫
+            </a>
+            <a href="../../Remember/Remember.html" id="home">
+                備忘録
+            </a>
+            <a href="../blog.html" id="home" class="tab_now">
+                にっき
+            </a>
+        </div>
+        <div class="page">
+            <div class="caption">
+                サマーウォーズのあの暗号
+            </div>
+            <div class="article">
+                <p>RSA暗号を作ってみる</p><br>
+                    <section>
+                        <div class='a_list'>
+                            <a href=#code>完成したプログラムまで読み飛ばす　＞＞</a><br>
+                            <a href=#1>1. RSA暗号とは</a><br>
+                            <a href=#2>2. まず実直な実装</a><br>
+                            <a href=#3>3. 既解読暗号の再利用</a><br>
+                            <a href=#4>4. 並行処理による計算の高速化</a><br>
+                            <a href=#5>5. ちょっと修正して完成</a><br>
+                            <a href=#6>6. numpyのpower()とmod()はあまり使えない話</a><br>
+                            <a href=#7>7. サマーウォーズの主人公は何を計算していたのか</a><br>
+                        </div><br><br>
+                        <br>
+                        <div class="index_title", id="1">
+                            1. RSA暗号とは
+                        </div><hr/><br>
+                        RSA暗号は公開鍵方式といい、受信者が秘密鍵と公開鍵、送信者が公開鍵のみを用いて暗号化・復号化を行う。
+                        秘密鍵は受信者の元から離れることがないので安全であると言われている。<br>
+                        <br>
+                        <br>
+                        <br>
+                        暗号に関わる数字は下記の６個である<br>
+                        <div class="det">
+                            <p_ style="font-weight:900;">
+                                p&nbsp;&nbsp;:&nbsp;&nbsp;素数<br>
+                                q&nbsp;&nbsp;:&nbsp;&nbsp;素数（ただし、p ≠ q）<br>
+                                n&nbsp;&nbsp;:&nbsp;&nbsp;p * q<br>
+                                e&nbsp;&nbsp;:&nbsp;&nbsp;p-1 と q-1 に対して互いに素な数（ただし e > 2）<br>
+                                L&nbsp;&nbsp;:&nbsp;&nbsp;p-1 と q-1 の最小公倍数（単に p-1 * q-1 でも可だが、桁数が大きくなるので最小公倍数を推奨）<br>
+                                d&nbsp;&nbsp;:&nbsp;&nbsp;de - yL = 1 の整数解 (d, y) のどれか一つ<br>
+                            </p_>
+                        </div>
+                        上記の数字のうち、<p_ style="color:#ae0606; font-weight:900;">n, e が公開鍵</p_>、<p_ style="color:#ae0606; font-weight:900;">d が秘密鍵</p_>となる。<br>
+                        <br>
+                        <br>
+                        <br>
+                        平文と暗号文の関係は、<br>
+                        <div class="det">
+                            ① <p_ style="color:#0606f0; font-weight:900;">平文</p_> ^ <p_ style="color:#ae0606; font-weight:900;">e</p_> (mod <p_ style="color:#ae0606; font-weight:900;">n</p_>) = <p_ style="color:#b56300; font-weight:900;">暗号文</p_><br>
+                            ② <p_ style="color:#b56300; font-weight:900;">暗号文</p_> ^ <p_ style="color:#ae0606; font-weight:900;">d</p_> (mod <p_ style="color:#ae0606; font-weight:900;">n</p_>) = <p_ style="color:#0606f0; font-weight:900;">平文</p_><br>
+                        </div>
+                        であるので、①が送信側、②が受信側となる。
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        例として <p_ style="font-weight:900;">p = 5, q = 11</p_> の時の公開鍵と秘密鍵を計算すると、<br>
+                        <p_ style="font-weight:900;">
+                            n = 5*11 = 55<br>
+                            e = 3<br>
+                        </p_>
+                        p-1 = 4 = 2^2, q-1 = 10 = 2 * 5 より、最小公倍数 <p_ style="font-weight:900;">L = 2^2 * 5 = 20</p_><br>
+                        3d - 20y = 1 より、<p_ style="font-weight:900;">d = 7</p_>, y = 1<br>
+                        <br>
+                        よって公開鍵は 55 と 3 で、秘密鍵は 7 になる。<br>
+                        <br><br><br>
+                        <div class="index_title", id="2">
+                            2. まず実直な実装
+                        </div><hr/><br>
+                        １節で紹介した仕様通りにPythonを書いた。また、このプログラムではnumpyをあまり利用していない。その理由は<a href=#6 style="padding-left:0; padding-right:0">６節</a>で後述する。<br>
+                        <div class="code">
+                            #! /usr/local/bin/env python3<br>
+                            #! encode : -*- utf-8 -*-<br>
+                            #! author : osada (http://ossa2019.stars.ne.jp/)<br>
+                            <br>
+                            <span class="dec0">import</span> sympy<br>
+                            <span class="dec0">import</span> random<br>
+                            <br>
+                            <br>
+                            <span class="dec0">class</span> RSA:<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> <span class="dec4">__init__</span>(<span class="dec2">self</span>, start:int=100, range:int=100, *, sender:bool=<span class="dec3">False</span>, n:int=<span class="dec3">None</span>, e:int=<span class="dec3">None</span>):<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 送信者用の設定<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(sender):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.n = n<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.e = e<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 受信者用の設定<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 新たな鍵の生成<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_buf = random.rand<span class="dec4">int</span>(start, start+range)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;q_buf = random.rand<span class="dec4">int</span>(start, start+range-1)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(p_buf == q_buf): q_buf += 1<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 素数 p<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.p = sympy.prime(p_buf)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 素数 q<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.q = sympy.prime(q_buf)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 公開鍵 n<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.n = <span class="dec2">self</span>.p * <span class="dec2">self</span>.q<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 公開鍵 e<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facts = sympy.factor<span class="dec4">int</span>((<span class="dec2">self</span>.p-1)*(<span class="dec2">self</span>.q-1))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf_e = 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">while</span> sympy.prime(buf_e) <span class="dec1">in</span> facts.keys():<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf_e += 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.e = sympy.prime(buf_e)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 不定方程式を構成する変数 L<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.l = sympy.lcm(<span class="dec2">self</span>.p-1, <span class="dec2">self</span>.q-1)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 秘密鍵 d<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count = 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">while</span> ((1+(count*<span class="dec2">self</span>.l))/<span class="dec2">self</span>.e) % 1 != 0:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.d = (1+(count*<span class="dec2">self</span>.l))/<span class="dec2">self</span>.e<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.y = count<br>
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;## 復号化<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> decode(<span class="dec2">self</span>, xs:list):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>((x**<span class="dec2">self</span>.d)%<span class="dec2">self</span>.n) # 暗号文^d (mod n) = 平文<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;**  {x} -&gt; {result[<span class="dec4">len</span>(result)-1]}  **&quot;)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# utf8 でデコード<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str = bytes(result).decode(&quot;utf8&quot;)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result, re_str<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;## 暗号化<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> encode(<span class="dec2">self</span>, xs:list, n:int=<span class="dec3">None</span>, e:int=<span class="dec3">None</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n = <span class="dec2">self</span>.n <span class="dec1">if</span> n == <span class="dec3">None</span> <span class="dec1">else</span> n<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e = <span class="dec2">self</span>.e <span class="dec1">if</span> e == <span class="dec3">None</span> <span class="dec1">else</span> e<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chars = <span class="dec4">dict</span>()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str = &quot;&quot;<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# utf8 でエンコード<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = <span class="dec4">list</span>(xs.encode(&quot;utf8&quot;))<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>((x**e)%n) # 平文^e (mod n) = 暗号文<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> r <span class="dec1">in</span> result:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str += f&quot;{r} &quot;<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result, re_str<br>
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;## 公開鍵の取得<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> get_keys(<span class="dec2">self</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec2">self</span>.n, <span class="dec2">self</span>.e<br>
+                        </div><br>
+                        <p_ style="color:#ae0606; font-weight:900;">RSA(n, m)</p_> で n 〜 n+m 番目までの素数を使った公開鍵と秘密鍵を生成する。また、<p_ style="color:#ae0606; font-weight:900;">RSA(sender=True)</p_> とすることで鍵を生成することなく暗号化の機能のみを利用できる。<br>
+                        公開鍵の取得：<p_ style="color:#ae0606; font-weight:900;">RSA.get_keys()</p_>、戻り値：n, e<br>
+                        暗号化：<p_ style="color:#ae0606; font-weight:900;">RSA.encode(平文, n, e)</p_>、戻り値：暗号文, 暗号文を読みやすくした文字列<br>
+                        復号化：<p_ style="color:#ae0606; font-weight:900;">RSA.decode(暗号文)</p_>、戻り値：復号文, 復号文を読みやすくした文字列<br>
+                        <br>
+                        <br>
+                        実行結果：<br>
+                        <div class="code">
+                            <span class="dec6">&gt;&gt;</span> recv = RSA(100, 100)        # 受信者 <br>
+                            <span class="dec6">...</span> send = RSA(sender=True)     # 送信者<br>
+                            <span class="dec6">...</span><br>
+                            <span class="dec6">...</span> n, e = recv.get_keys()      # 公開鍵の取得<br>
+                            <span class="dec6">...</span> print(f&quot;公開鍵 : {n}, {e}&quot;)<br>
+                            <span class="dec6">...</span><br>
+                            <span class="dec6">...</span> ## 送信側<br>
+                            <span class="dec6">...</span> xs = input(&quot;入力&emsp; &gt; &quot;)<br>
+                            <span class="dec6">...</span> send_code, send_str = send.encode(xs, n, e)    # 暗号化<br>
+                            <span class="dec6">...</span> print(f&quot;暗号文 : {send_str}\n&quot;)<br>
+                            <span class="dec6">...</span><br>
+                            <span class="dec6">...</span> ## 受信側<br>
+                            <span class="dec6">...</span> recv_code, recv_str = recv.decode(send_code)   # 復号化<br>
+                            <span class="dec6">...</span> print(f&quot;復号文 : {recv_str}&quot;)<br>
+                            <br>
+                            <br>
+                            公開鍵 : 717949, 7<br>
+                            入力　 > <span class="dec0">hello</span><br>
+                            暗号文 : 585259 475730 472245 472245 188007 <br>
+                            <br>
+                            **  585259 -> 104  **<br>
+                            **  475730 -> 101  **<br>
+                            **  472245 -> 108  **<br>
+                            **  472245 -> 108  **<br>
+                            **  188007 -> 111  **<br>
+                            復号文 : <span class="dec0">hello</span><br>
+                        </div>
+                        入力の文字列 "hello" が復元されている。<br>
+                        これでRSA暗号は完成だが、大きい桁の乗剰算を行うために実行時間が長いことが課題である。次の節からはこの計算の高速化について考える。<br>
+                        <br><br><br>
+                        <div class="index_title", id="3">
+                            3. 既解読暗号の再利用
+                        </div><hr/><br>
+                        先程の "hello" の暗号化・復号化において " l " は重複しているため、２回同じ計算を行っていることになる。
+                        これを１種類の文字につき必ず１回の計算で済むように修正するには、先に登場する全ての文字列を重複なしで計算しそれを辞書に登録し、その辞書をもとに暗号化・復号化を行う方法が挙げられる。<br>
+                        <br>
+                        この考えをもとに所々修正した。（実行方法は変わらない）<br>
+                        <div class="code">
+                            <span class="dec0">class</span> RSA:<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> <span class="dec4">__init__</span>( ...<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 受信者用の設定<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.chars = dict() # 復号化用の辞書<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+                        </div>
+                        <div class="code">
+                            ## 復号化<br>
+                            <span class="dec0">def</span> decode(<span class="dec2">self</span>, xs:list):<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# 辞書の作成<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> <span class="dec4">set</span>(xs):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.chars[x] = (x**<span class="dec2">self</span>.d)%<span class="dec2">self</span>.n # 暗号文^d (mod n) = 平文<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;**  {x} -&gt; {<span class="dec2">self</span>.chars[x]}  **&quot;)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# 辞書をもとに復号化<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(<span class="dec2">self</span>.chars[x])<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# utf8 でデコード<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;re_str = bytes(result).decode(&quot;utf8&quot;)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result, re_str<br>
+                        </div>
+                        <div class="code">
+                            ## 暗号化<br>
+                            <span class="dec0">def</span> encode(<span class="dec2">self</span>, xs:list, n:int=<span class="dec3">None</span>, e:int=<span class="dec3">None</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(time_count):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start = time.time()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;n = <span class="dec2">self</span>.n <span class="dec1">if</span> n == <span class="dec3">None</span> <span class="dec1">else</span> n<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;e = <span class="dec2">self</span>.e <span class="dec1">if</span> e == <span class="dec3">None</span> <span class="dec1">else</span> e<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;result = []<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;chars = <span class="dec4">dict</span>() # 暗号化用の辞書<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;re_str = &quot;&quot;<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# utf8 でエンコード<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs = <span class="dec4">list</span>(xs.encode(&quot;utf8&quot;))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;xs_set = <span class="dec4">set</span>(xs)<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# 辞書の作成<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x_s <span class="dec1">in</span> xs_set:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chars[x_s] = (x_s**e)%n # 平文^e (mod n) = 暗号文<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;# 辞書をもとに暗号化<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(chars[x])<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> r <span class="dec1">in</span> result:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str += f&quot;{r} &quot;<br>
+                            <br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result, re_str<br>
+                        </div>
+                        これで無駄な計算を省くことができた。<br>
+                        <br><br><br>
+                        <div class="index_title", id="4">
+                            4. 並行処理による計算の高速化
+                        </div><hr/><br>
+                        ３節にてある程度は計算が速くなったが、結局は辞書の作成に一番時間が掛かるので根本的には解決できていない。
+                        一方、この辞書のキーは重複をしていないので何個もの辞書に分割したり、逆にくっつけたりしても壊れることはない。
+                        そこで、この辞書を複数個に分割してそれぞれを並行処理にて計算し、再び一つに統合することで高速化を図ることができる。<br>
+                        <br>
+                        つまり、受け取った文字列をいくつかに分割し、それをマルチプロセスにて計算を行う。<br>
+                        <br>
+                        <br>
+                        話は変わるが、かなり大きい素数で実験を行なったところ暗号化にはそこまでの計算時間を要さず、逆に復号化には小さな素数であってもかなりの計算時間がかかることがわかった。
+                        なのでマルチプロセスによる計算は復号化について行う。<br>
+                        <br>
+                        <br>
+                        この考えをもとにプログラムを大幅に修正した。（実行方法は変わらない）<br>
+                        <br>
+                        <details>
+                            <summary>並行処理に対応したプログラム</summary>
+                            <div class="code">
+                                #! /usr/local/bin/env python3<br>
+                                #! encode : -*- utf-8 -*-<br>
+                                #! author : osada (http://ossa2019.stars.ne.jp/)<br>
+                                <br>
+                                <span class="dec0">import</span> sympy<br>
+                                <span class="dec0">import</span> random<br>
+                                <span class="dec0">import</span> numpy <span class="dec1">as</span> np<br>
+                                <span class="dec0">import</span> multiprocessing <span class="dec1">as</span> mp<br>
+                                <br>
+                                <br>
+                                <span class="dec0">class</span> RSA:<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> <span class="dec4">__init__</span>(<span class="dec2">self</span>, start:int=100, range:int=100, *, sender:bool=<span class="dec3">False</span>, n:int=<span class="dec3">None</span>, e:int=<span class="dec3">None</span>):<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 送信者用の設定<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(sender):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.n = n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.e = e<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 受信者用の設定<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.chars = <span class="dec4">dict</span>()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_buf = random.rand<span class="dec4">int</span>(start, start+range)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;q_buf = random.rand<span class="dec4">int</span>(start, start+range-1)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(p_buf == q_buf): q_buf += 1<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 素数 p<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.p = sympy.prime(p_buf)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 素数 q<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.q = sympy.prime(q_buf)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 公開鍵 n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.n = <span class="dec2">self</span>.p * <span class="dec2">self</span>.q<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 公開鍵 e<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facts = sympy.factor<span class="dec4">int</span>((<span class="dec2">self</span>.p-1)*(<span class="dec2">self</span>.q-1))<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf_e = 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">while</span> sympy.prime(buf_e) <span class="dec1">in</span> facts.keys():<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf_e += 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.e = sympy.prime(buf_e)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 不定方程式を構成する変数 l<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.l = sympy.lcm(<span class="dec2">self</span>.p-1, <span class="dec2">self</span>.q-1)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 秘密鍵 d<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count = 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">while</span> ((1+(count*<span class="dec2">self</span>.l))/<span class="dec2">self</span>.e) % 1 != 0:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.d = (1+(count*<span class="dec2">self</span>.l))/<span class="dec2">self</span>.e<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.y = count<br>
+                                <br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 復号化<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> decode(<span class="dec2">self</span>, xs:list, split:int=<span class="dec3">None</span>):<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_set = <span class="dec4">set</span>(xs)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_set_buf = xs_set.copy()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 一つのスレッドに振り分ける暗号の数<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(split == <span class="dec3">None</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_length = <span class="dec4">len</span>(xs_set)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(xs_length == 0):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> [], &quot;&quot;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_num = 4 + <span class="dec4">int</span>(np.log10(<span class="dec4">len</span>(xs_set) ** 2))<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(split &gt; 0):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_num = split<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_num = <span class="dec4">len</span>(xs_set) + 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_len = <span class="dec4">len</span>(xs_set)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_div, xs_mod = xs_len//multi_num, xs_len%multi_num<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queues = []<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 暗号をスレッドに振り分け<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> d <span class="dec1">in</span> <span class="dec4">range</span>(xs_div):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> _ <span class="dec1">in</span> <span class="dec4">range</span>(multi_num):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf.<span class="dec4">append</span>(xs_set_buf.<span class="dec4">pop</span>())<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queues.<span class="dec4">append</span>(mp.Queue())<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes.<span class="dec4">append</span>(mp.Process(target=<span class="dec2">self</span>.calc, <span class="dec2">args</span>=([buf], queues[d])))<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(xs_mod != 0):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> _ <span class="dec1">in</span> <span class="dec4">range</span>(xs_mod):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf.<span class="dec4">append</span>(xs_set_buf.<span class="dec4">pop</span>())<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queues.<span class="dec4">append</span>(mp.Queue())<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes.<span class="dec4">append</span>(mp.Process(target=<span class="dec2">self</span>.calc, <span class="dec2">args</span>=([buf], queues[xs_div])))<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 計算<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> p <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(processes)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes[p].start()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> p <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(processes)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf = queues[p].<span class="dec4">get</span>()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keys = buf[:<span class="dec4">len</span>(buf)//2]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;values = buf[<span class="dec4">len</span>(buf)//2:]<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> k <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(keys)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.chars[keys[k]] = values[k]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes[p].join()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(<span class="dec2">self</span>.chars[x])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# utf8 でデコード<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str = bytes(result).decode(&quot;utf8&quot;)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result, re_str<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 暗号化<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> encode(<span class="dec2">self</span>, xs:list, n:int=<span class="dec3">None</span>, e:int=<span class="dec3">None</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n = <span class="dec2">self</span>.n <span class="dec1">if</span> n == <span class="dec3">None</span> <span class="dec1">else</span> n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e = <span class="dec2">self</span>.e <span class="dec1">if</span> e == <span class="dec3">None</span> <span class="dec1">else</span> e<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chars = <span class="dec4">dict</span>()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str = &quot;&quot;<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# utf8 でエンコード<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = <span class="dec4">list</span>(xs.encode(&quot;utf8&quot;))<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_set = <span class="dec4">set</span>(xs)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x_s <span class="dec1">in</span> xs_set:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chars[x_s] = (x_s**e)%n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(chars[x])<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> r <span class="dec1">in</span> result:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str += f&quot;{r} &quot;<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result, re_str<br>
+                                <br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 剰余の計算<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> calc(<span class="dec2">self</span>, xs:list, queue):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = xs[0].copy()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs[0]:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf = (x**<span class="dec2">self</span>.d)%<span class="dec2">self</span>.n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(buf)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;**  {x} -&gt; {buf}  **&quot;)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue.put(result)<br>
+                                <br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 公開鍵の取得<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> get_keys(<span class="dec2">self</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec2">self</span>.n, <span class="dec2">self</span>.e
+                            </div>
+                        </details>
+                        <br>
+                        実行した結果は好調であり、前節まで１０秒以上掛かっていた計算も１秒程で済むようになった。おそらく自作の関数をmultiprocessing.Process()の中で実行したことも高速化に寄与しているだろう。<br>
+                        <br><br><br id="code">
+                        <div class="index_title", id="5">
+                            5. ちょっと修正して完成
+                        </div><hr/><br>
+                        既存の鍵の代入機能、各計算時間の出力、エラーへの対応、repr()への出力を主に修正し、実行例を追記した。（実行方法は変わらない）<br>
+                        <br>
+                        <details>
+                            <summary>完成したプログラム全文</summary>
+                            <div class="code">
+                                #! /usr/local/bin/env python3<br>
+                                #! encode : -*- utf-8 -*-<br>
+                                #! author : osada (http://ossa2019.stars.ne.jp/)<br>
+                                <br>
+                                <span class="dec0">import</span> sympy<br>
+                                <span class="dec0">import</span> random<br>
+                                <span class="dec0">import</span> numpy <span class="dec1">as</span> np<br>
+                                <span class="dec0">import</span> multiprocessing <span class="dec1">as</span> mp<br>
+                                <span class="dec0">import</span> time<br>
+                                <br>
+                                <br>
+                                <span class="dec0">class</span> RSA:<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> <span class="dec4">__init__</span>(<span class="dec2">self</span>, start:int=100, range:int=100, *, params:dict=<span class="dec3">None</span>, sender:bool=<span class="dec3">False</span>, n:int=<span class="dec3">None</span>, e:int=<span class="dec3">None</span>):<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 送信者用の設定<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(sender):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;params_buf = {&quot;p&quot;:<span class="dec3">None</span>, &quot;q&quot;:<span class="dec3">None</span>, &quot;n&quot;:n, &quot;e&quot;:e, &quot;l&quot;:<span class="dec3">None</span>, &quot;d&quot;:<span class="dec3">None</span>, &quot;y&quot;:<span class="dec3">None</span>}<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.read_params(params_buf)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.set_params()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 受信者用の設定<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.chars = <span class="dec4">dict</span>()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 既存の鍵を設定<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(params != <span class="dec3">None</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.read_params(params)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.set_params()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 新たな鍵の生成<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p_buf = random.rand<span class="dec4">int</span>(start, start+range)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;q_buf = random.rand<span class="dec4">int</span>(start, start+range-1)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(p_buf == q_buf): q_buf += 1<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 素数 p<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.p = sympy.prime(p_buf)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 素数 q<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.q = sympy.prime(q_buf)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 公開鍵 n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.n = <span class="dec2">self</span>.p * <span class="dec2">self</span>.q<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 公開鍵 e<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;facts = sympy.factor<span class="dec4">int</span>((<span class="dec2">self</span>.p-1)*(<span class="dec2">self</span>.q-1))<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf_e = 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">while</span> sympy.prime(buf_e) <span class="dec1">in</span> facts.keys():<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf_e += 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.e = sympy.prime(buf_e)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 不定方程式を構成する変数 l<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.l = sympy.lcm(<span class="dec2">self</span>.p-1, <span class="dec2">self</span>.q-1)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 秘密鍵 d<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count = 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">while</span> ((1+(count*<span class="dec2">self</span>.l))/<span class="dec2">self</span>.e) % 1 != 0:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count += 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.d = (1+(count*<span class="dec2">self</span>.l))/<span class="dec2">self</span>.e<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.y = count<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.set_params()<br>
+                                <br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 復号化<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> decode(<span class="dec2">self</span>, xs:list, time_count:bool=<span class="dec3">False</span>, split:int=<span class="dec3">None</span>, <span class="dec0">return</span>_time:bool=<span class="dec3">False</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(time_count):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start = time.time()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_set = <span class="dec4">set</span>(xs)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_set_buf = xs_set.copy()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 一つのスレッドに振り分ける暗号の数<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(split == <span class="dec3">None</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_length = <span class="dec4">len</span>(xs_set)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(xs_length == 0):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span class="dec0">return</span>_time):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> [], &quot;&quot;, 0<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> [], &quot;&quot;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_num = 4 + <span class="dec4">int</span>(np.log10(<span class="dec4">len</span>(xs_set) ** 2))<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">el</span><span class="dec1">if</span>(split &gt; 0):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_num = split<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_num = <span class="dec4">len</span>(xs_set) + 1<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_len = <span class="dec4">len</span>(xs_set)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_div, xs_mod = xs_len//multi_num, xs_len%multi_num<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queues = []<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 暗号をスレッドに振り分け<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> d <span class="dec1">in</span> <span class="dec4">range</span>(xs_div):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> _ <span class="dec1">in</span> <span class="dec4">range</span>(multi_num):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf.<span class="dec4">append</span>(xs_set_buf.<span class="dec4">pop</span>())<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queues.<span class="dec4">append</span>(mp.Queue())<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes.<span class="dec4">append</span>(mp.Process(target=<span class="dec2">self</span>.calc, <span class="dec2">args</span>=([buf], queues[d])))<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(xs_mod != 0):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> _ <span class="dec1">in</span> <span class="dec4">range</span>(xs_mod):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf.<span class="dec4">append</span>(xs_set_buf.<span class="dec4">pop</span>())<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queues.<span class="dec4">append</span>(mp.Queue())<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes.<span class="dec4">append</span>(mp.Process(target=<span class="dec2">self</span>.calc, <span class="dec2">args</span>=([buf], queues[xs_div])))<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# 計算<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> p <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(processes)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes[p].start()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> p <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(processes)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf = queues[p].<span class="dec4">get</span>()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keys = buf[:<span class="dec4">len</span>(buf)//2]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;values = buf[<span class="dec4">len</span>(buf)//2:]<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> k <span class="dec1">in</span> <span class="dec4">range</span>(<span class="dec4">len</span>(keys)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.chars[keys[k]] = values[k]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processes[p].join()<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span class="dec2">self</span>.chars[x] &lt; 1&lt;&lt;8):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(<span class="dec2">self</span>.chars[x])<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(&quot;[!] 復号化した文字列が不正です。&quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span class="dec0">return</span>_time):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> [], &quot;&quot;, 0<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> [], &quot;&quot;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# utf8 でデコード<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str = bytes(result).decode(&quot;utf8&quot;)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(time_count):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decode_time = round(time.time() - start, 4)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span class="dec0">return</span>_time):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result, re_str, decode_time<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;復号化時間 : {decode_time} 秒&quot;)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result, re_str<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 暗号化<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> encode(<span class="dec2">self</span>, xs:list, n:int=<span class="dec3">None</span>, e:int=<span class="dec3">None</span>, is_str:bool=<span class="dec3">True</span>, time_count:bool=<span class="dec3">False</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(time_count):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start = time.time()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n = <span class="dec2">self</span>.n <span class="dec1">if</span> n == <span class="dec3">None</span> <span class="dec1">else</span> n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e = <span class="dec2">self</span>.e <span class="dec1">if</span> e == <span class="dec3">None</span> <span class="dec1">else</span> e<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = []<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chars = <span class="dec4">dict</span>()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str = &quot;&quot;<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# utf8 でエンコード<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = <span class="dec4">list</span>(xs.encode(&quot;utf8&quot;))<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs_set = <span class="dec4">set</span>(xs)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x_s <span class="dec1">in</span> xs_set:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chars[x_s] = (x_s**e)%n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(chars[x])<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(is_str):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> r <span class="dec1">in</span> result:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re_str += f&quot;{r} &quot;<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(time_count):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;暗号化時間 : {time.time() - start:.4f} 秒&quot;)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> result, re_str<br>
+                                <br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 剰余の計算<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> calc(<span class="dec2">self</span>, xs:list, queue):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = xs[0].copy()<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span> x <span class="dec1">in</span> xs[0]:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# buf = np.mod(np.power(x, <span class="dec2">self</span>.d), <span class="dec2">self</span>.n)  # 整数の精度悪<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buf = (x**<span class="dec2">self</span>.d)%<span class="dec2">self</span>.n<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.<span class="dec4">append</span>(buf)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;**  {x} -&gt; {buf}  **&quot;)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue.put(result)<br>
+                                <br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 公開鍵の取得<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> get_keys(<span class="dec2">self</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec2">self</span>.n, <span class="dec2">self</span>.e<br>
+                                <br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 全ての変数を取得<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> get_params(<span class="dec2">self</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> <span class="dec2">self</span>.params<br>
+                                <br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 変数の辞書を作成<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> set_params(<span class="dec2">self</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.params = {&quot;p&quot;:<span class="dec2">self</span>.p, &quot;q&quot;:<span class="dec2">self</span>.q, &quot;n&quot;:<span class="dec2">self</span>.n, &quot;e&quot;:<span class="dec2">self</span>.e, &quot;l&quot;:<span class="dec2">self</span>.l, &quot;d&quot;:<span class="dec2">self</span>.d, &quot;y&quot;:<span class="dec2">self</span>.y}<br>
+                                <br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 既存の変数を設定<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> read_params(<span class="dec2">self</span>, params):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.p = params[&quot;p&quot;]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.q = params[&quot;q&quot;]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.n = params[&quot;n&quot;]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.e = params[&quot;e&quot;]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.l = params[&quot;l&quot;]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.d = params[&quot;d&quot;]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.y = params[&quot;y&quot;]<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> __repr__(<span class="dec2">self</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span class="dec2">self</span>.p == <span class="dec3">None</span>):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> f&quot;RSA(sender=<span class="dec3">True</span>, n={<span class="dec2">self</span>.n}, e={<span class="dec2">self</span>.e})&quot;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">return</span> f&quot;RSA(params={<span class="dec2">self</span>.params})&quot;<br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <span class="dec1">if</span>(<span class="dec4">__name__</span>  == &quot;<span class="dec4">__main__</span>&quot;):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# 既存の鍵を代入するならこっち<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# pre_params = {'p': 1039, 'q': 691, 'n': 717949, 'e': 7, 'l': 119370, 'd': 17053, 'y': 1}<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;# recv = RSA(params=pre_params)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;recv = RSA(100, 100)        # 受信者<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;send = RSA(sender=<span class="dec3">True</span>)     # 送信者<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(repr(recv))<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;n, e = recv.get_keys()      # 公開鍵の取得<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;公開鍵 : {n}, {e}&quot;)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 送信側<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;xs = input(&quot;入力&emsp; &gt; &quot;)<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;send_code, send_str = send.encode(xs, n, e)   # 暗号化<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;暗号文 : {send_str}&quot;, end=&quot;\n\n&quot;)<br>
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;## 受信側<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;recv_code, recv_str = recv.decode(send_code) # 復号化<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec4">print</span>(f&quot;復号文 : {recv_str}&quot;)<br>
+                            </div>
+                        </details>
+                        <br>
+                        decode()関数に return_time=True を渡すことで第３戻り値が計算時間になるので、それを利用して他のプログラムから複数回実行し理想的な引数やプロセスの個数を探索することが可能である。<br>
+                        <br><br><br>
+                        <div class="index_title", id="6">
+                            6. numpyのpower()とmod()はあまり使えない話
+                        </div><hr/><br>
+                        私は当初、計算の高速化＝numpyだと考えてそれを使用してコーディングを行なった。しかしエラーの連続であった。
+                        詳しく見てみるとnumpy.mod()とnumpy.power()関数の実行結果がおかしいことに気づき、調べてみるとnumpyで扱うことのできる最大の符号なし整数は2^64 - 1であり、それ以上は精度が削がれるとのことであった。
+                        今回使用する数値は 暗号文^d が 10万^10万 程の桁数になっていることからわかる通り、2^64 - 1など軽く超えているのでnumpyでは計算できなかったのである。
+                        numpyのバージョンによっては2^64 - 1を超える数値を入力するとエラーが出るようだが、私のnumpyではそのまま実行できてしまったので発見が遅れた。
+                        整数の桁を分けて実行する方法があるみたいだが、面倒なので今回は標準搭載の演算子の「*」と「%」でそのまま記述した。<br>
+                        また、numpyの代わりにmathモジュールを試してみたところ、計算自体は正確に実行してくれたが計算時間の短縮にはあまりならなかった。<br>
+                        <br><br><br>
+                        <div class="index_title", id="7">
+                            7. サマーウォーズの主人公は何を計算していたのか
+                        </div><hr/><br>
+                            &nbsp;&nbsp;&nbsp;映画『サマーウォーズ』にて主人公が序盤と最終盤に数字の羅列から英文を書き出すシーンがある。
+                            あれがまさにRSA暗号であるが、彼が行っていたのは公開鍵のみでの暗号文の復号化である。
+                            要は<p_ style="color:#b56300; font-weight:900;">
+                                公開鍵 e と暗号文 y が判明している時、x^e (mod n) = y、x^ed (mod n) = x となる x, d, n の組み合わせの内、x の値が文章になりそうなものを探せ
+                            </p_>という問題を解いている。
+                            <br>
+                            &nbsp;&nbsp;&nbsp;まず、上記の連立不定方程式の問題を解くためにはかなりの時間を要し、今のスパコンをもってしても何千年やら何万年やら掛かるとも言われている。
+                            素因数分解について効果的なアルゴリズムは現在見つかっていないので、一般的にはある数値を素数で割り、それが割り切れれば素因数、割り切れなければ次の素数で割るアルゴリズムで執り行われる。
+                            RSA暗号の数値はもともと巨大な素数で作られているおかげで共通の因数が少なく、素因数が巨大な素数になっていることが多いので素数を具に走査するものではとんでもなく時間が掛かってしまう。
+                            また、その巨大な素数は企業や国家などがそれぞれ独自のものを占有していることもあるので、その場合はまず割る数が素数かどうかの判定を同時に行わなければならない。
+                            サマーウォーズの劇中では<p_ style="color:#b56300; font-weight:900;">「Shorの因数分解アルゴリズム」</p_>が書かれた参考書を主人公が読んでいるシーンが登場する。
+                            このアルゴリズムは目的の整数体の周期性から因数を割り出すもので、その時間計算量が多項式時間（入力サイズ x, 実数 a に対して時間計算量が ax であるもの）であることが知られている。
+                            しかし、素数の積が含まれる問題に対しては超多項式時間（入力サイズ x に対して時間計算量が x^2 や x! などであるもの）に跳ね上がることも知られている。
+                            今回の問題は思いっきり素数の積の累乗が登場するので超多項式時間となり現実的ではないが、このアルゴリズムは量子ビットと相性が良いとされており、
+                            もしそれを計算可能な量子コンピュータが実現すればRSA暗号を３分余りで解くことができるとも言われている。
+                            主人公の脳内にQPUが存在するなのなら納得である。
+                        <br><br><br><br><br>
+                        <a href="../blog.html" class="link">
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script src="../../js/fade.js"></script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

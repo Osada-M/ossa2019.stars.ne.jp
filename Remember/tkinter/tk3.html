@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang='ja'>
+    <head>
+        <meta charset='utf-8'>
+        <link rel="shortcut icon" href="..\..\pic\o.ico">
+        <link rel='apple-touch-icon-precomposed' href='..\..\pic\o.png'>
+        <link rel='stylesheet' href='..\..\css\main.css'>
+        <meta property='og:title' content='tkinterのラベルの使い方'>
+        <meta property='og:description' content='tkinterのラベルの使い方について'>
+        <meta property='og:site_name' content='tkinterのラベルの使い方'>
+        <meta property='og:type' content='article'>
+        <meta property='og:url' content='http://https://ossa2019.stars.ne.jp/Remember/tkinter/tk3.html'>
+        <title>tkinterのラベルの使い方：Label()について【Python備忘録】</title>
+    </head>
+    <body class='all'>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='top'>
+            <h1>
+                3. tkinterのラベルの使い方
+            </h1>
+        </div>
+        <div class='a0'>
+            <a href='..\..\index.html' class='a2'>
+                トップページ
+            </a>
+        </div>
+        <div class='pad'>
+            <div class='first'>
+                Pythonで簡単にアプリを作ることができる「tkinter」についてインストールから実用例までを複数章に分けて解説していく。（2020年12月10日&nbsp;更新）
+            </div>
+            <div class='inde'>
+                <p class='pi'>目次</p>
+                <div class='list0'>
+                    <a href='tk1.html' class='a1'>1. tkinterのインストール</a><br>
+                    <a href='tk2.html' class='a1'>2. 基本的な構文</a><br>
+                    <bl>
+                    <a href='#i3' class='a1'>3. ラベル</a><br>
+                    <a href='#i3-1' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;ラベルの定義</a><br>
+                    <a href='#i3-2' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;ラベルのカスタマイズ</a><br>
+                    <a href='#i3-3' class='a1'>&nbsp;&nbsp;&nbsp;&nbsp;ラベルの内容を後から書き換える</a><br>
+                    </bl>
+                    <br>
+                    <a href='tk4.html' class='a1'>4. ボタン</a><br>
+                    <a href='tk5.html' class='a1'>5. エントリー</a><br>
+                    <a href='tk6.html' class='a1'>6. テキスト</a><br>
+                    <a href='tk7.html' class='a1'>7. スクロールバー</a><br>
+                    <a href='tk8.html' class='a1'>8. チェックボックス</a><br>
+                    <a href='tk9.html' class='a1'>9. アプリへのバインドについて</a><br>
+                    <a href='tk10.html' class='a1'>10. 複数のアプリ画面をつくる</a><br>
+                    <a href='tk11.html' class='a1'>11. 作ったUIを消す（デストロイについて）</a><br>
+                </div>
+                <br><br><br>
+            </div>
+            <div class='file'>
+                <p id='i3'>ラベル</p>
+                <div class='list0'>
+                    <li id='i3-1'>
+                        ラベルの定義
+                    </li><br>
+                    <p1>
+                        ラベルの作成には <bl>Label()</bl> を用いる。
+                        <br><br><div class='t0'>lab = t.Label()</div>
+                        <br><br>ラベルに文字を挿入するには <bl>text</bl> オプションを用いる。
+                        <br><br><div class='t0'>lab = t.Label( text = u'ラベル' )</div>
+                        <br><br>ラベルを実際にアプリに表示させるには <bl>pack()</bl> または <bl>place()</bl> を用いる。pack()は自動的に上から配置してくれるもので、place()は自分で配置や大きさを決めるものだ。
+                        <br><br><br>
+                        <div class='t2' id='j1'>
+                            &nbsp;実行例１
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '250x150' )<br>
+                                <br><koko>
+                                lab = t.Label( text = u'ラベル' )<br>
+                                lab.pack()<br>
+                                <br></koko>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果
+                            <div class='pic'><img src='label1.PNG' width='250px'></div>
+                            <br><br><div id='j2'></div>
+                            <br>&nbsp;実行例２
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '250x150' )<br>
+                                <br>
+                                lab = t.Label( text = u'ラベル' )<br>
+                                <koko>lab.place( x = 10, y = 10 )<br>
+                                <br></koko>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果
+                            <div class='pic'><img src='label2.PNG' width='250px'></div>
+                        </div>
+                        <br>
+                    </p1><br>
+                    <li id='i3-2'>
+                        ラベルのカスタマイズ
+                    </li><br>
+                    <p1>
+                        ラベルのフォントを変更するには <bl>font</bl> オプションを用いる。
+                        <br><br><div class='t0'>lab = t.Label( font = ('MS Gothic', 20) ) <nbl>#フォントは「MS ゴシック」、フォントサイズが２０。</nbl>
+                        </div><br>
+                        <br>ラベルの文字色の変更には <bl>foreground</bl> または <bl>fg</bl> オプションを、背景色の変更には <bl>background</bl> または <bl>bg</bl> オプションを用いる。
+                        <br>色の指定は16進数6桁のカラーコードを書くか、有名な色であれば英単語で書いてもちゃんと動作する。
+                        <br><br><div class='t0'>lab = t.Label( foreground = '#FF00FF', background = 'cyan' ) <nbl>#文字色が紫で、背景色がcyan（水色）</nbl></div>
+                        <br><br>また、これらのオプションは組み合わせて使うことができる。<br><br>
+                        <br><div class='t2' id='j3'>
+                            &nbsp;実行例３
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '250x150' )<br>
+                                <br>
+                                lab = t.Label( text = u'ラベル'<koko>, font = ('MS Gothic', 20), foreground = '#FF00FF', background = 'cyan' )<br>
+                                </koko>lab.place( x = 10, y = 10 )<br>
+                                <br>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果
+                            <div class='pic'><img src='label3.PNG' width='250px'></div>
+                        </div>
+                        <br><br>
+                        一方、place() にて <bl>width</bl> や <bl>height</bl> オプションを用いることでラベルの縦横の大きさを変更することができる。
+                        <br><br><div class='t0'>lab = t.place( <nbl>x = 10, y = 10</nbl>, width = 230, height = 50 ) <nbl>#横230px、縦50px</nbl>
+                        </div><br><br>
+                        <div class='t2' id='j4'>
+                            &nbsp;実行例４
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '250x150' )<br>
+                                <br>
+                                lab = t.Label( text = u'ラベル', font = ('MS Gothic', 20), foreground = '#FF00FF', background = 'cyan' )<br>
+                                lab.place( x = 10, y = 10<koko>, width = 230, height = 50 )<br>
+                                <br></koko>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果
+                            <div class='pic'><img src='label4.PNG' width='250px'></div>
+                        </div><br><br>
+                        ここまでがラベルの基本的な内容で、ここからは少し発展的な話だ。
+                        <br><br><br>
+                    </p1>
+                    <li id='i3-3'>
+                        ラベルの内容を後から書き換える
+                    </li><br>
+                    <p1>
+                        ラベルに限らずtkinterの機能の多くは辞書型で管理されているため、その辞書の内容を直接書き換えることで後から自分の好きなタイミングでフォントや文字色を変更することができる。
+                        例えば文章を変更したければ辞書の「text」の内容を書き換える。
+                        <br><br><div class='t0'>lab[ 'text' ] = 'こんにちは'</div>
+                        <br><br>次に背景色を変更したければ「background」を変更する。
+                        <br><br><div class='t0'>lab[ 'background' ] = '#000000' <nbl>#黒に変更</nbl></div>
+                        <br><br>
+                        <div class='t2' id='j5'>
+                            &nbsp;実行例５
+                            <div class='t1'>
+                                import tkinter as t<br>
+                                <br>
+                                app = t.Tk()<br>
+                                app.title( 'テスト' )<br>
+                                app.geometry( '250x150' )<br>
+                                <br>
+                                lab = t.Label( text = u'ラベル', font = ('MS Gothic', 20), foreground = '#FF00FF', background = 'cyan' )<br>
+                                lab.place( x = 10, y = 10, width = 230, height = 50 )<br>
+                                <br><koko>
+                                lab['text'] = 'こんにちは'<br>
+                                lab['background'] = '#000000'<br>
+                                <br></koko>
+                                app.mainloop()
+                            </div>
+                            <br>&nbsp;実行結果
+                            <div class='pic'><img src='label5.PNG' width='250px'></div>
+                        </div>
+                    </p1>
+                </div>
+                <br></br>
+            </div>
+        </div>
+        <script src="../../js/main.js"></script>
+        <script src='../../count/count.php'></script>
+    </body>
+</html>

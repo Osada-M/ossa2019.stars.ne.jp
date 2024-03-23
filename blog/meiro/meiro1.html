@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='shortcut icon' href='../../pic/o.ico'>
+    <link rel='apple-touch-icon-precomposed' href='../../pic/o.png'>
+    <link rel='stylesheet' href='../../css/main2.css'>
+    <link rel='stylesheet' href='../../css/main2_half.css' media='screen and (max-width:1360px)'>
+    <link rel='stylesheet' href='../../css/main2_quarter.css' media='screen and (max-width:850px)'>
+    <link rel='stylesheet' href='../../css/main2_mobile.css' media='screen and (max-width:550px)'>
+    <meta property='og:title' content='Pythonのtkinterで迷路制作（１）'>
+    <meta property='og:description' content='pythonで迷路を作っています。'>
+    <meta property='og:site_name' content='Pythonのtkinterで迷路制作（１）'>
+    <meta property='og:type' content='blog'>
+    <meta property='og:url' content='https://ossa2019.stars.ne.jp/blog/meiro/meiro1.html'>
+    <title>【おさだのホームページ】Pythonのtkinterで迷路制作（１）</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class='tab'>
+            <p>おさだのホームページ</p>
+            <a href='../../index.html' id='home'>
+                ホーム
+            </a>
+            <a href='../../apps.html' id='home'>
+                倉　庫
+            </a>
+            <a href='../../Remember/Remember.html' id='home'>
+                備忘録
+            </a>
+            <a href='../blog.html' id='home' class='tab_now'>
+                にっき
+            </a>
+        </div>
+        <div class='page'>
+            <div class='caption'>
+                Pythonのtkinterで迷路の制作を目指す
+            </div>
+            <div class='article'>
+                <p>迷路制作（１）<br>大筋のアルゴリズムの決定</p><br>
+                    <section>
+                        迷路を制作するアルゴリズムとして２種類思いついた。<br><br><br>
+                        アルゴリズム[1]：壁をランダムに作る<br><br>
+                        １マスおきに1x1の正方形を配置し、その全ての正方形から左右上下からランダムに選ばれた方向に1x1の正方形を生やす方法。<br><br>
+                        <div class='pic'><img src='algo1.png' width='60%' alt='アルゴリズム[1]画像'></div><br><br><br>
+                        アルゴリズム[2]：道をランダムに作る<br><br>
+                        スタートから1x2の長方形を左右上下からランダムに選ばれた方向に生やし、そこを道とする方法。もし進める方向がなくなった時は進める方向が現れる地点まで戻ってから道づくりをまた始める。<br><br>
+                        <div class='pic'><img src='algo2.png' width='60%' alt='アルゴリズム[2]画像'></div><br><br>
+                        アルゴリズム[1]の方が簡単そうであるので、[1]から実装を進めようと思う。<br><br><br>
+                        次：
+                        <a href='meiro2.html' class='link'>
+                            迷路制作（２）　迷路アプリの下地の制作
+                        </a><br>
+                        <br>
+                        迷路制作のページ：
+                        <a>１</a>
+                        <a href='meiro2.html' class='link'>２</a>
+                        <a href='meiro3.html' class='link'>３</a>
+                        <br><br><br>
+                        <a href='../blog.html' class='link'>
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src='../../count/count.php'></script>
+</body>
+</html>

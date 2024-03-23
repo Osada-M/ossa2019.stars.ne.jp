@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="../../pic/o.png">
+    <link rel="stylesheet" href="../../css/main2.css">
+    <link rel="stylesheet" href="../../css/main2_half.css" media="screen and (max-width:1360px)">
+    <link rel="stylesheet" href="../../css/main2_quarter.css" media="screen and (max-width:850px)">
+    <link rel="stylesheet" href="../../css/main2_mobile.css" media="screen and (max-width:550px)">
+    <meta property="og:title" content="Pythonでマンデルブロ集合をプロットする。n次マンデルブロ集合の計算と発散速度のより良い描画について考える。">
+    <meta property="og:description" content="マンデルブロ集合の定義から描画までのコードを紹介します。複素数の二項定理を使ったn次マンデルブロ集合の計算と、双曲線関数による発散速度のより良い可視化について。">
+    <meta property="og:site_name" content="Pythonでマンデルブロ集合をプロットする">
+    <meta property="og:type" content="blog">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/blog/number/mandelblot.html">
+    <title>Pythonでマンデルブロ集合をプロットする。n次マンデルブロ集合の計算と発散速度のより良い描画について考える。【おさだのホームページ】</title>
+</head>
+<body>
+    <main>
+        <div id="topScroll" class="tmTopBtn" onclick="tmTopScroll()">▲<br>top</div>
+        <div class="tab">
+            <p>おさだのホームページ</p>
+            <a href="../../index.html" id="home">
+                ホーム
+            </a>
+            <a href="../../apps.html" id="home">
+                倉　庫
+            </a>
+            <a href="../../Remember/Remember.html" id="home">
+                備忘録
+            </a>
+            <a href="../blog.html" id="home" class="tab_now">
+                にっき
+            </a>
+        </div>
+        <div class="page">
+            <div class="caption">
+                Pythonでマンデルブロ集合(Mandelblot set)をプロットしたい
+            </div>
+            <div class="article">
+                <p>マンデルブロ集合のプロット</p><br>
+                    <section>
+                        <a href="#0" class="notdec">0. マンデルブロ集合とは</a><br>
+                        <a href=#code class="notdec">1. プログラム全文</a><br>
+                        <a href=#HowToUse class="notdec">2. 使い方</a><br>
+                        <a href=#result class="notdec">3. 実行結果</a><br>
+                        <a href="#1" class="notdec">4. tanhを用いた発散速度のプロットについて</a><br>
+                        <a href="#2" class="notdec">5. n次の複素数の計算について</a><br>
+                        <a href="#3" class="notdec">6. 長さが無限である様子を確認する</a>
+                        <br><hr/><br><br>
+                        このページではこのような
+                        <div class="pic">
+                            <img src="images/mandelblot_1k1k7.jpg" width="30%" alt="MandelblotSetの画像">
+                            <img src="images/mandelblot_tanh_0.jpg" width="30%" alt="MandelblotSet_tanhの画像">
+                        </div>
+                        マンデルブロ集合(Mandelblot set)や、<br><br>
+                        <div class="pic">
+                            <img src="images/mandelblot_g_3.jpg" width="20%" alt="MandelblotSet^3の画像">
+                            <img src="images/mandelblot_g_4.jpg" width="20%" alt="MandelblotSet^4の画像">
+                            <img src="images/mandelblot_g_5.jpg" width="20%" alt="MandelblotSet^5の画像">
+                            <img src="images/mandelblot_g_6.jpg" width="20%" alt="MandelblotSet^6の画像">
+                        </div>
+                        そのn次の集合のプロットを行う。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="0">
+                            0. マンデルブロ集合とは
+                        </div><hr/>
+                        マンデルブロ集合とは、漸化式 Z(x+1) = Z(x)^2 + C , Z(0) = 0 があった時、xをどんどん大きくしていく。その結果 Z(x) が無限大に発散しないような複素数 C の集合である。
+                        またこの集合には数学的に面白い性質があり、円のように閉じた図形でありながら周の長さは無限である。その様子もこのページで紹介しようと思う。<br><br><br>
+                        具体的に C = 0 の時、<br>
+                        <div class="det">
+                        Z(0) = 0<br>
+                        Z(1) = Z(0)^2 + 0 = 0<br>
+                        Z(2) = Z(1)^2 + 0 = 0<br>
+                        Z(100) = 0<br>
+                        </div>
+                        このように無限大には発散しないので C = 0 はマンデルブロ集合に含まれる。<br><br><br>
+                        次に C = 1 の時は、<br>
+                        <div class="det">
+                            Z(0) = 0<br>
+                            Z(1) = Z(0)^2 + 1 = 1<br>
+                            Z(2) = Z(1)^2 + 1 = 2<br>
+                            Z(3) = 2^2 + 1 = 5<br>
+                            Z(4) = 5^2 + 1 = 26<br>
+                            Z(5) = 677<br>
+                            Z(6) = 458,330<br>
+                            Z(7) = 210,066,388,901<br>
+                        </div>
+                        このように Z(x) の値がどんどん大きくなっていき、最終的には無限大に発散する。よって C = 1 はマンデルブロ集合には含まれない。<br><br><br><br><br>
+                        まず方針として、調べたい範囲内の全ての座標において無限大に発散するかどうかを計算し、発散したかしなかったかをプロットする。
+                        また、発散する速度を加味してプロットした方が美しい図形になるので発散速度によるヒートマップを描くことにする。<br><br>
+                        説明は後回しにして、作成したプログラムと使い方と実行結果を紹介する。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="code">
+                            1. プログラム全文
+                        </div><hr/>
+                        <div class="code">
+                            <span class="dec0">class</span> mandelblot:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">import</span> matplotlib.pyplot <span class="dec1">as</span> plt, numpy <span class="dec1">as</span> np, math<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> <span class="dec4">__init__</span>(<span class="dec2">self</span>, n:int=2, pixel:int=200, xy_range=[[-2.1, 0.5], [-1.2, 1.2]], count_type:int=0, is_add=<span class="dec3">True</span>):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.n = n<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.xy_range = xy_range<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.count_type = count_type<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.is_add = is_add<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs = <span class="dec2">self</span>.np.linspace(xy_range[1][0], xy_range[1][1], pixel+1)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys = <span class="dec2">self</span>.np.linspace(xy_range[0][0], xy_range[0][1], pixel+1)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.xy = [[<span class="dec2">self</span>.calc(r, i) <span class="dec1">for</span>  i <span class="dec1">in</span>   xs] <span class="dec1">for</span>  r <span class="dec1">in</span>   ys]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.xs = [xs <span class="dec1">for</span>  y <span class="dec1">in</span>   ys]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.ys = [[y <span class="dec1">for</span>  _ <span class="dec1">in</span>   ys] <span class="dec1">for</span>  y <span class="dec1">in</span>   ys]<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> combination(<span class="dec2">self</span>, a, b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span>  i <span class="dec1">in</span>   <span class="dec4">range</span>(b):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result *= (a-i)/(b-i)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  result<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> i_separate(<span class="dec2">self</span>, k):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = <span class="dec2">self</span>.math.sin(<span class="dec2">self</span>.math.radians(k*90 + 45))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(result &lt; 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  -1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">elif</span> (result &gt; 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  0<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> comp_binomial(<span class="dec2">self</span>, r, i, n):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;real, imagine, add = 0., 0., 0.<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span>  k <span class="dec1">in</span>   <span class="dec4">range</span>(n+1):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(k % 2 == 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num = <span class="dec2">self</span>.combination(n, k)*(i**k)*(r**(n-k))*<span class="dec2">self</span>.i_separate(k)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;real += num<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add += <span class="dec2">self</span>.absol(num)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imagine +=  <span class="dec2">self</span>.combination(n, k)*(i**k)*(r**(n-k))*<span class="dec2">self</span>.i_separate(k)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#<span class="dec4">print</span>(real, imagine)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  real, imagine, add<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> absol(<span class="dec2">self</span>, n):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  n <span class="dec1">if</span>(n &gt;= 0) <span class="dec1">else</span> -n<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> calc(<span class="dec2">self</span>, r, i, lim=1e6, for_range=2**7):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new_r, new_i, add = 0., 0., 0.<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">for</span>  count <span class="dec1">in</span>   <span class="dec4">range</span>(for_range):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">try</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new_r, new_i, add = <span class="dec2">self</span>.comp_binomial(new_r + r, new_i + i, <span class="dec2">self</span>.n)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">except</span>  :<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  <span class="dec2">self</span>.scale(count)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span class="dec2">self</span>.is_add):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(add &gt;= lim):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  <span class="dec2">self</span>.count_scale(count)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(new_r &gt;= lim):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  <span class="dec2">self</span>.count_scale(count)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  -1<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> count_scale(<span class="dec2">self</span>, n):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count_typeの説明<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 : 発散速度をそのまま反映  &lt;-  基本<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 : 発散速度を２乗 &lt;- 集合の正確さが高くなる<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2 : tanh(円周率/発散速度)  &lt;-  発散速度の分布が見やすい。<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 : 発散の有無のみを反映（発散すれば1, しなければ-1）<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(<span class="dec2">self</span>.count_type == 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  n<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">elif</span>(<span class="dec2">self</span>.count_type == 1):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  n**2<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">elif</span> (<span class="dec2">self</span>.count_type == 2):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(n == 0):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  0<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  <span class="dec2">self</span>.math.tanh(<span class="dec2">self</span>.math.pi/n)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">elif</span> (<span class="dec2">self</span>.count_type == 3):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  1 <span class="dec1">if</span>(n &gt; 0) <span class="dec1">else</span> -1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">else</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  n<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> s_g_scale(<span class="dec2">self</span>, s_g):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s = s_g[0][1] - s_g[0][0]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g = s_g[1][1] - s_g[1][0]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2"><span class="dec2"><span class="dec0">return</span> </span> </span>  s, g<br>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="dec0">def</span> plot(<span class="dec2">self</span>, size=10, save=<span class="dec3">False</span>, axis=<span class="dec3">True</span>, buff=""):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s, g = <span class="dec2">self</span>.s_g_scale(<span class="dec2">self</span>.xy_range)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fig = <span class="dec2">self</span>.plt.figure(figsize=(size*s, size*g))<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.pcolor(<span class="dec2">self</span>.ys, <span class="dec2">self</span>.xs, <span class="dec2">self</span>.xy)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span> <span class="dec3">not</span>(axis):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.axis("off")<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec2">self</span>.plt.show()<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec1">if</span>(save):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fig.savefig("mandelblot"+buff+".jpg")
+                        </div><br>
+                        <br><br><br>
+                        <div class="index_title", id="HowToUse">
+                            2. 使い方
+                        </div><hr/>
+                        <div class="det">
+                            プロットは二行で終わる。<br><br>
+                            ① m = mandelblot()<br>
+                            ② m.plot()<br><br>
+                            また、それぞれオプションを追加できる。<br><br><hr/><br>
+                            ① m = mandelblot(<br>
+                            n = マンデルブロ集合 : Z(x)^n + C の n の値,<br>
+                            pixel = 整数で、どれだけ細かい座標まで計算するのかの値,<br>
+                            xy_range = [[xの開始値, 終了値], [yの開始値, 終了値]],<br>
+                            count_type = 発散速度をどのようにプロットするのか。０〜３までの数字で指定。後に説明,<br>
+                            is_add = 発散したかどうかの判定を実部の絶対値で行うか否か。True か False<br>
+                            )<br><br>
+                            count_type = 0 で発散速度をそのまま反映<br>
+                            count_type = 1 で(発散速度)^2　：　集合の正確さが上がる。<br>
+                            count_type = 2 で双曲線関数tanh(π/発散速度)　：　発散速度の分布が見やすい。<br>
+                            count_type = 3 で発散したかどうかのみを反映<br><br><hr/><br>
+                            ② m.plot(<br>
+                            size = 画像サイズの単位。実際にはsizeの値 * xyの最大値と最小値の差が画像サイズ,<br>
+                            save = 画像を保存するか否か。True か False,<br>
+                            axis = 縦軸・横軸をプロットするか否か。True か False,<br>
+                            buff = 画像の保存名に付け足す文字列<br>
+                            )<br><br><hr/>
+                        </div><br>
+                        <br><br><br>
+                        <div class="index_title", id="result">
+                            3. 実行結果
+                        </div><hr/>
+                        <section style="text-align:left; padding-left:20%;">
+                            m = mandelblot(n=2, pixel=1000)<br>
+                            m.plot(size=20)
+                        </section>
+                        <div class="pic"><img src="images/mandelblot_1k1k7.jpg" width="60%" alt="mandelblot_1k1k7の画像"></div><br>
+                        <section style="text-align:left; padding-left:20%;">
+                            m = mandelblot(n=2, pixel=1000, count_type=2)<br>
+                            m.plot(size=20)
+                        </section>
+                        <div class="pic"><img src="images/mandelblot_tanh_0.jpg" width="60%" alt="mandelblot_tanhの画像"></div><br>
+                        2次から10次までのマンデルブロ集合：<br>
+                        <section style="text-align:left; padding-left:10%; font-size: 80%;">
+                            for i in range(2, 11):<br>
+                            &nbsp;&nbsp;g = 0.5 if(i &gt; 2) else 0<br>
+                            &nbsp;&nbsp;m = mandelblot(n=i, pixel=500, count_type=2, xy_range=[[-2+g, 1+g], [-1.5, 1.5]])<br>
+                            &nbsp;&nbsp;m.plot(size=20, save=True, buff=str(i))
+                        </section>
+                        <div class="pic">
+                            <img src="images/mandelblot_g_2.jpg" width="20%" alt="mandelblot^2の画像">
+                            <img src="images/mandelblot_g_3.jpg" width="20%" alt="mandelblot^3の画像">
+                            <img src="images/mandelblot_g_4.jpg" width="20%" alt="mandelblot^4の画像">
+                            <img src="images/mandelblot_g_5.jpg" width="20%" alt="mandelblot^5の画像">
+                            <img src="images/mandelblot_g_6.jpg" width="20%" alt="mandelblot^6の画像">
+                            <img src="images/mandelblot_g_7.jpg" width="20%" alt="mandelblot^7の画像">
+                            <img src="images/mandelblot_g_8.jpg" width="20%" alt="mandelblot^8の画像">
+                            <img src="images/mandelblot_g_9.jpg" width="20%" alt="mandelblot^9の画像">
+                            <img src="images/mandelblot_g_10.jpg" width="20%" alt="mandelblot^10の画像">
+                        </div><br><br>
+                        もっと高画質の画像が必要ならば pixel か size の値を上げて実行すれば良い。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="1">
+                            4. tanhを用いた発散速度のプロットについて
+                        </div><hr/>
+                        このプログラムにて発散速度のプロットにtanh(π/発散速度)を用いた。これは早期に発散した数値を誇張して表示させるためである。
+                        発散速度の計測はcalc()関数にて Z(x) の値を x=0 から 10^6 までの範囲で計算して、無限大に発散した際の x を配列に保存することで出している。
+                        しかし、実際に計算してみると発散した x の値のほとんどは 10 以下であり、0 ~ 10^6 までの尺度でプロットするとその細かい数値の差が潰れてしまう。<br>
+                        そこで双曲線関数tanhを用いることにした。<br>
+                        <div class="pic">y = tanh(x) のグラフ -&gt;  <img src="images/tanh.jpg" width="30%" alt="mandelblot^10の画像"></div>
+                        このtanhはニューラルネットワークの活性化関数としても活躍するもので、y=-1 と y=1 に漸近し、x=0 付近の傾きが大きい。この関数を用いることで大きい数字を排除して小さい変化を観察することができる。
+                        実際に y = tanh(π/x) のグラフを x=1 ~ 100 まででプロットしてみる。
+                        <div class="pic"><img src="images/tanh_n.png" width="30%" alt="mandelblot^10の画像"></div>
+                        すると上図のように小さい値に対しては傾き(の絶対値)が大きく、大きい値に対しては傾きが小さいことが見て取れる。また、同じような動きをする関数として x の負数乗が挙げられあるが、傾きの変化が激しく調整が難しかったので今回は使用しなかった。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="2">
+                            5. n次の複素数の計算について
+                        </div><hr/>
+                        n次のマンデルブロ集合の計算は、複素数 (a + bi)^n + C の計算の反復によって行われている。
+                        (a + b)^n の計算には二項定理を用いることができるが、二項定理を複素数に適応しようとすると実部と虚部を分けたり、虚数 i の累乗の正負を判定したりしなくてはならないので少し複雑になる。
+                        詳しくは別の記事<a href="comp_binomial.html" class="newlink">複素数の二項定理について</a>をご参照いただきたい。
+                        簡単に説明すると、複素数の積をベクトルの積として考え、その三角関数がとる値から計算している。<br>
+                        <br><br><br><br>
+                        <div class="index_title", id="3">
+                            6. 長さが無限である様子を確認する
+                        </div><hr/>
+                        最初に言った通り、この図形の周の長さは無限である。それを確認するために計算する範囲を小さくして拡大してみる。<br><br><br>
+                        <section style="text-align:center;">xy_range = [[-0.4, 0.1], [0.6, 1.1]]</section><br>
+                        <div class="pic"><img src="images/mandelblot_1k1k7_1.jpg" width="60%" alt="mandelblot_1k1k7_1の画像"></div><br><br>
+                        <section style="text-align:center;">[[-0.12, -0.085], [0.94, 0.97]]</section><br>
+                        <div class="pic"><img src="images/mandelblot_1k1k7_2.jpg" width="60%" alt="mandelblot_1k1k7_2の画像"></div><br><br>
+                        <section style="text-align:center;">[[-0.108, -0.097], [0.94, 0.948]]</section><br>
+                        <div class="pic"><img src="images/mandelblot_1k1k7_3.jpg" width="60%" alt="mandelblot_1k1k7_3の画像"></div><br><br>
+                        このようにどんなに拡大しても端っこが見えないし、拡大した先に更に同じ形のマンデルブロ集合があるように見える。
+                        これが「周の長さが無限」の意味である。<br><br><br>
+                        <div class="hajimeni">
+                            さいごに<br>
+                            マンデルブロ集合のような複素数における発散点の集合を「発散点集合(Escaping set)」と呼び、その中でも反復的で長さが無限大のものを「フラクタル」と呼ぶ。
+                            この集合には他に、ジュリア集合やバーニングシップ集合などがある。
+                            式がわかればプログラムでプロットすることができるので興味があれば試すのも良い暇つぶしになりそうである。
+                        </div><br><br>
+                        <a href="../blog.html" class="link">
+                            にっきのページに戻る
+                        </a><br>
+                    </section>
+                <br></br>
+            </div>
+        </div>
+    </main>
+    <script src="../../js/main.js"></script>
+    <script src="../../count/count.php"></script>
+</body>
+</html>

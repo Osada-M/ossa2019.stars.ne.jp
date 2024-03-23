@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="pic/o.ico">
+    <link rel="shortcut icon" href="pic/o.ico">
+    <link rel="apple-touch-icon-precomposed" href="pic/o.png">
+    <link rel="stylesheet" href="css/jouhou.css">
+    <!-- pc版css -->
+    <link rel="stylesheet" href="css/mainContent.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="css/sidebar.css" media="screen and (min-width:600px)">
+    <link rel="stylesheet" href="css/pointerEffect.css" media="screen and (min-width:600px)">
+    <!-- モバイル版css -->
+    <link rel="stylesheet" href="css/sidebar_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="css/mainContent_mobile.css" media="screen and (max-width:599px)">
+    <link rel="stylesheet" href="css/pointerEffect_mobile.css" media="screen and (max-width:599px)">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <meta property="og:title" content="基本情報技術者試験の解答照会">
+    <meta property="og:description" content="基本情報技術者試験の年度、季節、問番号から解答を検索します。">
+    <meta property="og:site_name" content="基本情報技術者試験の解答照会">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ossa2019.stars.ne.jp/text.html">
+    <title>基本情報技術者試験の解答照会</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo_content">
+            <div class="logo">
+                <!-- <i class='bx bxl-python'></i> -->
+                <img src="pic/o_alpha.PNG">
+                <div class="name" id="jp_font">
+                    おさだのホームページ
+                </div>
+            </div>
+            <i class='bx bx-menu' id="open_btn"></i>
+            <i class='bx bx-x' id="close_btn"></i>
+        </div>
+        <ul class="page_list">
+            <!-- search -->
+            <li>
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="サイト内検索..." id="search-key">
+                <i class='bx bx-right-arrow-circle' id="search_btn" onclick="jump()"></i>
+            </li>
+            <!-- home -->
+            <li>
+                <a href="index.html">
+                    <i class='bx bx-home'></i>
+                    <span class="link_name">home</span>
+                </a>
+                <span class="popup_text">home</span>
+            </li>
+            <!-- note -->
+            <li>
+                <a href="blog/blog.html">
+                    <i class='bx bx-book'></i>
+                    <span class="link_name">note</span>
+                </a>
+                <span class="popup_text">note</span>
+            </li>
+            <!-- programs -->
+            <li>
+                <a href="apps.html">
+                    <i class='bx bx-code-alt'></i>
+                    <span class="link_name">programs</span>
+                </a>
+                <span class="popup_text">programs</span>
+            </li>
+            <!-- remember -->
+            <li>
+                <a href="Remember/Remember.html">
+                    <i class='bx bx-paperclip'></i>
+                    <span class="link_name">remember</span>
+                </a>
+                <span class="popup_text">remember</span>
+            </li>
+            <li>
+                <!-- space -->
+            </li>
+            <!-- Sorting Sumilator -->
+            <li>
+                <a href="sorting/sorting.html">
+                    <i class='bx bx-bar-chart'></i>
+                    <span class="link_name" id="jp_font">Sorting Simulator</span>
+                </a>
+                <span class="popup_text" id="jp_font">Sorting Simulator</span>
+            </li>
+            <!-- tkinterの解説ページ -->
+            <li>
+                <a href="Remember/tkinter/tkinter.html">
+                    <i class='bx bxl-python'></i>
+                    <span class="link_name" id="jp_font">tkinterの解説ページ</span>
+                </a>
+                <span class="popup_text" id="jp_font">tkinterの解説ページ</span>
+            </li>
+            <!-- 基本情報技術者試験 -->
+            <li id="now">
+                <a href="jouhou.html">
+                    <i class='bx bx-radio-circle'></i>
+                    <span class="link_name" id="jp_font">基本情報技術者試験の解答</span>
+                </a>
+                <span class="popup_text" id="jp_font">基本情報技術者試験の解答</span>
+            </li>
+            <!-- 文字数カウンター -->
+            <li>
+                <a href="text.html">
+                    <i class='bx bx-pencil'></i>
+                    <span class="link_name" id="jp_font">文字数カウンター</span>
+                </a>
+                <span class="popup_text" id="jp_font">文字数カウンター</span>
+            </li>
+            <li></li>
+            <!-- secret page -->
+            <li id="secret">
+                <a href="myPage/home.html" target="_blank" rel="noopener noreferrer" id="secret_page">
+                    <i class='bx bx-key'></i>
+                    <span class="link_name">test page</span>
+                </a>
+                <span class="popup_text_secret">test page</span>
+            </li>
+        </ul>
+        <div class="profile_content">
+            <div class="profile">
+                <div class="profile_details">
+                    <div class="subscript">Writer</div>
+                    <div class="name">
+                        Osada Masashi
+                        <br>
+                        <a href="https://twitter.com/ossa2019_osada" target="_blank" rel="noopener noreferrer">
+                            > twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main_content">
+        <div class="tmTopBtn" id="topScroll" onclick="tmTopScroll()">
+            <i class='bx bx-upvote'></i>
+            <br>
+            <span class="topScroll_ception">
+                top
+            </span>
+        </div>
+        <div class="text_content">
+            <div class="top_title_text" id="jp_font">おさだのホームページ</div>
+            <br>
+            <div class="page_title" id="fade_0">
+                <div class="title_text">
+                    基本情報技術者試験の解答照会
+                </div>
+                <div class="caption_text" id="version">
+                    <div class="version_text" id="jp_font">
+                        JavaScript読み込み中...
+                    </div>
+                </div>
+            </div>
+            <div class="article">
+                <br>
+                <br>
+                <div class="text_counter">
+                    <div class="text">
+                        <!-- 
+                            以下、旧バージョンのページから移植したため記述方法に差異あり
+                        -->
+                        <div class='jouhou'>
+                            <div class="explain_text">
+                                <span id="jp_font">
+                                    半角、全角が混じっていても動作します。<br>
+                                    年度のところは平成、令和関係なく入力してください。自動で振り分けます。<br>
+                                    &gt;&nbsp;&nbsp;例：平成24年→「24」年、令和1年→「1」年
+                                </span>
+                            </div>
+                            <br><br>
+                            <div class="form_content">
+                                <div class="input_form">
+                                    <form id='startF' action='#'>
+                                    <table>
+                                        <tr class='table_form'>
+                                            <td>
+                                                平成/令和 <input name='year' id="jouhou_year_input"> 年
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span id='nendo_result'>&ensp;</sapn></td>
+                                        </tr>
+                                        <tr class='table_form'>
+                                            <td>
+                                                <input type='radio' name='kisetsu' value='haru' checked>春&ensp;
+                                                <input type='radio' name='kisetsu' value='aki'>秋&ensp;
+                                                <input type='radio' name='kisetsu' value='toku'>特別
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><p2 id='kisetu_result' style='font-size:15px;'>&ensp;</p2></td>
+                                        </tr>
+                                        <tr class='table_form'>
+                                            <td>
+                                                <input type='radio' name='noon' value='am' checked>午前&ensp;&ensp;
+                                                <input type='radio' name='noon' value='pm'>午後
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><p2 id='noon_result' style='font-size:10px;'>&ensp;</p2></td>
+                                        </tr>
+                                        <tr class='table_form'>
+                                            <td>
+                                                問 <input name='toi' id="jouhou_toi_input"></input>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><p2 id='toi_result' style='font-size:15px;'>&ensp;</p2></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type='submit' value='検索' id="jouhou_search_btn">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    </form>
+                                    <br><br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='j_frame'>
+                            <p2 id='ans'></p2>
+                        </div>
+                        <!-- 
+                            旧バージョンここまで
+                        -->
+                        <div class="source_content">
+                            <span id="jp_font">
+                                解答として表示しているページ：
+                            </span>
+                            <a href='https://www.fe-siken.com/' target='_blank' rel='noopener noreferrer' class="link">
+                                <span id="jp_font">
+                                    基本情報技術者試験ドットコム
+                                </span>
+                            </a> 
+                        </div>
+                        <br><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jouhou.js"></script>
+    <script src="js/copy.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/details.js"></script>
+    <script src="js/i_btn.js"></script>
+    <script src="js/pointerEffect.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/fade.js"></script>
+    <!-- <script src="js/counter.js"></script> -->
+    <script src="count/count.php"></script>
+</body>
+</html>

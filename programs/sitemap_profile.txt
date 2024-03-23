@@ -1,0 +1,51 @@
+#% file pass (http://ossa2019.stars.ne.jp/ ~~ .html)  :  priority
+: 1.0
+### independent pages
+index       : 1.0
+apps        : 1.0
+## other site pages
+jouhou      : 1.0
+text        : 1.0
+sorting/sorting : 1.0
+### blog pages
+blog/blog   : 0.5
+blog/osada_module   : 1.0
+## chromeEx
+blog/chromeEx/chromeEx1     : 0.8
+## other
+blog/other/plot_anime       : 0.8
+blog/other/python3_10       : 0.8
+blog/other/python_benri     : 0.8
+blog/other/linear_separation : 0.8
+blog/other/rsa              : 0.8
+blog/other/font_class       : 0.8
+blog/other/rainbow_print       : 0.8
+## number
+blog/number/mandelblot      : 0.8
+blog/number/long_division   : 0.8
+blog/number/comp_binomial   : 0.8
+blog/number/complex         : 0.8
+blog/number/diff            : 0.8
+blog/number/isprime         : 0.8
+## meiro
+blog/meiro/meiro1           : 0.5
+blog/meiro/meiro2           : 0.5
+blog/meiro/meiro3           : 0.5
+### Remember pages
+Remember/Remember           : 0.5
+## html
+Remember/html/target        : 1.0
+## tkinter
+Remember/tkinter/tkinter    : 1.0
+Remember/tkinter/tk1        : 1.0
+Remember/tkinter/tk2        : 1.0
+Remember/tkinter/tk3        : 1.0
+Remember/tkinter/tk4        : 1.0
+Remember/tkinter/tk5        : 1.0
+Remember/tkinter/tk6        : 1.0
+Remember/tkinter/tk7        : 1.0
+Remember/tkinter/tk8        : 1.0
+Remember/tkinter/tk9        : 1.0
+Remember/tkinter/tk10       : 1.0
+Remember/tkinter/tk11       : 1.0
+#% end
